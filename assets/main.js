@@ -153,6 +153,7 @@
     openWa(
       "Hola, soy " + f.get("nombre") + " y quiero reservar La Bellota 🚐\n" +
       "· Fechas: del " + f.get("desde") + " al " + f.get("hasta") + "\n" +
+      "· Viajamos: " + f.get("personas") + " · " + f.get("mascota") + "\n" +
       "· Contacto: " + f.get("contacto") +
       (f.get("mensaje") ? "\n· Mensaje: " + f.get("mensaje") : "")
     );

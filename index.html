@@ -235,8 +235,23 @@
         <label>Fecha de devolución
           <input type="date" name="hasta" required>
         </label>
+        <label>Número de personas
+          <select name="personas" required>
+            <option value="" disabled selected>¿Cuántos viajáis?</option>
+            <option>1 persona</option>
+            <option>2 personas</option>
+            <option>3 personas</option>
+            <option>4 personas</option>
+          </select>
+        </label>
+        <label>¿Mascota a bordo?
+          <select name="mascota">
+            <option>Sin mascota</option>
+            <option>Con mascota 🐾</option>
+          </select>
+        </label>
         <label class="full">Mensaje
-          <textarea name="mensaje" placeholder="¿Cuántos viajáis? ¿Lleváis mascota? ¿Qué plan tenéis?"></textarea>
+          <textarea name="mensaje" placeholder="¿Qué plan tenéis? ¿Alguna duda?"></textarea>
         </label>
         <button class="btn full" type="submit">Enviar por WhatsApp</button>
         <p class="form__hint" data-c="contacto.formNota"></p>
