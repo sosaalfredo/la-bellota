@@ -110,6 +110,25 @@ textarea{min-height:86px;resize:vertical}
 .toast.err{border-color:var(--err)}
 
 .pill{display:inline-flex;align-items:center;gap:.4rem;font-size:.78rem;font-weight:700;border-radius:999px;padding:.25rem .7rem;background:var(--panel-2);border:1px solid var(--line)}
+
+/* Calendario admin */
+.admcal__tools{display:flex;gap:.7rem;align-items:end;flex-wrap:wrap;margin-bottom:1rem}
+.admcal__nav{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-bottom:.8rem}
+.admcal__nav span{font-size:.8rem;color:var(--muted);text-align:center}
+.admcal{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem}
+@media(max-width:760px){.admcal{grid-template-columns:1fr}}
+.admcal h4{font-family:var(--font-display);text-transform:capitalize;text-align:center;margin-bottom:.55rem}
+.admcal__grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.admcal__dow{font-size:.68rem;font-weight:700;color:var(--muted);text-align:center;text-transform:uppercase;padding-bottom:.25rem}
+.admcal__dia{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:7px;font-size:.85rem;font-weight:600;font-variant-numeric:tabular-nums;border:1px solid transparent}
+.admcal__dia.vacio{visibility:hidden}
+.admcal__dia.libre{background:#1E3226;border-color:#2E5940;cursor:pointer;transition:border-color .1s}
+.admcal__dia.libre:hover{border-color:var(--miel)}
+.admcal__dia.ocupado{background:#46281A;border-color:#8A4E2A;color:#EBAD8C;text-decoration:line-through;cursor:pointer}
+.admcal__dia.ocupado:hover{border-color:var(--miel)}
+.admcal__dia.pasado{opacity:.28}
+.admcal__dia.hoy{box-shadow:inset 0 0 0 2px var(--miel)}
+.admcal__foot{display:flex;justify-content:space-between;align-items:center;margin-top:1rem;flex-wrap:wrap;gap:.6rem}
 .pill.ok{color:var(--ok)}
 .pill.err{color:var(--err)}
 .warn{background:#3A2A18;border:1px solid #6E4E22;border-radius:11px;padding: .8rem .95rem;font-size:.85rem;color:#F4D9A8;margin-bottom:1rem}
@@ -243,6 +262,12 @@ const SECTIONS = [
     { path:"tarifas.temporadas", titulo:"Temporadas", labelItem:"Temporada", campos:[ ["nombre","Nombre"],["meses","Meses"],["precio","Precio €/noche","num"] ]},
     { path:"tarifas.condiciones", titulo:"Condiciones", labelItem:"Condición", campos:[ ["label","Concepto"],["valor","Valor"] ]}
   ]},
+  { id:"disponibilidad", nombre:"📅 Disponibilidad", desc:"Marca los días OCUPADOS haciendo clic en el calendario (o por rango). Lo que publiques es lo que verá el cliente.", cards:[
+    { t:"Textos de la sección", f:[
+      ["disponibilidad.titulo","Título"],
+      ["disponibilidad.texto","Texto","ta"],
+      ["disponibilidad.nota","Nota bajo el calendario"] ]}
+  ]},
   { id:"pasos", nombre:"👣 Cómo funciona", desc:"Los 4 pasos de la reserva.", list:{ path:"pasos", labelItem:"Paso", campos:[ ["titulo","Título"],["texto","Texto","ta"] ]}},
   { id:"noche", nombre:"🌌 Bloque nocturno", desc:"La sección emocional con la foto de estrellas.", cards:[
     { t:"Textos", f:[
@@ -257,10 +282,20 @@ const SECTIONS = [
   ], lists:[
     { path:"rutas.lista", titulo:"Rutas", labelItem:"Ruta", campos:[ ["titulo","Título"],["zona","Zona"],["dias","Duración"],["texto","Descripción","ta"],["foto","Foto","img"] ]}
   ]},
-  { id:"resenas", nombre:"💬 Reseñas", desc:"Opiniones de clientes. Mantén el aviso mientras sean de ejemplo.", cards:[
-    { t:"Encabezado", f:[ ["resenas.titulo","Título"],["resenas.aviso","Aviso (déjalo vacío cuando sean reales)"] ]}
+  { id:"resenas", nombre:"💬 Reseñas", desc:"Las opiniones que se publican en la web. Los clientes las envían por WhatsApp desde el formulario de la web: pégalas en la bandeja y revisa antes de publicar. Borra con 🗑 las que no convengan.", cards:[
+    { t:"Encabezado", f:[ ["resenas.titulo","Título"],["resenas.aviso","Aviso (déjalo vacío cuando sean reales)"],["resenas.formTitulo","Título del formulario 'deja tu opinión'"],["resenas.formTexto","Texto del formulario","ta"] ]}
   ], lists:[
-    { path:"resenas.lista", titulo:"Reseñas", labelItem:"Reseña", campos:[ ["nombre","Nombre"],["viaje","Detalle del viaje"],["texto","Texto","ta"] ]}
+    { path:"resenas.lista", titulo:"Reseñas publicadas", labelItem:"Reseña", campos:[ ["nombre","Nombre"],["viaje","Detalle del viaje"],["estrellas","Estrellas (1–5)","num"],["texto","Texto","ta"] ]}
+  ]},
+  { id:"hermano", nombre:"🥓 La Bellota Extremeña", desc:"La banda de la casa madre en la web. Si vacías el título, la sección desaparece de la web.", cards:[
+    { t:"Textos", f:[
+      ["hermano.eyebrow","Antetítulo"],
+      ["hermano.titulo","Nombre del negocio"],
+      ["hermano.texto","Texto","ta"],
+      ["hermano.direccion","Dirección"],
+      ["hermano.telefono","Teléfono"] ]}
+  ], lists:[
+    { path:"hermano.enlaces", titulo:"Enlaces (botones)", labelItem:"Enlace", campos:[ ["label","Texto del botón"],["url","URL"] ]}
   ]},
   { id:"faq", nombre:"❓ Preguntas frecuentes", desc:"Las dudas típicas con su respuesta.", list:{ path:"faq", labelItem:"Pregunta", campos:[ ["p","Pregunta"],["r","Respuesta","ta"] ]}},
   { id:"contacto", nombre:"✉️ Contacto y pie", desc:"Encabezados del bloque de contacto y texto del pie.", cards:[
@@ -324,6 +359,8 @@ function renderSection(){
   if (sec){
     html = `<h1>${sec.nombre}</h1><p class="sub">${esc(sec.desc)}</p>`;
     (sec.cards||[]).forEach(c=>{ html += `<div class="card"><h3>${esc(c.t)}</h3>`+c.f.map(([p,l,t])=>fieldHtml(p,l,t)).join("")+`</div>`; });
+    if (sec.id==="disponibilidad") html += admCalHtml();
+    if (sec.id==="resenas") html += bandejaHtml();
     if (sec.list) html += listHtml({...sec.list, titulo:null});
     (sec.lists||[]).forEach(l=>{ html += listHtml(l); });
   } else if (currentSec==="_github"){
@@ -371,6 +408,116 @@ function bindInputs(){
   document.querySelectorAll("[data-upload]").forEach(b=>b.addEventListener("click",()=>uploadImage(b.getAttribute("data-upload"))));
   if (currentSec==="_github") bindGithub();
   if (currentSec==="_datos") bindDatos();
+  if (currentSec==="disponibilidad") bindAdmCal();
+  if (currentSec==="resenas") bindBandeja();
+}
+
+/* ---------------- Calendario de disponibilidad (admin) ---------------- */
+let admOffset = 0;
+const isoDia = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+function ocupadoArr(){
+  if (!DRAFT.disponibilidad) DRAFT.disponibilidad = { titulo:"¿Cuándo te vienes?", texto:"", nota:"", ocupado:[] };
+  if (!Array.isArray(DRAFT.disponibilidad.ocupado)) DRAFT.disponibilidad.ocupado = [];
+  return DRAFT.disponibilidad.ocupado;
+}
+function admCalHtml(){
+  return `<div class="card"><h3>🗓 Días ocupados — clic en un día para alternar</h3>
+    <div class="admcal__tools">
+      <label class="field" style="margin:0;flex:1;min-width:9rem"><span>Desde</span><input type="date" id="rangoA"></label>
+      <label class="field" style="margin:0;flex:1;min-width:9rem"><span>Hasta</span><input type="date" id="rangoB"></label>
+      <button class="btn" type="button" id="rangoOcupar">Marcar ocupado</button>
+      <button class="btn" type="button" id="rangoLiberar">Marcar libre</button>
+    </div>
+    <div class="admcal__nav">
+      <button class="btn" type="button" id="admPrev">‹ Anterior</button>
+      <span>Los clientes ven este mismo calendario en la web</span>
+      <button class="btn" type="button" id="admNext">Siguiente ›</button>
+    </div>
+    <div class="admcal" id="admCal"></div>
+    <div class="admcal__foot">
+      <span class="pill" id="admCount"></span>
+      <button class="btn btn--ghost" type="button" id="admLimpiaPasado">🧹 Quitar días ya pasados</button>
+    </div>
+  </div>`;
+}
+function renderAdmCal(){
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const hoyIso = isoDia(hoy);
+  const occ = new Set(ocupadoArr());
+  const DOW = ["L","M","X","J","V","S","D"];
+  let html = "";
+  for (let k=0;k<2;k++){
+    const base = new Date(hoy.getFullYear(), hoy.getMonth()+admOffset+k, 1);
+    const y=base.getFullYear(), m=base.getMonth();
+    const pad=(base.getDay()+6)%7, dias=new Date(y,m+1,0).getDate();
+    let cells = DOW.map(d=>`<span class="admcal__dow">${d}</span>`).join("");
+    for(let i=0;i<pad;i++) cells+=`<span class="admcal__dia vacio"></span>`;
+    for(let d=1;d<=dias;d++){
+      const f=isoDia(new Date(y,m,d));
+      const cls="admcal__dia"+(f<hoyIso?" pasado":(occ.has(f)?" ocupado":" libre"))+(f===hoyIso?" hoy":"");
+      cells+=`<span class="${cls}" data-f="${f}">${d}</span>`;
+    }
+    html+=`<div><h4>${base.toLocaleDateString("es-ES",{month:"long",year:"numeric"})}</h4><div class="admcal__grid">${cells}</div></div>`;
+  }
+  $("admCal").innerHTML=html;
+  $("admCount").textContent = ocupadoArr().length+" días marcados como ocupados";
+  $("admCal").querySelectorAll(".admcal__dia.libre, .admcal__dia.ocupado").forEach(el=>el.addEventListener("click",()=>{
+    const f=el.getAttribute("data-f"); const arr=ocupadoArr(); const i=arr.indexOf(f);
+    if(i>=0){arr.splice(i,1);} else {arr.push(f);}
+    arr.sort(); queueSave(); renderAdmCal();
+  }));
+}
+function bindAdmCal(){
+  renderAdmCal();
+  $("admPrev").addEventListener("click",()=>{admOffset=Math.max(0,admOffset-1);renderAdmCal();});
+  $("admNext").addEventListener("click",()=>{admOffset=Math.min(17,admOffset+1);renderAdmCal();});
+  const rango=(marcar)=>{
+    const a=$("rangoA").value,b=$("rangoB").value;
+    if(!a||!b||b<a){toast("Elige un rango válido (desde / hasta)","err");return;}
+    const arr=ocupadoArr(); const d=new Date(a+"T12:00");
+    while(isoDia(d)<=b){
+      const f=isoDia(d); const i=arr.indexOf(f);
+      if(marcar&&i<0)arr.push(f);
+      if(!marcar&&i>=0)arr.splice(i,1);
+      d.setDate(d.getDate()+1);
+    }
+    arr.sort(); saveDraft(); renderAdmCal();
+    toast(marcar?"Rango marcado como ocupado":"Rango liberado","ok");
+  };
+  $("rangoOcupar").addEventListener("click",()=>rango(true));
+  $("rangoLiberar").addEventListener("click",()=>rango(false));
+  $("admLimpiaPasado").addEventListener("click",()=>{
+    const hoyIso=isoDia(new Date());
+    DRAFT.disponibilidad.ocupado=ocupadoArr().filter(f=>f>=hoyIso);
+    saveDraft(); renderAdmCal(); toast("Días pasados eliminados de la lista","ok");
+  });
+}
+
+/* ---------------- Bandeja: opiniones recibidas por WhatsApp ---------------- */
+function bandejaHtml(){
+  return `<div class="card"><h3>📥 Bandeja — pega aquí una opinión recibida por WhatsApp</h3>
+    <textarea id="bandejaTxt" placeholder="⭐ OPINIÓN para la web de La Bellota&#10;· Nombre: …&#10;· Viaje: …&#10;· Estrellas: 5/5&#10;· Opinión: …"></textarea>
+    <div style="margin-top:.6rem">
+      <button class="btn btn--miel" type="button" id="bandejaAdd">➕ Convertir en reseña</button>
+    </div></div>`;
+}
+function bindBandeja(){
+  $("bandejaAdd").addEventListener("click",()=>{
+    const t=$("bandejaTxt").value;
+    if(!t.trim()){toast("Pega primero el mensaje del cliente","err");return;}
+    const g=(re)=>{const m=t.match(re);return m?m[1].trim():"";};
+    const item={
+      nombre: g(/nombre:\s*(.+)/i)||"Viajero/a",
+      viaje: g(/viaje:\s*(.+)/i).replace(/^-+$/,""),
+      estrellas: Math.min(5,Math.max(1,parseInt(g(/estrellas:\s*(\d)/i))||5)),
+      texto: g(/opini[oó]n:\s*([\s\S]+)/i)||t.trim()
+    };
+    if(!DRAFT.resenas)DRAFT.resenas={titulo:"",aviso:"",lista:[]};
+    if(!Array.isArray(DRAFT.resenas.lista))DRAFT.resenas.lista=[];
+    DRAFT.resenas.lista.unshift(item);
+    saveDraft(); renderSection();
+    toast("Reseña añadida al principio de la lista — revísala y publica","ok");
+  });
 }
 
 /* ---------------- Menú / estado ---------------- */

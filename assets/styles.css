@@ -296,6 +296,57 @@ h2{
 .condiciones li b{font-variant-numeric:tabular-nums;text-align:right}
 .tarifas .btn{width:100%}
 
+/* ---------- Disponibilidad (calendario) ---------- */
+.cal{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-s);padding:clamp(1rem,3vw,1.8rem)}
+.cal__nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+.cal__nav button{
+  width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--surface-2);
+  color:var(--ink);font-size:1.2rem;cursor:pointer;transition:border-color .15s, background .15s;
+}
+.cal__nav button:hover:not(:disabled){border-color:var(--miel)}
+.cal__nav button:disabled{opacity:.35;cursor:default}
+.cal__leyenda{display:flex;flex-wrap:wrap;gap:1rem;font-size:.82rem;color:var(--muted)}
+.cal__leyenda span{display:inline-flex;align-items:center;gap:.4rem}
+.cal__leyenda i{width:14px;height:14px;border-radius:5px;display:inline-block}
+.cal__leyenda .li-libre{background:color-mix(in srgb,var(--pino) 16%,var(--surface));border:1px solid color-mix(in srgb,var(--pino) 45%,var(--line))}
+.cal__leyenda .li-ocupado{background:color-mix(in srgb,var(--teja) 22%,var(--surface))}
+.cal__leyenda .li-sel{background:var(--miel)}
+.cal__meses{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,3vw,2rem);margin-top:1.1rem}
+@media (max-width:760px){.cal__meses{grid-template-columns:1fr}}
+.cal__mes h3{font-family:var(--font-display);font-size:1.08rem;text-transform:capitalize;margin-bottom:.6rem;text-align:center}
+.cal__grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal__dow{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:var(--muted);text-align:center;padding-bottom:.3rem;text-transform:uppercase}
+.cal__dia{
+  aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  border-radius:9px;font-size:.88rem;font-weight:600;border:1px solid transparent;
+  font-variant-numeric:tabular-nums;
+}
+.cal__dia.vacio{visibility:hidden}
+.cal__dia.libre{
+  background:color-mix(in srgb,var(--pino) 10%,var(--surface));
+  border-color:color-mix(in srgb,var(--pino) 30%,var(--line));
+  cursor:pointer;transition:transform .1s, border-color .1s;
+}
+.cal__dia.libre:hover{border-color:var(--miel);transform:scale(1.06)}
+.cal__dia.ocupado{
+  background:color-mix(in srgb,var(--teja) 20%,var(--surface));
+  color:color-mix(in srgb,var(--ink) 55%,transparent);
+  text-decoration:line-through;cursor:not-allowed;
+}
+.cal__dia.pasado{opacity:.3;cursor:default}
+.cal__dia.hoy{box-shadow:inset 0 0 0 2px var(--miel)}
+.cal__dia.sel{background:var(--miel);color:var(--on-miel);border-color:var(--miel)}
+.cal__dia.enrango{background:color-mix(in srgb,var(--miel) 38%,var(--surface));border-color:color-mix(in srgb,var(--miel) 60%,var(--line))}
+.cal__accion{
+  margin-top:1.2rem;border-top:1px dashed var(--line);padding-top:1.1rem;
+  display:flex;flex-wrap:wrap;gap:.9rem;align-items:center;justify-content:space-between;
+}
+.cal__accion p{font-size:.95rem}
+.cal__accion p b{font-variant-numeric:tabular-nums}
+.cal__accion .err{color:var(--teja);font-weight:600}
+.cal__accion .acts{display:flex;gap:.6rem;flex-wrap:wrap}
+.cal__hint{font-size:.85rem;color:var(--muted);margin-top:1rem}
+
 /* ---------- Pasos ---------- */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem;position:relative;counter-reset:paso}
 .steps::before{
@@ -334,6 +385,32 @@ h2{
 .noche p{color:rgba(255,255,255,.88);margin-bottom:1rem}
 .noche blockquote{font-family:var(--font-hand);font-size:clamp(1.6rem,3vw,2.1rem);color:#FFE3AC;margin-top:1.4rem}
 
+/* ---------- La Bellota Extremeña (banda hermana) ---------- */
+.hermano{background:var(--pino-deep);color:var(--on-pino)}
+.hermano__in{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(1.4rem,4vw,3rem);align-items:center;padding-block:clamp(2.4rem,6vw,3.6rem)}
+.hermano__icon svg{width:clamp(64px,8vw,92px);height:auto}
+.hermano .kicker{color:#F7CF8E}
+.hermano h2{color:var(--on-pino);font-size:clamp(1.6rem,3.2vw,2.2rem);margin:.45rem 0 .55rem}
+.hermano p{color:color-mix(in srgb,var(--on-pino) 78%,transparent);font-size:1.02rem;max-width:38rem}
+.hermano__dir{margin-top:.6rem;font-size:.9rem !important;color:color-mix(in srgb,var(--on-pino) 60%,transparent) !important}
+.hermano__dir a{color:inherit;font-weight:700;text-decoration:none}
+.hermano__dir a:hover{color:var(--miel)}
+.hermano__links{display:flex;flex-direction:column;gap:.6rem;min-width:12rem}
+.hermano__links a{
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  background:rgba(255,255,255,.08);border:1px solid color-mix(in srgb,var(--on-pino) 25%,transparent);
+  border-radius:999px;padding:.62rem 1.2rem;text-decoration:none;
+  font-weight:700;font-size:.92rem;color:var(--on-pino);
+  transition:border-color .15s, background .15s;
+}
+.hermano__links a:hover{border-color:var(--miel);background:rgba(255,255,255,.14);color:var(--miel)}
+@media (max-width:860px){
+  .hermano__in{grid-template-columns:1fr;text-align:left}
+  .hermano__icon{display:none}
+  .hermano__links{flex-direction:row;flex-wrap:wrap}
+  .hermano__links a{flex:1;min-width:10rem}
+}
+
 /* ---------- Rutas ---------- */
 .rutas{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
 @media (max-width:960px){.rutas{grid-template-columns:1fr;max-width:33rem;margin-inline:auto}}
@@ -364,6 +441,32 @@ h2{
 .review footer{margin-top:auto;font-weight:700;font-size:.93rem}
 .review footer span{display:block;font-weight:500;font-size:.82rem;color:var(--muted)}
 .reviews-note{margin-top:1.1rem;font-size:.85rem;color:var(--muted);font-style:italic}
+.opina{
+  margin-top:2.4rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow-s);padding:clamp(1.3rem,3vw,2rem);
+  display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(1.4rem,4vw,2.5rem);align-items:start;
+}
+@media (max-width:860px){.opina{grid-template-columns:1fr}}
+.opina__head h3{font-family:var(--font-display);font-weight:800;font-size:1.5rem;letter-spacing:-.01em;margin-bottom:.5rem}
+.opina__head p{color:var(--muted);font-size:.98rem}
+.opina__form{display:grid;gap:1rem}
+.opina__stars{display:flex;gap:.3rem}
+.opina__stars button{
+  background:none;border:none;cursor:pointer;padding:.1rem;
+  color:var(--line);transition:transform .1s, color .1s;
+}
+.opina__stars button.on{color:var(--miel)}
+.opina__stars button:hover{transform:scale(1.15)}
+.opina__stars svg{width:30px;height:30px;display:block}
+.opina__fields{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:560px){.opina__fields{grid-template-columns:1fr}}
+.opina__form label{display:flex;flex-direction:column;gap:.35rem;font-size:.85rem;font-weight:700}
+.opina__form input,.opina__form textarea{
+  font:inherit;color:var(--ink);background:var(--bg);
+  border:1px solid var(--line);border-radius:10px;padding:.72rem .85rem;
+}
+.opina__form input:focus,.opina__form textarea:focus{outline:2px solid var(--miel);outline-offset:0;border-color:var(--miel)}
+.opina__form textarea{min-height:96px;resize:vertical}
 
 /* ---------- FAQ ---------- */
 .faq{max-width:47rem}

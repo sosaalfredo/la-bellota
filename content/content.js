@@ -93,6 +93,17 @@ window.SITE_CONTENT = {
       { "label": "Combustible", "valor": "Se entrega y devuelve lleno" }
     ]
   },
+  "disponibilidad": {
+    "titulo": "¿Cuándo te vienes?",
+    "texto": "Mira los días libres y elige tus fechas directamente en el calendario: te preparamos la consulta por WhatsApp con todo puesto.",
+    "nota": "Calendario orientativo — te confirmamos la disponibilidad al momento por WhatsApp.",
+    "ocupado": [
+      "2026-08-29", "2026-08-30", "2026-08-31",
+      "2026-09-04", "2026-09-05", "2026-09-06",
+      "2026-09-18", "2026-09-19", "2026-09-20", "2026-09-21", "2026-09-22",
+      "2026-09-23", "2026-09-24", "2026-09-25", "2026-09-26", "2026-09-27"
+    ]
+  },
   "pasos": [
     { "titulo": "Elige tus fechas", "texto": "Escríbenos por WhatsApp o con el formulario y te confirmamos disponibilidad en el día." },
     { "titulo": "Resérvala con una señal", "texto": "Un anticipo del 25 % bloquea tus fechas. El resto se paga el día de la recogida." },
@@ -134,13 +145,27 @@ window.SITE_CONTENT = {
       }
     ]
   },
+  "hermano": {
+    "eyebrow": "De la misma familia",
+    "titulo": "La Bellota Extremeña",
+    "texto": "Antes de rodar —o para celebrar la vuelta— pásate por nuestra casa madre: jamón ibérico, quesos, conservas y buen vino a un paso de Las Canteras. El mismo cariño de siempre, ahora también sobre ruedas.",
+    "direccion": "C. Luis Morote, 45 · 35007 Las Palmas de Gran Canaria",
+    "telefono": "928 96 45 06",
+    "enlaces": [
+      { "label": "📍 Cómo llegar", "url": "https://maps.google.com/?q=La+Bellota+Extremeña,+C.+Luis+Morote+45,+35007+Las+Palmas+de+Gran+Canaria" },
+      { "label": "Facebook", "url": "https://www.facebook.com/p/La-Bellota-Extreme%C3%B1a-100067590225478/" },
+      { "label": "TripAdvisor", "url": "https://www.tripadvisor.es/Restaurant_Review-g187472-d8550381-Reviews-LA_BELLOTA_EXTREMENA-Las_Palmas_de_Gran_Canaria_Gran_Canaria_Canary_Islands.html" }
+    ]
+  },
   "resenas": {
     "titulo": "Los que ya la han probado",
     "aviso": "Reseñas de ejemplo — pronto estarán aquí las de los primeros viajeros.",
+    "formTitulo": "¿Ya has viajado con La Bellota?",
+    "formTexto": "Cuéntanos cómo fue: tu opinión ayuda a los siguientes viajeros. Nos llega por WhatsApp y la publicamos aquí en cuanto la leemos.",
     "lista": [
-      { "nombre": "Laura y Marcos", "viaje": "7 noches · septiembre", "texto": "Nunca habíamos viajado en camper y nos lo pusieron facilísimo. La explicación al recogerla, el mapa con los rincones… Repetimos seguro." },
-      { "nombre": "Andrea", "viaje": "Escapada de 4 noches", "texto": "Despertar en la cumbre por encima de las nubes y bajar a bañarte a Güi Güi el mismo día. La Bellota se mete por todas partes y no le falta detalle." },
-      { "nombre": "Familia Guedes", "viaje": "10 noches · con perra", "texto": "Fuimos con la niña y la perra y sobró espacio. Todo impecable y Nahum pendiente de nosotros durante todo el viaje." }
+      { "nombre": "Laura y Marcos", "viaje": "7 noches · septiembre", "estrellas": 5, "texto": "Nunca habíamos viajado en camper y nos lo pusieron facilísimo. La explicación al recogerla, el mapa con los rincones… Repetimos seguro." },
+      { "nombre": "Andrea", "viaje": "Escapada de 4 noches", "estrellas": 5, "texto": "Despertar en la cumbre por encima de las nubes y bajar a bañarte a Güi Güi el mismo día. La Bellota se mete por todas partes y no le falta detalle." },
+      { "nombre": "Familia Guedes", "viaje": "10 noches · con perra", "estrellas": 5, "texto": "Fuimos con la niña y la perra y sobró espacio. Todo impecable y Nahum pendiente de nosotros durante todo el viaje." }
     ]
   },
   "faq": [

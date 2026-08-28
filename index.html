@@ -35,8 +35,10 @@
     <nav class="nav" id="mainnav">
       <ul>
         <li><a href="#camper">La camper</a></li>
+        <li><a href="#disponibilidad">Disponibilidad</a></li>
         <li><a href="#tarifas">Tarifas</a></li>
         <li><a href="#rutas">Rutas</a></li>
+        <li><a href="#extremena">La Bellota Extremeña</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#contacto">Contacto</a></li>
         <li><a class="btn btn--sm" href="#contacto">Reservar</a></li>
@@ -138,8 +140,39 @@
   </div>
 </section>
 
+<!-- ============ DISPONIBILIDAD ============ -->
+<section class="section" id="disponibilidad">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <span class="kicker">Disponibilidad</span>
+      <h2 data-c="disponibilidad.titulo"></h2>
+      <p data-c="disponibilidad.texto"></p>
+    </div>
+    <div class="cal reveal">
+      <div class="cal__nav">
+        <button type="button" id="calPrev" aria-label="Mes anterior">‹</button>
+        <div class="cal__leyenda">
+          <span><i class="li-libre"></i> Libre</span>
+          <span><i class="li-ocupado"></i> Ocupado</span>
+          <span><i class="li-sel"></i> Tu selección</span>
+        </div>
+        <button type="button" id="calNext" aria-label="Mes siguiente">›</button>
+      </div>
+      <div class="cal__meses" id="calMeses"></div>
+      <div class="cal__accion" id="calAccion" hidden>
+        <p id="calResumen"></p>
+        <div class="acts">
+          <button class="btn btn--ghost btn--sm" type="button" id="calLimpiar">Quitar selección</button>
+          <a class="btn btn--sm" id="calWa" href="#" target="_blank" rel="noopener">Consultar estas fechas</a>
+        </div>
+      </div>
+      <p class="cal__hint" data-c="disponibilidad.nota"></p>
+    </div>
+  </div>
+</section>
+
 <!-- ============ PASOS ============ -->
-<section class="section" id="como">
+<section class="section section--alt" id="como">
   <div class="wrap">
     <div class="sechead reveal">
       <span class="kicker">Cómo funciona</span>
@@ -172,6 +205,27 @@
   </div>
 </section>
 
+<!-- ============ LA BELLOTA EXTREMEÑA ============ -->
+<section class="hermano" id="extremena">
+  <div class="wrap hermano__in reveal">
+    <div class="hermano__icon" aria-hidden="true">
+      <svg viewBox="0 0 64 64">
+        <path d="M14 20 Q14 8 32 8 Q50 8 50 20 L50 24 L14 24 Z" fill="#E8A03C"/>
+        <path d="M32 8 Q34 4 39 3" fill="none" stroke="#E8A03C" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M17 24 L47 24 Q47 42 32 52 Q17 42 17 24 Z" fill="#F2EDE0"/>
+        <path d="M26 29 Q26 38 32 44" fill="none" stroke="#C4633A" stroke-width="3" stroke-linecap="round" opacity=".75"/>
+      </svg>
+    </div>
+    <div class="hermano__text">
+      <span class="kicker" data-c="hermano.eyebrow"></span>
+      <h2 data-c="hermano.titulo"></h2>
+      <p data-c="hermano.texto"></p>
+      <p class="hermano__dir"><span data-c="hermano.direccion"></span> · <a id="hermanoTel" href="#" data-c="hermano.telefono"></a></p>
+    </div>
+    <div class="hermano__links" id="hermanoLinks"></div>
+  </div>
+</section>
+
 <!-- ============ RESEÑAS ============ -->
 <section class="section section--alt" id="opiniones">
   <div class="wrap">
@@ -181,6 +235,29 @@
     </div>
     <div class="reviews" id="reviews"></div>
     <p class="reviews-note" data-c="resenas.aviso"></p>
+
+    <div class="opina reveal">
+      <div class="opina__head">
+        <h3 data-c="resenas.formTitulo"></h3>
+        <p data-c="resenas.formTexto"></p>
+      </div>
+      <form class="opina__form" id="opinaform">
+        <div class="opina__stars" id="opinaStars" role="radiogroup" aria-label="Tu valoración"></div>
+        <div class="opina__fields">
+          <label>Tu nombre
+            <input type="text" name="nombre" required placeholder="Nombre (y quién viajó contigo)">
+          </label>
+          <label>Tu viaje
+            <input type="text" name="viaje" placeholder="Ej.: 5 noches · octubre">
+          </label>
+        </div>
+        <label class="full">Tu opinión
+          <textarea name="texto" required placeholder="¿Qué tal la camper? ¿Qué rincón os enamoró?"></textarea>
+        </label>
+        <button class="btn" type="submit">Enviar mi opinión</button>
+        <p class="form__hint">Se envía por WhatsApp y la publicamos tras leerla — así evitamos spam.</p>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -278,9 +355,10 @@
       <nav aria-label="Mapa web">
         <ul>
           <li><a href="#camper">La camper</a></li>
+          <li><a href="#disponibilidad">Disponibilidad</a></li>
           <li><a href="#tarifas">Tarifas</a></li>
           <li><a href="#rutas">Rutas</a></li>
-          <li><a href="#como">Cómo funciona</a></li>
+          <li><a href="#extremena">La Bellota Extremeña</a></li>
         </ul>
       </nav>
       <nav aria-label="Ayuda">
