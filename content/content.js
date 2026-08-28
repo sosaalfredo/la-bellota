@@ -24,7 +24,7 @@ window.SITE_CONTENT = {
     "subtitulo": "Despierta sobre el mar, desayuna sobre las nubes y duerme bajo un cielo lleno de estrellas. La Bellota es tu casa rodante en Gran Canaria: recógela, arranca y déjate llevar.",
     "cta1": "Consultar fechas",
     "cta2": "Conoce la camper",
-    "foto": "https://images.unsplash.com/photo-1521014710171-f44dfe788ece?auto=format&fit=crop&w=2000&q=80",
+    "foto": "content/img/hero-costa.jpg",
     "badge": "Temporada 2026 · plazas limitadas"
   },
   "claves": [
@@ -39,7 +39,7 @@ window.SITE_CONTENT = {
     "titulo": "Un continente en miniatura, a las puertas de tu cama",
     "texto1": "Gran Canaria cambia de paisaje cada veinte minutos: dunas doradas, pinares por encima de las nubes, acantilados que caen al Atlántico y pueblos donde el tiempo va más despacio. La única forma de vivirla entera es no tener que volver cada noche al mismo sitio.",
     "texto2": "Somos un negocio pequeño y de aquí. No somos una flota anónima: somos una furgoneta cuidada al detalle y alguien al otro lado del teléfono que conoce cada rincón de la isla y te lo cuenta como a un amigo.",
-    "foto": "https://images.unsplash.com/photo-1613547566635-8adfcd6f23cf?auto=format&fit=crop&w=1400&q=80",
+    "foto": "content/img/intro-amigos.jpg",
     "fotoPie": "Los planes buenos no caben en un hotel"
   },
   "camper": {
@@ -48,10 +48,10 @@ window.SITE_CONTENT = {
     "tipo": "Furgoneta camper gran volumen · 5,99 m",
     "descripcion": "Una Fiat Ducato camperizada con todo lo que importa y nada que sobre: cama fija para dos, cocina completa, baño con ducha y agua caliente, y energía solar para que no dependas de nadie. Pequeña por fuera para aparcar donde un coche; un hogar por dentro.",
     "fotos": [
-      { "url": "https://images.unsplash.com/photo-1592344260351-e80aaed1b5f8?auto=format&fit=crop&w=1600&q=80", "alt": "La Bellota aparcada en plena naturaleza" },
-      { "url": "https://images.unsplash.com/photo-1557855226-e63c7f07d9fb?auto=format&fit=crop&w=1600&q=80", "alt": "Interior en madera con cocina y salón" },
-      { "url": "https://images.unsplash.com/photo-1764067218398-e568ff9dccaa?auto=format&fit=crop&w=1600&q=80", "alt": "Acampada al pie de la montaña" },
-      { "url": "https://images.unsplash.com/photo-1534540378968-85a7b8fde19f?auto=format&fit=crop&w=1600&q=80", "alt": "En carretera al caer el sol" }
+      { "url": "content/img/camper-01-exterior.jpg", "alt": "La Bellota aparcada en plena naturaleza" },
+      { "url": "content/img/camper-02-interior.jpg", "alt": "Interior en madera con cocina y salón" },
+      { "url": "content/img/camper-03-montana.jpg", "alt": "Acampada al pie de la montaña" },
+      { "url": "content/img/camper-04-carretera.jpg", "alt": "En carretera al caer el sol" }
     ],
     "specs": [
       { "icono": "plazas",   "valor": "4 plazas",        "detalle": "de viaje con cinturón" },
@@ -104,7 +104,7 @@ window.SITE_CONTENT = {
     "titulo": "El mejor hotel no tiene paredes",
     "texto": "Cena viendo cómo el sol se apaga en el Atlántico. Duerme arropado por un cielo que aquí sí tiene estrellas. Desayuna donde el navegador ya no sabe llegar. Tú pones el rumbo; La Bellota pone el resto.",
     "cita": "“La felicidad es pequeña: cabe en una bellota.”",
-    "foto": "https://images.unsplash.com/photo-1782150042524-53c5dd17c204?auto=format&fit=crop&w=2000&q=80"
+    "foto": "content/img/noche-vialactea.jpg"
   },
   "rutas": {
     "eyebrow": "Ideas para empezar",
@@ -116,21 +116,21 @@ window.SITE_CONTENT = {
         "zona": "Costa oeste",
         "dias": "2 días",
         "texto": "De Puerto de Mogán a Agaete por la GC-200: piscinas naturales, atardeceres de escándalo y el mejor café de la isla en el Valle.",
-        "foto": "https://images.unsplash.com/photo-1581886038633-4c46f67b0e3d?auto=format&fit=crop&w=1200&q=80"
+        "foto": "content/img/ruta-oeste.jpg"
       },
       {
         "titulo": "Sobre el mar de nubes",
         "zona": "Cumbre",
         "dias": "1–2 días",
         "texto": "Tejeda, Roque Nublo y el Pico de las Nieves. Amanecer por encima de las nubes con un café en la mano: eso no se olvida.",
-        "foto": "https://images.unsplash.com/photo-1717718117159-ab2528c9ebd4?auto=format&fit=crop&w=1200&q=80"
+        "foto": "content/img/ruta-nublo.jpg"
       },
       {
         "titulo": "Dunas y sur salvaje",
         "zona": "Sur",
         "dias": "2 días",
         "texto": "Maspalomas al amanecer, los barrancos de Fataga y una noche en el faro. El desierto y el mar en el mismo día.",
-        "foto": "https://images.unsplash.com/photo-1611237147279-a98066529cdb?auto=format&fit=crop&w=1200&q=80"
+        "foto": "content/img/ruta-dunas.jpg"
       }
     ]
   },
