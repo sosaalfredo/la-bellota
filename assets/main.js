@@ -138,16 +138,24 @@
         b.addEventListener("click", () => { rating = +b.getAttribute("data-v"); pintaStars(); }));
     };
     pintaStars();
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
+    const opinionTexto = () => {
       const f = new FormData(form);
-      openWa(
-        "⭐ OPINIÓN para la web de La Bellota\n" +
+      return "⭐ OPINIÓN para la web de La Bellota\n" +
         "· Nombre: " + f.get("nombre") + "\n" +
         "· Viaje: " + (f.get("viaje") || "-") + "\n" +
         "· Estrellas: " + rating + "/5\n" +
-        "· Opinión: " + f.get("texto")
-      );
+        "· Opinión: " + f.get("texto");
+    };
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      openWa(opinionTexto());
+    });
+    const mailBtn = $("opinaMail");
+    if (mailBtn) mailBtn.addEventListener("click", () => {
+      if (!form.reportValidity()) return;
+      location.href = "mailto:" + (get("negocio.email") || "") +
+        "?subject=" + encodeURIComponent("Opinión para la web de La Bellota") +
+        "&body=" + encodeURIComponent(opinionTexto());
     });
   })();
 

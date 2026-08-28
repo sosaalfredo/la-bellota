@@ -467,6 +467,8 @@ h2{
 }
 .opina__form input:focus,.opina__form textarea:focus{outline:2px solid var(--miel);outline-offset:0;border-color:var(--miel)}
 .opina__form textarea{min-height:96px;resize:vertical}
+.opina__send{display:flex;gap:.7rem;flex-wrap:wrap}
+.opina__send .btn{flex:1;min-width:11rem}
 
 /* ---------- FAQ ---------- */
 .faq{max-width:47rem}
