@@ -282,6 +282,18 @@ const SECTIONS = [
   ], lists:[
     { path:"rutas.lista", titulo:"Rutas", labelItem:"Ruta", campos:[ ["titulo","Título"],["zona","Zona"],["dias","Duración"],["texto","Descripción","ta"],["foto","Foto","img"] ]}
   ]},
+  { id:"areas", nombre:"⛺ Áreas de pernocta", desc:"La selección de zonas para acampar o pernoctar (se muestra tras las rutas). En «Tipo» escribe: cabildo (icono tienda, verde), camping (árbol, miel) o area (furgoneta, teja).", cards:[
+    { t:"Encabezado", f:[
+      ["areas.eyebrow","Antetítulo"],
+      ["areas.titulo","Título"],
+      ["areas.texto","Texto","ta"],
+      ["areas.permisoLabel","Texto del botón de permisos"],
+      ["areas.permisoUrl","URL de permisos del Cabildo"],
+      ["areas.aviso","Aviso al pie de la sección","ta"] ]}
+  ], lists:[
+    { path:"areas.lista", titulo:"Áreas", labelItem:"Área", campos:[
+      ["nombre","Nombre"],["zona","Municipio / zona"],["tipo","Tipo (cabildo, camping o area)"],["servicios","Servicios (separados por ·)"],["nota","Nota corta","ta"] ]}
+  ]},
   { id:"resenas", nombre:"💬 Reseñas", desc:"Las opiniones que se publican en la web. Los clientes las envían por WhatsApp desde el formulario de la web: pégalas en la bandeja y revisa antes de publicar. Borra con 🗑 las que no convengan.", cards:[
     { t:"Encabezado", f:[ ["resenas.titulo","Título"],["resenas.aviso","Aviso (déjalo vacío cuando sean reales)"],["resenas.formTitulo","Título del formulario 'deja tu opinión'"],["resenas.formTexto","Texto del formulario","ta"] ]}
   ], lists:[

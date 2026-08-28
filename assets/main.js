@@ -41,7 +41,10 @@
       medidas: '<path d="M4 20L20 4M4 20h6M4 20v-6"/>',
       motor:   '<circle cx="12" cy="12" r="9"/><path d="M8 8v8M8 12h8M16 8v8"/>',
       agua:    '<path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/>',
-      solar:   '<circle cx="12" cy="12" r="3"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>'
+      solar:   '<circle cx="12" cy="12" r="3"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
+      carpa:   '<path d="M12 4L3 19h18z"/><path d="M12 4v15"/><path d="M8.6 19c.8-2.6 2-4.2 3.4-4.2s2.6 1.6 3.4 4.2"/>',
+      arbol:   '<path d="M12 3L6.5 11h3L5 17h14l-4.5-6h3z"/><path d="M12 17v4"/>',
+      furgo:   '<rect x="2.5" y="8" width="13" height="8" rx="2"/><path d="M15.5 10h3.2l2.3 3.2V16h-5.5"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>'
     }[name] || '<circle cx="12" cy="12" r="9"/>';
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + "</svg>";
   };
@@ -250,6 +253,34 @@
     $("calNext").addEventListener("click", () => { offset = Math.min(MESES_MAX - 1, offset + 1); pintar(); });
     $("calLimpiar").addEventListener("click", () => { selA = selB = null; setForms(); pintar(); });
     pintar();
+  })();
+
+  /* ---------- Áreas de pernocta ---------- */
+  (function areas() {
+    const sec = document.getElementById("areas");
+    if (!sec) return;
+    const A = C.areas;
+    if (!A || !(A.lista || []).length) {
+      sec.hidden = true;
+      document.querySelectorAll('a[href="#areas"]').forEach((a) => (a.parentElement || a).remove());
+      return;
+    }
+    const btn = $("permisoBtn");
+    if (A.permisoUrl) { btn.href = A.permisoUrl; btn.textContent = A.permisoLabel || "Pedir permiso"; }
+    else btn.hidden = true;
+    const ICONO_TIPO = { cabildo: "carpa", camping: "arbol", area: "furgo" };
+    $("areasLista").innerHTML = A.lista.map((a) => {
+      const tipo = (a.tipo || "area").trim().toLowerCase();
+      const chips = String(a.servicios || "").split("·").map((s) => s.trim()).filter(Boolean)
+        .map((s) => "<span>" + esc(s) + "</span>").join("");
+      return '<article class="areacard reveal ' + esc(tipo) + '">' +
+        '<div class="areacard__head">' + I(ICONO_TIPO[tipo] || "furgo") +
+        "<div><h3>" + esc(a.nombre) + "</h3><span>" + esc(a.zona) + "</span></div></div>" +
+        (chips ? '<div class="areacard__chips">' + chips + "</div>" : "") +
+        (a.nota ? "<p>" + esc(a.nota) + "</p>" : "") +
+      "</article>";
+    }).join("");
+    if (!A.aviso) $("areasAviso").hidden = true;
   })();
 
   /* ---------- La Bellota Extremeña ---------- */

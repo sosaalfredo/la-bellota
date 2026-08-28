@@ -157,6 +157,24 @@ window.SITE_CONTENT = {
       { "label": "TripAdvisor", "url": "https://www.tripadvisor.es/Restaurant_Review-g187472-d8550381-Reviews-LA_BELLOTA_EXTREMENA-Las_Palmas_de_Gran_Canaria_Gran_Canaria_Canary_Islands.html" }
     ]
   },
+  "areas": {
+    "eyebrow": "Para dormir tranquilo",
+    "titulo": "Áreas para acampar y pernoctar",
+    "texto": "Nuestra selección para pasar la noche con La Bellota: zonas oficiales del Cabildo (gratuitas, pidiendo permiso online) y campings y áreas privadas con servicios. Con la camper te entregamos el mapa completo con nuestros rincones favoritos.",
+    "permisoLabel": "Pedir permiso del Cabildo",
+    "permisoUrl": "https://cabildo.grancanaria.com/w/permisos-de-acampada",
+    "aviso": "Las zonas del Cabildo exigen autorización previa (gratuita, online). Servicios, precios y condiciones pueden cambiar: confírmalos antes de ir. Pernoctar no es acampar: fuera de estas zonas, no despliegues campamento.",
+    "lista": [
+      { "nombre": "Llanos de la Pez", "zona": "Tejeda · Cumbre", "tipo": "cabildo", "servicios": "Gratis con permiso · Pinar a 1.600 m · Mesas y barbacoas", "nota": "La clásica bajo el Roque Nublo: amanecer sobre el mar de nubes a un paseo." },
+      { "nombre": "Presa de Las Niñas", "zona": "Tejeda · Cumbre", "tipo": "cabildo", "servicios": "Gratis con permiso · Junto al embalse · Sombra", "nota": "El rincón más fotogénico de la cumbre; ideal para remojarse al despertar." },
+      { "nombre": "Llanos de la Mimbre", "zona": "Agaete · Tamadaba", "tipo": "cabildo", "servicios": "Gratis con permiso · Pinar canario", "nota": "En el corazón de Tamadaba, con el Teide de fondo al atardecer." },
+      { "nombre": "Morro de Santiago", "zona": "San Bartolomé de Tirajana", "tipo": "cabildo", "servicios": "Gratis con permiso · Alta montaña", "nota": "Tranquilidad absoluta y cielos estrellados de reserva Starlight." },
+      { "nombre": "Camping Temisas", "zona": "Agüimes · Sureste", "tipo": "camping", "servicios": "De pago · Servicios de camping", "nota": "Entre olivares y con uno de los pueblos más bonitos de la isla al lado." },
+      { "nombre": "Camping El Pinillo", "zona": "Mogán · Suroeste", "tipo": "camping", "servicios": "De pago · Apto autocaravanas", "nota": "Base cómoda para las playas del sur y los barrancos de Mogán." },
+      { "nombre": "Área de Salinetas", "zona": "Telde · Costa este", "tipo": "area", "servicios": "De pago · Agua · Vaciado · Duchas", "nota": "Acampada junto al mar con servicios completos para la camper." },
+      { "nombre": "Tejeda Camper Parking", "zona": "Tejeda · Pueblo", "tipo": "area", "servicios": "De pago · Pernocta autorizada", "nota": "Despertar con vistas al Nublo y desayunar dulces de almendra en el pueblo." }
+    ]
+  },
   "resenas": {
     "titulo": "Los que ya la han probado",
     "aviso": "Reseñas de ejemplo — pronto estarán aquí las de los primeros viajeros.",
@@ -171,7 +189,7 @@ window.SITE_CONTENT = {
   "faq": [
     { "p": "¿Qué carnet necesito y qué edad mínima piden?", "r": "Con el carnet B de toda la vida es suficiente: La Bellota pesa menos de 3.500 kg y se conduce como una furgoneta normal. Pedimos 25 años cumplidos y al menos 2 años de carnet." },
     { "p": "¿Hay fianza? ¿Cuánto es?", "r": "Sí, una fianza de 600 € que se retiene en tarjeta el día de la recogida y se libera a la devolución, tras una revisión rápida juntos. El seguro a todo riesgo con franquicia va incluido en el precio." },
-    { "p": "¿Dónde puedo pasar la noche con la camper?", "r": "En Gran Canaria puedes pernoctar donde esté permitido estacionar, siempre que no despliegues campamento (mesa, toldo, sillas…) fuera de zonas autorizadas. Te entregamos un mapa con áreas y rincones probados por nosotros, y repasamos la normativa en el tutorial de bienvenida." },
+    { "p": "¿Dónde puedo pasar la noche con la camper?", "r": "En Gran Canaria puedes pernoctar donde esté permitido estacionar, siempre que no despliegues campamento (mesa, toldo, sillas…) fuera de zonas autorizadas. En la sección «Áreas para acampar y pernoctar» de esta web tienes nuestra selección — zonas gratuitas del Cabildo y campings — y con la camper te entregamos el mapa completo. Repasamos la normativa en el tutorial de bienvenida." },
     { "p": "¿Puedo llevar a mi mascota?", "r": "¡Claro! Viaja gratis; solo aplicamos 30 € de limpieza al final del alquiler. Incluimos kit con cuenco, correa larga y manta." },
     { "p": "¿Los kilómetros son de verdad ilimitados?", "r": "Sí, dentro de la isla no hay límite de kilómetros. El combustible corre de tu cuenta: la camper se entrega llena y se devuelve llena." },
     { "p": "¿Podéis entregarla en el aeropuerto?", "r": "Sí. La recogida y devolución estándar es en nuestra base de Las Palmas, y por 40 € por trayecto te la llevamos o recogemos en el aeropuerto de Gran Canaria, coordinados con tu vuelo." },

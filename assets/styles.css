@@ -385,6 +385,32 @@ h2{
 .noche p{color:rgba(255,255,255,.88);margin-bottom:1rem}
 .noche blockquote{font-family:var(--font-hand);font-size:clamp(1.6rem,3vw,2.1rem);color:#FFE3AC;margin-top:1.4rem}
 
+/* ---------- Áreas de pernocta ---------- */
+.sechead .btn{margin-top:1rem}
+.areas{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:1rem}
+.areacard{
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:1.1rem;display:flex;flex-direction:column;gap:.65rem;box-shadow:var(--shadow-s);
+  transition:transform .2s, box-shadow .2s;
+}
+.areacard:hover{transform:translateY(-4px);box-shadow:var(--shadow-m)}
+.areacard__head{display:flex;gap:.7rem;align-items:center}
+.areacard__head svg{
+  width:38px;height:38px;flex:none;padding:.42rem;border-radius:11px;
+  background:color-mix(in srgb,var(--pino) 13%,var(--surface));color:var(--pino);
+}
+.areacard.camping .areacard__head svg{background:color-mix(in srgb,var(--miel) 20%,var(--surface));color:var(--miel-hover)}
+.areacard.area .areacard__head svg{background:color-mix(in srgb,var(--teja) 14%,var(--surface));color:var(--teja)}
+.areacard__head h3{font-family:var(--font-display);font-weight:700;font-size:1.05rem;line-height:1.2}
+.areacard__head span{font-size:.78rem;color:var(--muted);font-weight:600}
+.areacard__chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.areacard__chips span{
+  font-size:.74rem;font-weight:700;background:var(--surface-2);
+  border:1px solid var(--line);border-radius:999px;padding:.18rem .6rem;color:var(--muted);
+}
+.areacard>p{font-size:.88rem;color:var(--muted)}
+.areas-aviso{margin-top:1.3rem;font-size:.85rem;color:var(--muted);max-width:48rem}
+
 /* ---------- La Bellota Extremeña (banda hermana) ---------- */
 .hermano{background:var(--pino-deep);color:var(--on-pino)}
 .hermano__in{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(1.4rem,4vw,3rem);align-items:center;padding-block:clamp(2.4rem,6vw,3.6rem)}
