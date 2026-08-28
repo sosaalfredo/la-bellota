@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Panel — La Bellota Campers</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M10 17 Q10 8 24 8 Q38 8 38 17 L38 20 L10 20 Z' fill='%23E8A03C'/%3E%3Cpath d='M12 20 L36 20 Q36 34 24 42 Q12 34 12 20 Z' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#121814;--panel:#1A2420;--panel-2:#22302A;--line:#31423A;
+  --ink:#EFEBDF;--muted:#9FAEA3;--miel:#F0B04C;--on-miel:#231A08;
+  --teja:#E08A5F;--ok:#5FBF7F;--err:#E5715B;
+  --font-display:"Bricolage Grotesque",system-ui,sans-serif;
+  --font-body:"Figtree","Segoe UI",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:.98rem;line-height:1.5}
+button{font:inherit;cursor:pointer}
+input,textarea,select{font:inherit}
+:focus-visible{outline:2px solid var(--miel);outline-offset:2px;border-radius:4px}
+
+.layout{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+@media (max-width:860px){.layout{grid-template-columns:1fr}}
+
+/* ---- Sidebar ---- */
+.side{background:var(--panel);border-right:1px solid var(--line);padding:1.2rem;position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column;gap:1.2rem}
+@media (max-width:860px){.side{position:static;height:auto}}
+.side .brand{display:flex;align-items:center;gap:.6rem;font-family:var(--font-display);font-weight:800;font-size:1.15rem;text-decoration:none;color:var(--ink)}
+.side .brand svg{width:30px;height:30px}
+.side .brand b{color:var(--miel)}
+.side .tag{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.menu{display:flex;flex-direction:column;gap:.15rem}
+.menu button{
+  text-align:left;background:none;border:none;color:var(--muted);
+  padding:.55rem .7rem;border-radius:9px;font-weight:600;font-size:.92rem;
+}
+.menu button:hover{background:var(--panel-2);color:var(--ink)}
+.menu button.active{background:var(--panel-2);color:var(--miel)}
+.side .foot{margin-top:auto;font-size:.78rem;color:var(--muted)}
+.side .foot a{color:var(--muted)}
+
+/* ---- Main ---- */
+.main{padding:1.4rem clamp(1rem,3vw,2.4rem) 6rem;max-width:980px}
+.toolbar{
+  position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);
+  padding:.9rem 0;border-bottom:1px solid var(--line);margin-bottom:1.6rem;
+}
+.toolbar .status{font-size:.85rem;color:var(--muted);margin-right:auto}
+.toolbar .status b{color:var(--ink)}
+.btn{
+  display:inline-flex;align-items:center;gap:.45rem;border:none;border-radius:999px;
+  font-weight:700;font-size:.9rem;padding:.6rem 1.15rem;
+  background:var(--panel-2);color:var(--ink);border:1px solid var(--line);
+  transition:transform .12s, background .12s;
+}
+.btn:hover{transform:translateY(-1px);background:#2A3B33}
+.btn--miel{background:var(--miel);color:var(--on-miel);border-color:transparent}
+.btn--miel:hover{background:#F7BE63}
+.btn--ghost{background:transparent}
+.btn:disabled{opacity:.55;cursor:wait;transform:none}
+
+h1{font-family:var(--font-display);font-weight:800;font-size:1.6rem;letter-spacing:-.01em;margin-bottom:.3rem}
+.sub{color:var(--muted);font-size:.92rem;margin-bottom:1.4rem;max-width:44rem}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.15rem;margin-bottom:1rem}
+.card h3{font-family:var(--font-display);font-size:1.05rem;margin-bottom:.9rem;color:var(--miel)}
+.field{display:grid;gap:.3rem;margin-bottom:.9rem}
+.field:last-child{margin-bottom:0}
+.field>span{font-size:.78rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.field small{color:var(--muted);font-size:.78rem}
+input[type=text],input[type=number],input[type=password],input[type=url],textarea,select{
+  background:var(--bg);border:1px solid var(--line);border-radius:9px;color:var(--ink);
+  padding:.62rem .75rem;width:100%;
+}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--miel);border-color:var(--miel)}
+textarea{min-height:86px;resize:vertical}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+@media (max-width:640px){.grid2{grid-template-columns:1fr}}
+
+/* Image field */
+.imgfield{display:grid;grid-template-columns:110px 1fr;gap:.8rem;align-items:start}
+.imgfield .thumb{
+  width:110px;height:78px;border-radius:9px;object-fit:cover;background:var(--panel-2);
+  border:1px solid var(--line);display:block;
+}
+.imgfield .acts{display:flex;gap:.5rem;margin-top:.45rem;flex-wrap:wrap}
+.imgfield .acts .btn{padding:.4rem .8rem;font-size:.8rem}
+
+/* Lists */
+.item{
+  border:1px solid var(--line);border-radius:11px;padding: .9rem;margin-bottom:.7rem;background:var(--panel-2);
+}
+.item__bar{display:flex;justify-content:flex-end;gap:.35rem;margin-bottom:.6rem}
+.item__bar .btn{padding:.28rem .6rem;font-size:.78rem;border-radius:8px}
+.addbtn{width:100%;border-style:dashed;justify-content:center}
+
+/* Toast */
+.toast{
+  position:fixed;left:50%;bottom:1.4rem;transform:translateX(-50%) translateY(20px);
+  background:var(--panel-2);border:1px solid var(--line);color:var(--ink);
+  border-radius:999px;padding:.7rem 1.3rem;font-weight:600;font-size:.9rem;
+  opacity:0;pointer-events:none;transition:.25s;z-index:99;box-shadow:0 12px 34px rgba(0,0,0,.5);
+  max-width:min(92vw,34rem);text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.toast.ok{border-color:var(--ok)}
+.toast.err{border-color:var(--err)}
+
+.pill{display:inline-flex;align-items:center;gap:.4rem;font-size:.78rem;font-weight:700;border-radius:999px;padding:.25rem .7rem;background:var(--panel-2);border:1px solid var(--line)}
+.pill.ok{color:var(--ok)}
+.pill.err{color:var(--err)}
+.warn{background:#3A2A18;border:1px solid #6E4E22;border-radius:11px;padding: .8rem .95rem;font-size:.85rem;color:#F4D9A8;margin-bottom:1rem}
+code{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:.1rem .4rem;font-size:.85em}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="side">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M10 17 Q10 8 24 8 Q38 8 38 17 L38 20 L10 20 Z" fill="#2E5940"/>
+        <path d="M12 20 L36 20 Q36 34 24 42 Q12 34 12 20 Z" fill="#E8A03C"/>
+      </svg>
+      <span>La <b>Bellota</b> · Panel</span>
+    </a>
+    <div>
+      <div class="tag">Contenido</div>
+      <nav class="menu" id="menu"></nav>
+    </div>
+    <div>
+      <div class="tag">Sistema</div>
+      <nav class="menu">
+        <button data-sec="_github">⚙️ Publicación (GitHub)</button>
+        <button data-sec="_datos">💾 Copias y datos</button>
+      </nav>
+    </div>
+    <div class="foot">Los cambios se guardan como <b>borrador</b> en este navegador hasta que pulses <b>Publicar</b>.</div>
+  </aside>
+
+  <main class="main">
+    <div class="toolbar">
+      <span class="status" id="status">Cargando…</span>
+      <button class="btn" id="btnPreview">👁 Vista previa</button>
+      <button class="btn btn--ghost" id="btnReset">↩ Descartar borrador</button>
+      <button class="btn btn--miel" id="btnPublish">🚀 Publicar</button>
+    </div>
+    <div id="content"></div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="../content/content.js"></script>
+<script>
+"use strict";
+/* =====================================================================
+   PANEL DE ADMINISTRACIÓN — La Bellota Campers
+   - Edita una copia (borrador) de window.SITE_CONTENT en localStorage.
+   - "Vista previa" abre la web usando el borrador (index.html?preview=1).
+   - "Publicar" sube content/content.js al repo de GitHub vía API REST
+     (token fine-grained del propietario; solo permiso Contents RW).
+   ===================================================================== */
+
+const LS_DRAFT = "labellota_draft";
+const LS_GH    = "labellota_gh";
+const PUBLISHED = JSON.parse(JSON.stringify(window.SITE_CONTENT || {}));
+
+let DRAFT = loadDraft();
+let dirty = false;
+
+function loadDraft(){
+  try{
+    const d = localStorage.getItem(LS_DRAFT);
+    if (d) return JSON.parse(d);
+  }catch(e){}
+  return JSON.parse(JSON.stringify(PUBLISHED));
+}
+function saveDraft(){
+  localStorage.setItem(LS_DRAFT, JSON.stringify(DRAFT));
+  dirty = true; paintStatus();
+}
+let saveTimer;
+const queueSave = () => { clearTimeout(saveTimer); saveTimer = setTimeout(saveDraft, 300); };
+
+const getP = (o,p)=>p.split(".").reduce((a,k)=>a==null?a:a[k],o);
+const setP = (o,p,v)=>{const ks=p.split(".");const last=ks.pop();let t=o;for(const k of ks){if(t[k]==null)t[k]=isNaN(+ks[ks.indexOf(k)+1] ?? last)?{}:[];t=t[k];}t[last]=v;};
+const esc = s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+/* ---------------- Esquema del editor ---------------- */
+const ICONOS = ["km","seguro","carnet","mascota","limpio","plazas","cama","medidas","motor","agua","solar"];
+const SECTIONS = [
+  { id:"negocio", nombre:"🏠 Datos del negocio", desc:"Nombre, contacto y datos que aparecen por toda la web.", cards:[
+    { t:"Identidad", f:[
+      ["negocio.nombre","Nombre del negocio"],
+      ["negocio.claim","Frase corta (claim)"],
+      ["negocio.base","Base / ubicación"],
+      ["negocio.horario","Horario de atención"] ]},
+    { t:"Contacto", f:[
+      ["negocio.telefono","Teléfono visible"],
+      ["negocio.whatsapp","WhatsApp (solo números con prefijo, ej. 34612345678)"],
+      ["negocio.email","Email"],
+      ["negocio.instagram","Usuario de Instagram (sin @)"] ]}
+  ]},
+  { id:"hero", nombre:"🌅 Portada", desc:"Lo primero que ve el cliente: gran foto, titular y botones.", cards:[
+    { t:"Textos", f:[
+      ["hero.badge","Etiqueta pequeña (badge)"],
+      ["hero.eyebrow","Antetítulo"],
+      ["hero.titulo","Titular (usa saltos de línea)","ta"],
+      ["hero.subtitulo","Subtítulo","ta"],
+      ["hero.cta1","Botón principal"],
+      ["hero.cta2","Botón secundario"] ]},
+    { t:"Imagen de portada", f:[ ["hero.foto","Foto principal","img"] ]}
+  ]},
+  { id:"claves", nombre:"⭐ Ventajas (barra verde)", desc:"Los 5 puntos fuertes bajo la portada.", list:{ path:"claves", labelItem:"Ventaja", campos:[
+      ["icono","Icono","icon"],["titulo","Título"],["texto","Texto corto"] ]}},
+  { id:"intro", nombre:"🏝 Bloque isla", desc:"El texto emocional con foto que presenta la experiencia.", cards:[
+    { t:"Textos", f:[
+      ["intro.eyebrow","Antetítulo"],
+      ["intro.titulo","Título"],
+      ["intro.texto1","Párrafo 1","ta"],
+      ["intro.texto2","Párrafo 2","ta"],
+      ["intro.fotoPie","Frase manuscrita sobre la foto"] ]},
+    { t:"Imagen", f:[ ["intro.foto","Foto del bloque","img"] ]}
+  ]},
+  { id:"camper", nombre:"🚐 La camper", desc:"La ficha de la furgoneta: fotos, descripción y características.", cards:[
+    { t:"Ficha", f:[
+      ["camper.eyebrow","Antetítulo"],
+      ["camper.nombre","Nombre de la camper"],
+      ["camper.tipo","Tipo / subtítulo"],
+      ["camper.descripcion","Descripción","ta"] ]}
+  ], lists:[
+    { path:"camper.fotos", titulo:"Galería de fotos", labelItem:"Foto", campos:[ ["url","Imagen","img"],["alt","Descripción corta (alt)"] ]},
+    { path:"camper.specs", titulo:"Características (6 recomendadas)", labelItem:"Característica", campos:[ ["icono","Icono","icon"],["valor","Dato principal"],["detalle","Detalle"] ]},
+    { path:"camper.equipamiento", titulo:"Equipamiento incluido", labelItem:"Elemento", simple:true }
+  ]},
+  { id:"tarifas", nombre:"💶 Tarifas", desc:"Temporadas, precios y condiciones del alquiler.", cards:[
+    { t:"Encabezado", f:[ ["tarifas.titulo","Título"], ["tarifas.nota","Nota bajo los precios","ta"] ]}
+  ], lists:[
+    { path:"tarifas.temporadas", titulo:"Temporadas", labelItem:"Temporada", campos:[ ["nombre","Nombre"],["meses","Meses"],["precio","Precio €/noche","num"] ]},
+    { path:"tarifas.condiciones", titulo:"Condiciones", labelItem:"Condición", campos:[ ["label","Concepto"],["valor","Valor"] ]}
+  ]},
+  { id:"pasos", nombre:"👣 Cómo funciona", desc:"Los 4 pasos de la reserva.", list:{ path:"pasos", labelItem:"Paso", campos:[ ["titulo","Título"],["texto","Texto","ta"] ]}},
+  { id:"noche", nombre:"🌌 Bloque nocturno", desc:"La sección emocional con la foto de estrellas.", cards:[
+    { t:"Textos", f:[
+      ["noche.eyebrow","Antetítulo"],
+      ["noche.titulo","Título"],
+      ["noche.texto","Texto","ta"],
+      ["noche.cita","Cita manuscrita"] ]},
+    { t:"Imagen", f:[ ["noche.foto","Foto de fondo","img"] ]}
+  ]},
+  { id:"rutas", nombre:"🗺 Rutas", desc:"Las rutas recomendadas con su foto.", cards:[
+    { t:"Encabezado", f:[ ["rutas.eyebrow","Antetítulo"],["rutas.titulo","Título"],["rutas.texto","Texto","ta"] ]}
+  ], lists:[
+    { path:"rutas.lista", titulo:"Rutas", labelItem:"Ruta", campos:[ ["titulo","Título"],["zona","Zona"],["dias","Duración"],["texto","Descripción","ta"],["foto","Foto","img"] ]}
+  ]},
+  { id:"resenas", nombre:"💬 Reseñas", desc:"Opiniones de clientes. Mantén el aviso mientras sean de ejemplo.", cards:[
+    { t:"Encabezado", f:[ ["resenas.titulo","Título"],["resenas.aviso","Aviso (déjalo vacío cuando sean reales)"] ]}
+  ], lists:[
+    { path:"resenas.lista", titulo:"Reseñas", labelItem:"Reseña", campos:[ ["nombre","Nombre"],["viaje","Detalle del viaje"],["texto","Texto","ta"] ]}
+  ]},
+  { id:"faq", nombre:"❓ Preguntas frecuentes", desc:"Las dudas típicas con su respuesta.", list:{ path:"faq", labelItem:"Pregunta", campos:[ ["p","Pregunta"],["r","Respuesta","ta"] ]}},
+  { id:"contacto", nombre:"✉️ Contacto y pie", desc:"Encabezados del bloque de contacto y texto del pie.", cards:[
+    { t:"Contacto", f:[ ["contacto.titulo","Título"],["contacto.texto","Texto","ta"],["contacto.formNota","Nota bajo el formulario"] ]},
+    { t:"Pie de página", f:[ ["footer.texto","Texto del pie","ta"] ]}
+  ]}
+];
+
+/* ---------------- Render ---------------- */
+const $ = id=>document.getElementById(id);
+let currentSec = "negocio";
+
+function fieldHtml(path,label,tipo){
+  const val = getP(DRAFT,path);
+  if (tipo==="ta") return `<label class="field"><span>${esc(label)}</span><textarea data-path="${path}">${esc(val)}</textarea></label>`;
+  if (tipo==="num") return `<label class="field"><span>${esc(label)}</span><input type="number" data-path="${path}" value="${esc(val)}"></label>`;
+  if (tipo==="icon"){
+    const opts = ICONOS.map(i=>`<option value="${i}"${i===val?" selected":""}>${i}</option>`).join("");
+    return `<label class="field"><span>${esc(label)}</span><select data-path="${path}">${opts}</select></label>`;
+  }
+  if (tipo==="img"){
+    const src = resolveImg(val);
+    return `<div class="field"><span>${esc(label)}</span>
+      <div class="imgfield">
+        <img class="thumb" src="${esc(src)}" onerror="this.style.opacity=.25" alt="">
+        <div>
+          <input type="text" data-path="${path}" value="${esc(val)}" placeholder="https://… o content/img/archivo.jpg">
+          <div class="acts">
+            <button class="btn" type="button" data-upload="${path}">⬆ Subir imagen al repo</button>
+          </div>
+          <small>Pega una URL o sube un archivo (requiere GitHub configurado). Recomendado: JPG ≤ 1600 px.</small>
+        </div>
+      </div></div>`;
+  }
+  return `<label class="field"><span>${esc(label)}</span><input type="text" data-path="${path}" value="${esc(val)}"></label>`;
+}
+function resolveImg(u){
+  if (!u) return "";
+  return /^https?:/i.test(u) ? u : "../"+u;
+}
+function listHtml(cfg){
+  const arr = getP(DRAFT,cfg.path) || [];
+  const items = arr.map((item,i)=>{
+    const inner = cfg.simple
+      ? fieldHtml(`${cfg.path}.${i}`, cfg.labelItem+" "+(i+1))
+      : cfg.campos.map(([k,l,t])=>fieldHtml(`${cfg.path}.${i}.${k}`,l,t)).join("");
+    return `<div class="item">
+      <div class="item__bar">
+        <button class="btn" data-move="${cfg.path}|${i}|-1" title="Subir">↑</button>
+        <button class="btn" data-move="${cfg.path}|${i}|1" title="Bajar">↓</button>
+        <button class="btn" data-del="${cfg.path}|${i}" title="Eliminar">🗑</button>
+      </div>${inner}</div>`;
+  }).join("");
+  return `<div class="card"><h3>${esc(cfg.titulo||cfg.labelItem+"s")}</h3>${items}
+    <button class="btn addbtn" data-add="${cfg.path}" data-simple="${cfg.simple?1:0}">＋ Añadir ${esc(cfg.labelItem.toLowerCase())}</button></div>`;
+}
+
+function renderSection(){
+  const sec = SECTIONS.find(s=>s.id===currentSec);
+  let html = "";
+  if (sec){
+    html = `<h1>${sec.nombre}</h1><p class="sub">${esc(sec.desc)}</p>`;
+    (sec.cards||[]).forEach(c=>{ html += `<div class="card"><h3>${esc(c.t)}</h3>`+c.f.map(([p,l,t])=>fieldHtml(p,l,t)).join("")+`</div>`; });
+    if (sec.list) html += listHtml({...sec.list, titulo:null});
+    (sec.lists||[]).forEach(l=>{ html += listHtml(l); });
+  } else if (currentSec==="_github"){
+    html = githubHtml();
+  } else if (currentSec==="_datos"){
+    html = datosHtml();
+  }
+  $("content").innerHTML = html;
+  bindInputs();
+}
+
+function bindInputs(){
+  document.querySelectorAll("[data-path]").forEach(el=>{
+    el.addEventListener("input",()=>{
+      let v = el.value;
+      if (el.type==="number") v = v==="" ? "" : +v;
+      setP(DRAFT, el.getAttribute("data-path"), v);
+      queueSave();
+      if (el.closest(".imgfield")){
+        const img = el.closest(".imgfield").querySelector(".thumb");
+        img.style.opacity=1; img.src = resolveImg(v);
+      }
+    });
+  });
+  document.querySelectorAll("[data-add]").forEach(b=>b.addEventListener("click",()=>{
+    const path=b.getAttribute("data-add");
+    const arr=getP(DRAFT,path)||[];
+    const sec=SECTIONS.find(s=>s.id===currentSec);
+    const cfg=(sec.list && sec.list.path===path) ? sec.list : (sec.lists||[]).find(l=>l.path===path);
+    arr.push(cfg.simple ? "" : Object.fromEntries(cfg.campos.map(([k])=>[k,""])));
+    setP(DRAFT,path,arr); saveDraft(); renderSection();
+  }));
+  document.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>{
+    const [path,i]=b.getAttribute("data-del").split("|");
+    const arr=getP(DRAFT,path); arr.splice(+i,1);
+    saveDraft(); renderSection();
+  }));
+  document.querySelectorAll("[data-move]").forEach(b=>b.addEventListener("click",()=>{
+    const [path,i,d]=b.getAttribute("data-move").split("|");
+    const arr=getP(DRAFT,path); const from=+i, to=from+ +d;
+    if (to<0||to>=arr.length) return;
+    [arr[from],arr[to]]=[arr[to],arr[from]];
+    saveDraft(); renderSection();
+  }));
+  document.querySelectorAll("[data-upload]").forEach(b=>b.addEventListener("click",()=>uploadImage(b.getAttribute("data-upload"))));
+  if (currentSec==="_github") bindGithub();
+  if (currentSec==="_datos") bindDatos();
+}
+
+/* ---------------- Menú / estado ---------------- */
+$("menu").innerHTML = SECTIONS.map(s=>`<button data-sec="${s.id}">${s.nombre}</button>`).join("");
+document.querySelectorAll("[data-sec]").forEach(b=>b.addEventListener("click",()=>{
+  currentSec=b.getAttribute("data-sec");
+  document.querySelectorAll("[data-sec]").forEach(x=>x.classList.toggle("active",x===b));
+  renderSection(); scrollTo(0,0);
+}));
+
+function paintStatus(){
+  const gh = ghConfig();
+  $("status").innerHTML = (dirty||localStorage.getItem(LS_DRAFT))
+    ? `📝 <b>Borrador con cambios</b> sin publicar`
+    : `✅ Sin cambios pendientes`;
+  if (!gh.token) $("status").innerHTML += ` · <span style="color:var(--teja)">GitHub sin configurar</span>`;
+}
+
+/* ---------------- Vista previa / descartar ---------------- */
+$("btnPreview").addEventListener("click",()=>{
+  saveDraft();
+  open("../index.html?preview=1","labellota_preview");
+});
+$("btnReset").addEventListener("click",()=>{
+  if (!confirm("¿Descartar el borrador y volver al contenido publicado?")) return;
+  localStorage.removeItem(LS_DRAFT);
+  DRAFT = JSON.parse(JSON.stringify(PUBLISHED));
+  dirty=false; renderSection(); paintStatus(); toast("Borrador descartado","ok");
+});
+
+/* ---------------- GitHub ---------------- */
+function ghConfig(){
+  try{ return JSON.parse(localStorage.getItem(LS_GH)||"{}"); }catch(e){ return {}; }
+}
+function githubHtml(){
+  const g = ghConfig();
+  return `<h1>⚙️ Publicación (GitHub)</h1>
+  <p class="sub">El panel publica los cambios directamente en el repositorio. GitHub Pages actualiza la web pública en 1–2 minutos.</p>
+  <div class="warn">🔐 El token es como una llave: créalo <b>fine-grained</b>, solo para el repositorio de la web y solo con permiso <b>Contents → Read and write</b>. Se guarda únicamente en este navegador. Nunca lo compartas por chat o email.</div>
+  <div class="card"><h3>Repositorio</h3>
+    <div class="grid2">
+      <label class="field"><span>Usuario/organización</span><input type="text" id="ghOwner" value="${esc(g.owner||"sosaalfredo")}"></label>
+      <label class="field"><span>Repositorio</span><input type="text" id="ghRepo" value="${esc(g.repo||"la-bellota")}"></label>
+      <label class="field"><span>Rama</span><input type="text" id="ghBranch" value="${esc(g.branch||"main")}"></label>
+      <label class="field"><span>Token (fine-grained)</span><input type="password" id="ghToken" value="${esc(g.token||"")}" placeholder="github_pat_…"></label>
+    </div>
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.4rem">
+      <button class="btn btn--miel" id="ghSave">Guardar configuración</button>
+      <button class="btn" id="ghTest">Probar conexión</button>
+      <span class="pill" id="ghStatus">Sin probar</span>
+    </div>
+  </div>
+  <div class="card"><h3>Cómo crear el token (una vez)</h3>
+    <p class="sub" style="margin-bottom:.6rem">GitHub → tu foto → <b>Settings</b> → <b>Developer settings</b> → <b>Fine-grained tokens</b> → <b>Generate new token</b>:</p>
+    <p class="sub" style="margin-bottom:0">1) Resource owner: tu usuario · 2) Repository access: <b>Only select repositories</b> → el repo de la web · 3) Permissions → Repository → <b>Contents: Read and write</b> · 4) Generate y pégalo aquí.</p>
+  </div>`;
+}
+function bindGithub(){
+  $("ghSave").addEventListener("click",()=>{
+    localStorage.setItem(LS_GH, JSON.stringify({
+      owner:$("ghOwner").value.trim(), repo:$("ghRepo").value.trim(),
+      branch:$("ghBranch").value.trim()||"main", token:$("ghToken").value.trim()
+    }));
+    paintStatus(); toast("Configuración guardada","ok");
+  });
+  $("ghTest").addEventListener("click",async()=>{
+    const g={owner:$("ghOwner").value.trim(),repo:$("ghRepo").value.trim(),token:$("ghToken").value.trim()};
+    const pill=$("ghStatus"); pill.textContent="Probando…"; pill.className="pill";
+    try{
+      const r=await fetch(`https://api.github.com/repos/${g.owner}/${g.repo}`,{headers:ghHeaders(g.token)});
+      if(!r.ok) throw new Error(r.status===404?"Repo no encontrado (¿existe? ¿token con acceso?)":"HTTP "+r.status);
+      const j=await r.json();
+      pill.textContent="✓ Conectado a "+j.full_name; pill.className="pill ok";
+    }catch(e){ pill.textContent="✗ "+e.message; pill.className="pill err"; }
+  });
+}
+const ghHeaders = t=>({ "Authorization":"Bearer "+t, "Accept":"application/vnd.github+json", "X-GitHub-Api-Version":"2022-11-28" });
+
+function contentFileBody(){
+  const header = "/* =========================================================\n" +
+    "   LA BELLOTA CAMPERS — CONTENIDO DEL SITIO\n" +
+    "   Editado desde el panel de administración (/admin).\n" +
+    "   ========================================================= */\n";
+  DRAFT.meta = DRAFT.meta || {};
+  DRAFT.meta.actualizado = new Date().toISOString().slice(0,10);
+  return header + "window.SITE_CONTENT = " + JSON.stringify(DRAFT,null,2) + ";\n";
+}
+const b64encode = (str)=>{
+  const bytes = new TextEncoder().encode(str);
+  let bin=""; const CH=0x8000;
+  for(let i=0;i<bytes.length;i+=CH) bin += String.fromCharCode(...bytes.subarray(i,i+CH));
+  return btoa(bin);
+};
+
+async function ghPut(path, base64, message){
+  const g = ghConfig();
+  if (!g.token) throw new Error("Configura GitHub primero (menú ⚙️ Publicación).");
+  const api = `https://api.github.com/repos/${g.owner}/${g.repo}/contents/${path}`;
+  let sha;
+  const head = await fetch(api+`?ref=${g.branch}`,{headers:ghHeaders(g.token)});
+  if (head.ok) sha = (await head.json()).sha;
+  const r = await fetch(api,{
+    method:"PUT", headers:ghHeaders(g.token),
+    body: JSON.stringify({ message, branch:g.branch, content:base64, ...(sha?{sha}:{}) })
+  });
+  if (!r.ok){
+    const j = await r.json().catch(()=>({}));
+    throw new Error(j.message || "HTTP "+r.status);
+  }
+  return r.json();
+}
+
+$("btnPublish").addEventListener("click", async ()=>{
+  const b=$("btnPublish");
+  if (!ghConfig().token){ currentSec="_github"; renderSection(); toast("Configura GitHub para poder publicar","err"); return; }
+  if (!confirm("¿Publicar los cambios en la web?")) return;
+  b.disabled=true; b.textContent="Publicando…";
+  try{
+    await ghPut("content/content.js", b64encode(contentFileBody()), "content: actualización desde el panel");
+    localStorage.removeItem(LS_DRAFT); dirty=false; paintStatus();
+    toast("✅ Publicado. La web pública se actualiza en 1–2 min.","ok");
+  }catch(e){ toast("Error al publicar: "+e.message,"err"); }
+  b.disabled=false; b.textContent="🚀 Publicar";
+});
+
+/* Subir imagen al repo */
+async function uploadImage(fieldPath){
+  if (!ghConfig().token){ toast("Configura GitHub (⚙️) para subir imágenes","err"); return; }
+  const input=document.createElement("input");
+  input.type="file"; input.accept="image/jpeg,image/png,image/webp";
+  input.onchange=async()=>{
+    const file=input.files[0]; if(!file) return;
+    if (file.size > 3*1024*1024){ toast("Imagen demasiado grande (máx 3 MB). Redúcela antes de subirla.","err"); return; }
+    toast("Subiendo "+file.name+"…");
+    try{
+      const buf=new Uint8Array(await file.arrayBuffer());
+      let bin=""; const CH=0x8000;
+      for(let i=0;i<buf.length;i+=CH) bin+=String.fromCharCode(...buf.subarray(i,i+CH));
+      const name=file.name.toLowerCase().replace(/[^a-z0-9.]+/g,"-").replace(/^-+|-+$/g,"");
+      const path="content/img/"+Date.now().toString(36)+"-"+name;
+      await ghPut(path, btoa(bin), "content: imagen "+name+" (panel)");
+      setP(DRAFT, fieldPath, path);
+      saveDraft(); renderSection();
+      toast("✅ Imagen subida","ok");
+    }catch(e){ toast("Error al subir: "+e.message,"err"); }
+  };
+  input.click();
+}
+
+/* ---------------- Copias y datos ---------------- */
+function datosHtml(){
+  return `<h1>💾 Copias y datos</h1>
+  <p class="sub">Por si prefieres trabajar sin GitHub o quieres una copia de seguridad del contenido.</p>
+  <div class="card"><h3>Exportar</h3>
+    <p class="sub" style="margin-bottom:.8rem">Descarga el contenido actual (borrador) como <code>content.js</code>. Puede sustituirse a mano en el repositorio, en <code>content/content.js</code>.</p>
+    <button class="btn btn--miel" id="btnExport">⬇ Descargar content.js</button>
+  </div>
+  <div class="card"><h3>Importar</h3>
+    <p class="sub" style="margin-bottom:.8rem">Pega aquí el contenido de un <code>content.js</code> (o solo el objeto JSON) para cargarlo como borrador.</p>
+    <textarea id="importBox" placeholder="window.SITE_CONTENT = { … };"></textarea>
+    <div style="margin-top:.6rem"><button class="btn" id="btnImport">Cargar como borrador</button></div>
+  </div>`;
+}
+function bindDatos(){
+  $("btnExport").addEventListener("click",()=>{
+    const blob=new Blob([contentFileBody()],{type:"text/javascript"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob); a.download="content.js"; a.click();
+    URL.revokeObjectURL(a.href);
+  });
+  $("btnImport").addEventListener("click",()=>{
+    try{
+      let t=$("importBox").value.trim();
+      const m=t.match(/window\.SITE_CONTENT\s*=\s*([\s\S]*?);?\s*$/);
+      if (m) t=m[1].replace(/;\s*$/,"");
+      DRAFT=JSON.parse(t); saveDraft(); toast("Contenido cargado como borrador","ok");
+    }catch(e){ toast("No se pudo leer: "+e.message,"err"); }
+  });
+}
+
+/* ---------------- Toast ---------------- */
+let toastTimer;
+function toast(msg,cls){
+  const t=$("toast"); t.textContent=msg; t.className="toast show "+(cls||"");
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.className="toast",3600);
+}
+
+/* ---------------- Init ---------------- */
+document.querySelector('[data-sec="negocio"]').classList.add("active");
+renderSection();
+paintStatus();
+if (localStorage.getItem(LS_DRAFT)) toast("Hay un borrador guardado de una sesión anterior");
+</script>
+</body>
+</html>

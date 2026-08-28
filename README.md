@@ -1,33 +1,64 @@
 # La Bellota Campers 🚐
 
-Web del negocio de alquiler de campers y autocaravanas de Nahum (Gran Canaria).
+Web del negocio de alquiler de furgoneta camper de Nahum en Gran Canaria, con panel de
+administración propio para editar textos, precios, fotos y contenido sin tocar código.
 
-Sitio estático en un único `index.html` autocontenido: CSS y JS inline, ilustraciones SVG
-incrustadas (sin dependencias, sin build). Se puede servir desde cualquier hosting estático
+## Arquitectura
+
+Sitio 100 % estático (sin build, sin backend). Se sirve desde cualquier hosting estático
 (GitHub Pages, Vercel, Netlify…).
 
-## Desarrollo
+```
+index.html            La web pública
+assets/styles.css     Estilos
+assets/main.js        Render (pinta el contenido) e interacciones
+content/content.js    ⭐ TODO el contenido editable (window.SITE_CONTENT)
+content/img/          Imágenes subidas desde el panel
+admin/index.html      Panel de administración
+```
 
-Abrir `index.html` en el navegador. No hay proceso de build.
+`index.html` no contiene textos de negocio: todo (textos, precios, fotos, FAQ, rutas,
+reseñas…) vive en `content/content.js` y la página se rellena al cargar.
 
-## Datos provisionales pendientes de reemplazar
+## Panel de administración (`/admin`)
 
-Todo el contenido es un borrador inventado para el arranque:
+- **Editar**: cada sección de la web tiene su formulario. Los cambios se guardan como
+  **borrador** en el navegador (localStorage), no tocan la web publicada.
+- **Vista previa**: abre `index.html?preview=1`, que pinta el borrador con una barra
+  naranja de aviso.
+- **Publicar**: sube `content/content.js` al repositorio vía API de GitHub. GitHub Pages
+  redespliega la web en 1–2 minutos.
+- **Imágenes**: se pueden pegar URLs o subir archivos al repo (van a `content/img/`).
+- **Copias**: exportar/importar `content.js` a mano, por si se prefiere sin GitHub.
 
-- **Teléfono/WhatsApp**: `+34 600 00 00 00` — buscar `34600000000` (aparece en varios enlaces
-  y en la constante `WHATSAPP_NUM` del script) y sustituir por el número real.
-- **Email**: `hola@labellotacampers.com`
-- **Instagram**: `@labellotacampers`
-- **Base**: Las Palmas de Gran Canaria (asumido)
-- **Flota**: El Drago / La Sabina / La Encina — nombres, plazas, medidas y precios inventados.
-- **Precios**: 89 / 109 / 129 €/día, señal 25 %, fianza 600 €, mascota 30 €, aeropuerto 40 € —
-  todos provisionales.
-- **Reseñas**: de ejemplo (marcadas con nota en la propia web).
-- **Ilustraciones SVG**: placeholders con estilo propio hasta tener fotos reales de las campers.
-- **Aviso legal / Privacidad / Cookies**: enlaces vacíos, pendientes de redactar.
+### Token de GitHub (una sola vez, lo crea el dueño del repo)
+
+GitHub → Settings → Developer settings → **Fine-grained tokens** → Generate:
+Repository access = *Only select repositories* → este repo; Permissions →
+Repository → **Contents: Read and write**. Se pega en el panel (⚙️ Publicación) y queda
+guardado solo en ese navegador. **Nunca compartir el token por chat/email.**
+
+## Desarrollo local
+
+Servir la carpeta con cualquier estático, p. ej.:
+
+```bash
+python -m http.server 8642
+```
+
+(`file://` también funciona para ver la web, pero el panel publica mejor vía http.)
+
+## Datos provisionales pendientes
+
+- ✅ Teléfono/WhatsApp y email: los de Alfredo (temporal para pruebas).
+- **Fotos**: de Unsplash (licencia libre) como placeholder — sustituir por fotos reales
+  de la furgoneta desde el panel.
+- **Ficha técnica, precios y condiciones**: inventados de forma realista — revisar con Nahum.
+- **Reseñas**: de ejemplo (la web lo avisa) — vaciar el aviso cuando haya reales.
+- **Instagram** `@labellotacampers`: por confirmar.
+- **Aviso legal / Privacidad / Cookies**: pendientes de redactar.
 
 ## Formulario
 
-El formulario no tiene backend: compone el mensaje y abre WhatsApp con el texto listo
-para que el cliente lo envíe. Si más adelante se quiere email/backend, sustituir el handler
-`submit` en el script final de `index.html`.
+Sin backend: los formularios componen el mensaje y abren WhatsApp con el texto listo
+para que el cliente lo envíe.
