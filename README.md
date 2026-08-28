@@ -3,6 +3,10 @@
 Web del negocio de alquiler de furgoneta camper de Nahum en Gran Canaria, con panel de
 administración propio para editar textos, precios, fotos y contenido sin tocar código.
 
+**Producción**: https://la-bellota.vercel.app/ (Vercel, auto-deploy en cada push)
+· espejo en https://sosaalfredo.github.io/la-bellota/ (GitHub Pages)
+· panel: https://la-bellota.vercel.app/admin
+
 ## Arquitectura
 
 Sitio 100 % estático (sin build, sin backend). Se sirve desde cualquier hosting estático
