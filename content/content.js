@@ -182,10 +182,14 @@ window.SITE_CONTENT = {
   },
   "resenas": {
     "titulo": "Los que ya la han probado",
-    "aviso": "La camper es nueva de 2026 y las primeras reseñas están en camino. Mientras tanto, puedes ver la ficha verificada de Nahum en Yescapa.",
+    "aviso": "Reseñas de ejemplo — pronto estarán aquí las de los primeros viajeros.",
     "formTitulo": "¿Ya has viajado con La Bellota?",
     "formTexto": "Cuéntanos cómo fue: tu opinión ayuda a los siguientes viajeros. Nos llega por WhatsApp y la publicamos aquí en cuanto la leemos.",
-    "lista": []
+    "lista": [
+      { "nombre": "Laura y Marcos", "viaje": "7 noches · septiembre", "estrellas": 5, "texto": "Nunca habíamos viajado en camper y nos lo pusieron facilísimo. La explicación al recogerla, el mapa con los rincones… Repetimos seguro." },
+      { "nombre": "Andrea", "viaje": "Escapada de 4 noches", "estrellas": 5, "texto": "Despertar en la cumbre por encima de las nubes y bajar a bañarte a Güi Güi el mismo día. La Bellota se mete por todas partes y no le falta detalle." },
+      { "nombre": "Familia Guedes", "viaje": "10 noches en familia", "estrellas": 5, "texto": "Fuimos con la niña y sobró espacio para todo. Todo impecable y Nahum pendiente de nosotros durante el viaje." }
+    ]
   },
   "faq": [
     { "p": "¿Qué carnet necesito?", "r": "El carnet B de toda la vida: La Bellota pesa menos de 3.500 kg y se conduce como una furgoneta normal. Al reservar dinos tu edad y años de carnet y te confirmamos los requisitos del seguro." },
