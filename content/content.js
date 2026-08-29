@@ -150,6 +150,17 @@ window.SITE_CONTENT = {
       }
     ]
   },
+  "explora": {
+    "titulo": "Gran Canaria para recordar",
+    "texto": "Miradores, pueblos, dunas y piscinas naturales: los rincones que hacen grande un viaje pequeño. Hemos preparado la guía completa, contada para quien viaja en camper.",
+    "cta": "Descubre Gran Canaria →",
+    "lista": [
+      { "slug": "roque-nublo", "nombre": "Roque Nublo", "municipio": "Tejeda", "texto": "El guardián de piedra de la cumbre.", "foto": "content/img/explora/roque-nublo.jpg" },
+      { "slug": "puerto-de-mogan", "nombre": "Puerto de Mogán", "municipio": "Mogán", "texto": "Canales y casas de flores frente al Atlántico.", "foto": "content/img/explora/puerto-de-mogan.jpg" },
+      { "slug": "dunas-maspalomas", "nombre": "Dunas de Maspalomas", "municipio": "San Bartolomé de Tirajana", "texto": "Un pequeño Sáhara junto al mar.", "foto": "content/img/explora/dunas-maspalomas.jpg" },
+      { "slug": "mirador-del-balcon", "nombre": "Mirador del Balcón", "municipio": "La Aldea", "texto": "La cola de dragón del oeste salvaje.", "foto": "content/img/explora/mirador-del-balcon.jpg" }
+    ]
+  },
   "hermano": {
     "eyebrow": "El origen de la marca",
     "titulo": "La Bellota Extremeña",
