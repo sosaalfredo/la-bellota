@@ -3,9 +3,11 @@
 Web del negocio de alquiler de furgoneta camper de Nahum en Gran Canaria, con panel de
 administración propio para editar textos, precios, fotos y contenido sin tocar código.
 
-**Producción**: https://la-bellota.vercel.app/ (Vercel, auto-deploy en cada push)
+**Producción**: https://www.labellotacampers.com (dominio en Hostalia → Vercel, auto-deploy en cada push)
+· alias: https://la-bellota.vercel.app/
 · espejo en https://sosaalfredo.github.io/la-bellota/ (GitHub Pages)
-· panel: https://la-bellota.vercel.app/admin
+· panel: https://www.labellotacampers.com/admin
+· ficha Yescapa (fuente de los datos reales): https://www.yescapa.es/campers/121413
 
 ## Arquitectura
 
@@ -52,15 +54,19 @@ python -m http.server 8642
 
 (`file://` también funciona para ver la web, pero el panel publica mejor vía http.)
 
-## Datos provisionales pendientes
+## Datos reales (sincronizados de Yescapa el 29/08/2026)
 
-- ✅ Teléfono/WhatsApp y email: los de Alfredo (temporal para pruebas).
-- **Fotos**: de Unsplash (licencia libre) como placeholder — sustituir por fotos reales
-  de la furgoneta desde el panel.
-- **Ficha técnica, precios y condiciones**: inventados de forma realista — revisar con Nahum.
-- **Reseñas**: de ejemplo (la web lo avisa) — vaciar el aviso cuando haya reales.
-- **Instagram** `@labellotacampers`: por confirmar.
-- **Aviso legal / Privacidad / Cookies**: pendientes de redactar.
+Ficha técnica (Weinsberg 2026, 6 m, 4 plazas), fotos de la furgo, precios (desde 110 €/noche,
+descuentos −10 %), fianza 800 €, 200 km/día, aeropuerto 20 € i/v, sin mascotas ni fumar.
+
+## Pendiente
+
+- **Teléfono/WhatsApp y email**: los de Alfredo (temporal) — cambiar a los de Nahum
+  y crear buzón `reservas@labellotacampers.com` en Hostalia.
+- **Legales**: quedan huecos amarillos (NIF, dirección, señal, franquicia del seguro,
+  tramos de cancelación) — completar con Nahum y revisión profesional.
+- **Reseñas**: la camper es nueva; la web enlaza a la ficha de Yescapa mientras llegan.
+- **DNS**: crear en Hostalia `A @ → 216.198.79.1` y `CNAME www → 18d97c7a40c02a4e.vercel-dns-017.com`.
 
 ## Formulario
 

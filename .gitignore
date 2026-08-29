@@ -1,6 +1,9 @@
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Material privado de referencia (no publicar en el repo público)
+Dominio_La_Bellota.jpeg
 .env
 .env.*
 node_modules/

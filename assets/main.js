@@ -44,14 +44,15 @@
       solar:   '<circle cx="12" cy="12" r="3"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
       carpa:   '<path d="M12 4L3 19h18z"/><path d="M12 4v15"/><path d="M8.6 19c.8-2.6 2-4.2 3.4-4.2s2.6 1.6 3.4 4.2"/>',
       arbol:   '<path d="M12 3L6.5 11h3L5 17h14l-4.5-6h3z"/><path d="M12 17v4"/>',
-      furgo:   '<rect x="2.5" y="8" width="13" height="8" rx="2"/><path d="M15.5 10h3.2l2.3 3.2V16h-5.5"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>'
+      furgo:   '<rect x="2.5" y="8" width="13" height="8" rx="2"/><path d="M15.5 10h3.2l2.3 3.2V16h-5.5"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+      avion:   '<path d="M10.5 13.5L3 11l1.5-1.5L10 10l4.5-4.5a1.8 1.8 0 0 1 2.5 2.5L12.5 12.5l.5 5.5L11.5 19.5l-2.5-6.5z"/><path d="M4 20h16"/>'
     }[name] || '<circle cx="12" cy="12" r="9"/>';
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + "</svg>";
   };
 
   /* ---------- Images ---------- */
   const setImg = (id, url, alt) => { const el = $(id); if (el && url) { el.src = url; if (alt) el.alt = alt; } };
-  setImg("heroImg", get("hero.foto"), "La Bellota junto al mar a la hora dorada");
+  setImg("heroImg", get("hero.foto"), "La Bellota, camper Weinsberg 2026, lista para salir en Gran Canaria");
   setImg("introImg", get("intro.foto"));
   setImg("nocheImg", get("noche.foto"), "Cielo estrellado sobre la camper");
 
@@ -99,7 +100,7 @@
   $("temporadas").innerHTML = (get("tarifas.temporadas") || []).map((t) =>
     '<div class="temporada' + (enTemporada(t) ? " destacada" : "") + '">' +
       "<div><b>" + esc(t.nombre) + "</b><span>" + esc(t.meses) + "</span></div>" +
-      '<div class="precio">' + esc(t.precio) + " €<small>por noche</small></div>" +
+      '<div class="precio">' + (typeof t.precio === "number" ? esc(t.precio) + " €<small>por noche</small>" : esc(t.precio)) + "</div>" +
     "</div>"
   ).join("");
   $("condiciones").innerHTML = (get("tarifas.condiciones") || []).map((c) =>
@@ -320,7 +321,7 @@
     openWa(
       "Hola, soy " + f.get("nombre") + " y quiero reservar La Bellota 🚐\n" +
       "· Fechas: del " + f.get("desde") + " al " + f.get("hasta") + "\n" +
-      "· Viajamos: " + f.get("personas") + " · " + f.get("mascota") + "\n" +
+      "· Viajamos: " + f.get("personas") + "\n" +
       "· Contacto: " + f.get("contacto") +
       (f.get("mensaje") ? "\n· Mensaje: " + f.get("mensaje") : "")
     );

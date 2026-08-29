@@ -2,11 +2,13 @@
    LA BELLOTA CAMPERS — CONTENIDO DEL SITIO
    Este archivo lo edita el panel de administración (/admin).
    También puede editarse a mano: es un objeto JS normal.
+   Datos del vehículo y condiciones: ficha real de Yescapa
+   (yescapa.es/campers/121413), sincronizados el 29/08/2026.
    ========================================================= */
 window.SITE_CONTENT = {
   "meta": {
-    "version": 2,
-    "actualizado": "2026-08-28"
+    "version": 3,
+    "actualizado": "2026-08-29"
   },
   "negocio": {
     "nombre": "La Bellota Campers",
@@ -15,100 +17,103 @@ window.SITE_CONTENT = {
     "whatsapp": "34636879402",
     "email": "sosa.alfredo@gmail.com",
     "instagram": "labellotacampers",
-    "base": "Las Palmas de Gran Canaria",
+    "base": "Ojos de Garza (Telde) · a 5 min del aeropuerto",
     "horario": "Todos los días · 9:00 – 20:00"
   },
   "hero": {
     "eyebrow": "Alquiler de camper · Gran Canaria",
     "titulo": "La isla entera.\nSin horarios. Sin maletas.",
-    "subtitulo": "Despierta sobre el mar, desayuna sobre las nubes y duerme bajo un cielo lleno de estrellas. La Bellota es tu casa rodante en Gran Canaria: recógela, arranca y déjate llevar.",
+    "subtitulo": "Descubre Gran Canaria en una camper de 2026 totalmente equipada para 4 personas. Desde 110 € por noche, con la base a 5 minutos del aeropuerto: aterriza, recoge y arranca.",
     "cta1": "Consultar fechas",
     "cta2": "Conoce la camper",
-    "foto": "content/img/hero-costa.jpg",
-    "badge": "Temporada 2026 · plazas limitadas"
+    "foto": "content/img/camper-real-00-frontal.jpg",
+    "badge": "Camper 2026 a estrenar · desde 110 €/noche"
   },
   "claves": [
-    { "icono": "km",      "titulo": "Km ilimitados",        "texto": "Recorre la isla sin mirar el cuentakilómetros" },
-    { "icono": "seguro",  "titulo": "Seguro a todo riesgo", "texto": "Con asistencia en carretera 24/7 incluida" },
-    { "icono": "carnet",  "titulo": "Carnet B",             "texto": "Se conduce como un coche normal" },
-    { "icono": "mascota", "titulo": "Mascotas a bordo",     "texto": "Tu perro también se viene de viaje" },
-    { "icono": "limpio",  "titulo": "Lista para vivir",     "texto": "Entregada limpia, con camas hechas y depósito lleno" }
+    { "icono": "furgo",  "titulo": "Camper 2026 a estrenar", "texto": "Weinsberg sobre Fiat Ducato, primera matriculación 2026" },
+    { "icono": "km",     "titulo": "200 km al día incluidos", "texto": "¿Vuelta tras vuelta a la isla? Km ilimitados por +10 €/día" },
+    { "icono": "carnet", "titulo": "Carnet B",               "texto": "Menos de 3.500 kg: se conduce como un coche" },
+    { "icono": "avion",  "titulo": "Junto al aeropuerto",    "texto": "Base en Ojos de Garza · traslado ida y vuelta por 20 €" },
+    { "icono": "limpio", "titulo": "Lista para vivir",       "texto": "Menaje, ropa de cama y baño y welcome pack incluidos" }
   ],
   "intro": {
     "eyebrow": "Vivir sobre ruedas",
     "titulo": "Un continente en miniatura, a las puertas de tu cama",
     "texto1": "Gran Canaria cambia de paisaje cada veinte minutos: dunas doradas, pinares por encima de las nubes, acantilados que caen al Atlántico y pueblos donde el tiempo va más despacio. La única forma de vivirla entera es no tener que volver cada noche al mismo sitio.",
-    "texto2": "Somos un negocio pequeño y de aquí. No somos una flota anónima: somos una furgoneta cuidada al detalle y alguien al otro lado del teléfono que conoce cada rincón de la isla y te lo cuenta como a un amigo.",
-    "foto": "content/img/intro-amigos.jpg",
+    "texto2": "No somos una flota anónima. Somos un negocio familiar que lleva 11 años recibiendo personas en La Bellota Extremeña, en Las Palmas, y ahora llevamos ese mismo cariño al mundo camper: un vehículo cuidado al detalle y alguien al otro lado del teléfono que conoce cada rincón de la isla.",
+    "foto": "content/img/hero-costa.jpg",
     "fotoPie": "Los planes buenos no caben en un hotel"
   },
   "camper": {
     "eyebrow": "Nuestra camper",
     "nombre": "La Bellota",
-    "tipo": "Furgoneta camper gran volumen · 5,99 m",
-    "descripcion": "Una Fiat Ducato camperizada con todo lo que importa y nada que sobre: cama fija para dos, cocina completa, baño con ducha y agua caliente, y energía solar para que no dependas de nadie. Pequeña por fuera para aparcar donde un coche; un hogar por dentro.",
+    "tipo": "Camper gran volumen · Weinsberg 2026 · 6 m",
+    "descripcion": "Una Weinsberg de gran volumen sobre Fiat Ducato, matriculada en 2026 y equipada con todo lo que importa: dos camas dobles, cocina de gas con nevera y congelador, baño con ducha interior y exterior, y placas solares con hasta 4 días de autonomía. Incluimos menaje de cocina, ropa de cama y baño y un pequeño welcome pack para que tu experiencia camper en Gran Canaria sea inolvidable.",
     "fotos": [
-      { "url": "content/img/camper-01-exterior.jpg", "alt": "La Bellota aparcada en plena naturaleza" },
-      { "url": "content/img/camper-02-interior.jpg", "alt": "Interior en madera con cocina y salón" },
-      { "url": "content/img/camper-03-montana.jpg", "alt": "Acampada al pie de la montaña" },
-      { "url": "content/img/camper-04-carretera.jpg", "alt": "En carretera al caer el sol" }
+      { "url": "content/img/camper-real-00-frontal.jpg", "alt": "La Bellota, camper Weinsberg 2026, con la puerta lateral abierta" },
+      { "url": "content/img/camper-real-02-trasera.jpg", "alt": "Vista trasera de la camper" },
+      { "url": "content/img/camper-real-05-comedor.jpg", "alt": "Salón-comedor con mesa y asientos para cuatro" },
+      { "url": "content/img/camper-real-06-cocina.jpg", "alt": "Cocina con cajones y menaje completo" },
+      { "url": "content/img/camper-real-03-cama.jpg", "alt": "Cama doble con la ropa de cama puesta" },
+      { "url": "content/img/camper-real-04-litera.jpg", "alt": "Dormitorio trasero visto desde el salón" },
+      { "url": "content/img/camper-real-07-banno.jpg", "alt": "Baño con ducha, WC y lavabo" },
+      { "url": "content/img/camper-real-08-nevera.jpg", "alt": "Nevera con congelador" }
     ],
     "specs": [
-      { "icono": "plazas",   "valor": "4 plazas",        "detalle": "de viaje con cinturón" },
-      { "icono": "cama",     "valor": "Cama fija 140×195", "detalle": "+ salón convertible" },
-      { "icono": "medidas",  "valor": "5,99 × 2,05 m",   "detalle": "aparca como un coche" },
-      { "icono": "motor",    "valor": "Diésel 140 CV",   "detalle": "cambio manual" },
-      { "icono": "agua",     "valor": "100 L de agua",   "detalle": "ducha y agua caliente" },
-      { "icono": "solar",    "valor": "Placa solar 200 W", "detalle": "batería auxiliar + 220 V" }
+      { "icono": "plazas",  "valor": "4 plazas",            "detalle": "para viajar y para dormir" },
+      { "icono": "cama",    "valor": "2 camas dobles",      "detalle": "150×190 transversal + 135×190 litera" },
+      { "icono": "medidas", "valor": "6,0 × 2,05 m",        "detalle": "2,8 m de alto · aparca como una furgo" },
+      { "icono": "motor",   "valor": "Diésel · manual",     "detalle": "Fiat Ducato · 6–8 l/100 km" },
+      { "icono": "agua",    "valor": "100 L de agua",       "detalle": "+100 L grises · ducha dentro y fuera" },
+      { "icono": "solar",   "valor": "Placas solares",      "detalle": "batería auxiliar · hasta 4 días de autonomía" }
     ],
     "equipamiento": [
-      "Cocina de 2 fuegos con menaje completo",
-      "Nevera de compresor 84 L",
-      "Baño con WC, lavabo y ducha interior",
+      "Cocina de gas con fregadero y menaje para 4",
+      "Nevera con congelador (12 V)",
+      "Baño con ducha interior, WC y lavabo",
       "Ducha exterior para después de la playa",
-      "Calefacción estacionaria",
-      "Toldo lateral",
-      "Mesa y sillas de camping",
-      "Ropa de cama, edredón y toallas",
-      "Cafetera italiana y kit de especias",
-      "Mapa de rincones favoritos de la isla",
-      "Kit mascota: cuenco, correa larga y manta",
-      "Portabicis para 2 bicicletas (bajo petición)"
+      "Calefacción y aire acondicionado en el habitáculo",
+      "Aire acondicionado también en cabina",
+      "Asientos de cabina giratorios",
+      "Cámara de marcha atrás, GPS y Bluetooth",
+      "Placas solares, batería auxiliar y enchufes USB / 12 V / 220 V",
+      "Toldo lateral, mesa y sillas de exterior",
+      "Bodega-maletero para el equipaje",
+      "Ropa de cama, toallas y welcome pack",
+      "Cafetera",
+      "Silla infantil disponible bajo petición"
     ]
   },
   "tarifas": {
     "titulo": "Tarifas claras, sin sorpresas",
-    "nota": "Todo incluido: seguro a todo riesgo, asistencia 24/7, km ilimitados, segundo conductor y equipamiento completo. Estancia mínima 3 noches (5 en agosto).",
+    "nota": "Incluye asistencia en carretera 24/7, 200 km al día, menaje completo y ropa de cama y baño. Estancia mínima 3 noches. El precio exacto depende de fechas y duración: te lo confirmamos al momento por WhatsApp.",
     "temporadas": [
-      { "nombre": "Temporada baja",  "meses": "Noviembre · Enero · Febrero", "precio": 85 },
-      { "nombre": "Temporada media", "meses": "Marzo · Abril · Mayo · Junio · Octubre", "precio": 99 },
-      { "nombre": "Temporada alta",  "meses": "Julio · Agosto · Septiembre · Diciembre", "precio": 119 }
+      { "nombre": "Precio por noche", "meses": "Según fechas y duración", "precio": "desde 110 €" },
+      { "nombre": "Reserva anticipada", "meses": "Reservando con 5+ meses", "precio": "−10 %" },
+      { "nombre": "Larga duración", "meses": "Viajes de 7 noches o más", "precio": "−10 %" }
     ],
     "condiciones": [
-      { "label": "Señal para reservar", "valor": "25 % del total" },
-      { "label": "Fianza (se devuelve)", "valor": "600 €" },
-      { "label": "Edad y carnet", "valor": "+25 años · carnet B (2 años)" },
-      { "label": "Entrega en aeropuerto", "valor": "40 € por trayecto" },
-      { "label": "Mascota", "valor": "30 € (limpieza final)" },
-      { "label": "Combustible", "valor": "Se entrega y devuelve lleno" }
+      { "label": "Fianza (se devuelve)", "valor": "800 € por transferencia" },
+      { "label": "Kilometraje", "valor": "200 km/día · ilimitados +10 €/día" },
+      { "label": "Km adicional", "valor": "0,25 €/km" },
+      { "label": "Carnet", "valor": "B (vehículo de menos de 3.500 kg)" },
+      { "label": "Traslado aeropuerto", "valor": "20 € ida y vuelta" },
+      { "label": "Limpieza final (opcional)", "valor": "50 € — gratis si la devuelves limpia" },
+      { "label": "Combustible", "valor": "Se entrega y devuelve lleno" },
+      { "label": "Mascotas y fumar", "valor": "No se admiten" }
     ]
   },
   "disponibilidad": {
     "titulo": "¿Cuándo te vienes?",
     "texto": "Mira los días libres y elige tus fechas directamente en el calendario: te preparamos la consulta por WhatsApp con todo puesto.",
     "nota": "Calendario orientativo — te confirmamos la disponibilidad al momento por WhatsApp.",
-    "ocupado": [
-      "2026-08-29", "2026-08-30", "2026-08-31",
-      "2026-09-04", "2026-09-05", "2026-09-06",
-      "2026-09-18", "2026-09-19", "2026-09-20", "2026-09-21", "2026-09-22",
-      "2026-09-23", "2026-09-24", "2026-09-25", "2026-09-26", "2026-09-27"
-    ]
+    "ocupado": []
   },
   "pasos": [
-    { "titulo": "Elige tus fechas", "texto": "Escríbenos por WhatsApp o con el formulario y te confirmamos disponibilidad en el día." },
-    { "titulo": "Resérvala con una señal", "texto": "Un anticipo del 25 % bloquea tus fechas. El resto se paga el día de la recogida." },
-    { "titulo": "Recógela lista para salir", "texto": "Tutorial de 20 minutos, depósito lleno y camas hechas. También te la llevamos al aeropuerto." },
-    { "titulo": "Carretera y manta", "texto": "La isla es tuya. Y si surge cualquier cosa, tienes asistencia 24/7 y nuestro teléfono directo." }
+    { "titulo": "Elige tus fechas", "texto": "Escríbenos por WhatsApp o con el formulario y te confirmamos disponibilidad y precio en el día." },
+    { "titulo": "Resérvala con una señal", "texto": "Una señal por adelantado bloquea tus fechas; el resto se paga el día de la recogida." },
+    { "titulo": "Recógela lista para salir", "texto": "Tutorial de 20 minutos, depósito lleno y camas hechas. Estamos a 5 minutos del aeropuerto y podemos recogerte por 20 € ida y vuelta." },
+    { "titulo": "Carretera y manta", "texto": "La isla es tuya. Y si surge cualquier cosa, tienes asistencia en carretera 24/7 y nuestro teléfono directo." }
   ],
   "noche": {
     "eyebrow": "La experiencia",
@@ -146,9 +151,9 @@ window.SITE_CONTENT = {
     ]
   },
   "hermano": {
-    "eyebrow": "De la misma familia",
+    "eyebrow": "El origen de la marca",
     "titulo": "La Bellota Extremeña",
-    "texto": "Antes de rodar —o para celebrar la vuelta— pásate por nuestra casa madre: jamón ibérico, quesos, conservas y buen vino a un paso de Las Canteras. El mismo cariño de siempre, ahora también sobre ruedas.",
+    "texto": "Llevamos 11 años recibiendo personas en nuestra casa madre, a un paso de Las Canteras: jamón ibérico, quesos, conservas y buen vino. Ahora queremos que descubran Gran Canaria de otra manera, llevando al mundo camper la calidad y el buen hacer que ya nos caracterizan. Pásate antes de rodar — o para celebrar la vuelta.",
     "direccion": "C. Luis Morote, 45 · 35007 Las Palmas de Gran Canaria",
     "telefono": "928 96 45 06",
     "enlaces": [
@@ -177,24 +182,20 @@ window.SITE_CONTENT = {
   },
   "resenas": {
     "titulo": "Los que ya la han probado",
-    "aviso": "Reseñas de ejemplo — pronto estarán aquí las de los primeros viajeros.",
+    "aviso": "La camper es nueva de 2026 y las primeras reseñas están en camino. Mientras tanto, puedes ver la ficha verificada de Nahum en Yescapa.",
     "formTitulo": "¿Ya has viajado con La Bellota?",
     "formTexto": "Cuéntanos cómo fue: tu opinión ayuda a los siguientes viajeros. Nos llega por WhatsApp y la publicamos aquí en cuanto la leemos.",
-    "lista": [
-      { "nombre": "Laura y Marcos", "viaje": "7 noches · septiembre", "estrellas": 5, "texto": "Nunca habíamos viajado en camper y nos lo pusieron facilísimo. La explicación al recogerla, el mapa con los rincones… Repetimos seguro." },
-      { "nombre": "Andrea", "viaje": "Escapada de 4 noches", "estrellas": 5, "texto": "Despertar en la cumbre por encima de las nubes y bajar a bañarte a Güi Güi el mismo día. La Bellota se mete por todas partes y no le falta detalle." },
-      { "nombre": "Familia Guedes", "viaje": "10 noches · con perra", "estrellas": 5, "texto": "Fuimos con la niña y la perra y sobró espacio. Todo impecable y Nahum pendiente de nosotros durante todo el viaje." }
-    ]
+    "lista": []
   },
   "faq": [
-    { "p": "¿Qué carnet necesito y qué edad mínima piden?", "r": "Con el carnet B de toda la vida es suficiente: La Bellota pesa menos de 3.500 kg y se conduce como una furgoneta normal. Pedimos 25 años cumplidos y al menos 2 años de carnet." },
-    { "p": "¿Hay fianza? ¿Cuánto es?", "r": "Sí, una fianza de 600 € que se retiene en tarjeta el día de la recogida y se libera a la devolución, tras una revisión rápida juntos. El seguro a todo riesgo con franquicia va incluido en el precio." },
-    { "p": "¿Dónde puedo pasar la noche con la camper?", "r": "En Gran Canaria puedes pernoctar donde esté permitido estacionar, siempre que no despliegues campamento (mesa, toldo, sillas…) fuera de zonas autorizadas. En la sección «Áreas para acampar y pernoctar» de esta web tienes nuestra selección — zonas gratuitas del Cabildo y campings — y con la camper te entregamos el mapa completo. Repasamos la normativa en el tutorial de bienvenida." },
-    { "p": "¿Puedo llevar a mi mascota?", "r": "¡Claro! Viaja gratis; solo aplicamos 30 € de limpieza al final del alquiler. Incluimos kit con cuenco, correa larga y manta." },
-    { "p": "¿Los kilómetros son de verdad ilimitados?", "r": "Sí, dentro de la isla no hay límite de kilómetros. El combustible corre de tu cuenta: la camper se entrega llena y se devuelve llena." },
-    { "p": "¿Podéis entregarla en el aeropuerto?", "r": "Sí. La recogida y devolución estándar es en nuestra base de Las Palmas, y por 40 € por trayecto te la llevamos o recogemos en el aeropuerto de Gran Canaria, coordinados con tu vuelo." },
+    { "p": "¿Qué carnet necesito?", "r": "El carnet B de toda la vida: La Bellota pesa menos de 3.500 kg y se conduce como una furgoneta normal. Al reservar dinos tu edad y años de carnet y te confirmamos los requisitos del seguro." },
+    { "p": "¿Hay fianza? ¿Cuánto es?", "r": "Sí, una fianza de 800 € por transferencia bancaria antes de la recogida. Se devuelve tras una revisión rápida juntos a la entrega de la camper." },
+    { "p": "¿Cuántos kilómetros incluye?", "r": "200 km por día de alquiler, de sobra para recorrer la isla. Si quieres rodar sin mirar el cuentakilómetros, amplía a kilómetros ilimitados por 10 €/día; cada km extra fuera del paquete son 0,25 €." },
+    { "p": "¿Dónde puedo pasar la noche con la camper?", "r": "En Gran Canaria puedes pernoctar donde esté permitido estacionar, siempre que no despliegues campamento (mesa, toldo, sillas…) fuera de zonas autorizadas. En la sección «Áreas para acampar y pernoctar» tienes nuestra selección — zonas gratuitas del Cabildo y campings — y con la camper te entregamos el mapa completo. Repasamos la normativa en el tutorial de bienvenida." },
+    { "p": "¿Puedo llevar a mi mascota? ¿Se puede fumar?", "r": "Lo sentimos: no se admiten mascotas ni fumar a bordo. Así mantenemos la camper impecable y sin alergias para todos los viajeros." },
+    { "p": "¿Podéis recogerme en el aeropuerto?", "r": "Sí, y nos pilla al lado: la base está en Ojos de Garza, a 5 minutos del aeropuerto de Gran Canaria. El traslado (ida y vuelta) cuesta 20 € por reserva y lo coordinamos con tu vuelo." },
     { "p": "¿Y si tengo un problema durante el viaje?", "r": "La Bellota tiene asistencia en carretera 24/7 y, además, nuestro teléfono directo. Somos un negocio pequeño: te responde una persona, no una centralita." },
-    { "p": "¿Qué necesito llevar?", "r": "Poca cosa: tu ropa y ganas de isla. La camper sale con ropa de cama, toallas, menaje completo, sillas, mesa y hasta cafetera. Si echas algo en falta, dínoslo y lo intentamos conseguir." }
+    { "p": "¿Qué necesito llevar?", "r": "Poca cosa: tu ropa y ganas de isla. La camper sale con ropa de cama, toallas, menaje completo, cafetera y un pequeño welcome pack. Si echas algo en falta, dínoslo y lo intentamos conseguir." }
   ],
   "contacto": {
     "titulo": "¿Hablamos? Te respondemos en el día",
