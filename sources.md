@@ -45,8 +45,9 @@ Fecha de consulta de todas las fuentes: **29/08/2026**.
 | cruz-tejeda.jpg | Cruz de Tejeda | [File:Cruz de Tejeda 2010.jpg](https://commons.wikimedia.org/wiki/File:Cruz_de_Tejeda_2010.jpg) | Felix König | CC BY 3.0 |
 | pozos-nieve.jpg | Mirador de los Pozos de la Nieve | [File:Pico de las Nieves, Gran Canaria.jpg](https://commons.wikimedia.org/wiki/File:Pico_de_las_Nieves,_Gran_Canaria.jpg) | Gerda Arendt | CC BY-SA 4.0 |
 
-**Atribución**: cada imagen muestra en la web el crédito "Foto: autor · licencia" enlazando a su página
-de Commons (cumple CC BY / CC BY-SA). Las imágenes solo se han redimensionado y recomprimido.
+**Atribución**: la landing incluye al pie un bloque plegable «Créditos fotográficos» con autor,
+licencia y enlace a la página de Commons de cada imagen (cumple CC BY / CC BY-SA de forma razonable
+sin sobrecargar las fotos). Las imágenes solo se han redimensionado y recomprimido.
 
 ## Sin fotografía (pendiente de intervención humana)
 

@@ -112,14 +112,6 @@
     '<div class="step reveal"><div><h3>' + esc(p.titulo) + "</h3><p>" + esc(p.texto) + "</p></div></div>"
   ).join("");
 
-  /* ---------- Rutas ---------- */
-  $("rutasLista").innerHTML = (get("rutas.lista") || []).map((r) =>
-    '<article class="ruta reveal">' +
-      '<div class="ruta__img"><img src="' + esc(r.foto) + '" alt="' + esc(r.titulo) + '" loading="lazy"></div>' +
-      '<div class="ruta__body"><div class="ruta__meta"><span>' + esc(r.dias) + "</span><span>·</span><span>" + esc(r.zona) + "</span></div>" +
-      "<h3>" + esc(r.titulo) + "</h3><p>" + esc(r.texto) + "</p></div></article>"
-  ).join("");
-
   /* ---------- Reseñas ---------- */
   const star = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .5-5.4 4.8L18.5 22 12 17.7 5.5 22l1.9-7.7L2 9.5 9 9z"/></svg>';
   $("reviews").innerHTML = (get("resenas.lista") || []).map((r) => {

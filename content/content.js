@@ -122,34 +122,6 @@ window.SITE_CONTENT = {
     "cita": "“La felicidad es pequeña: cabe en una bellota.”",
     "foto": "content/img/noche-vialactea.jpg"
   },
-  "rutas": {
-    "eyebrow": "Ideas para empezar",
-    "titulo": "Tres rutas que enamoran",
-    "texto": "En menos de una hora pasas de las dunas al pinar de cumbre. Estas son nuestras favoritas para un primer viaje — y con la camper te llevas el mapa con todos nuestros rincones.",
-    "lista": [
-      {
-        "titulo": "Acantilados del poniente",
-        "zona": "Costa oeste",
-        "dias": "2 días",
-        "texto": "De Puerto de Mogán a Agaete por la GC-200: piscinas naturales, atardeceres de escándalo y el mejor café de la isla en el Valle.",
-        "foto": "content/img/ruta-oeste.jpg"
-      },
-      {
-        "titulo": "Sobre el mar de nubes",
-        "zona": "Cumbre",
-        "dias": "1–2 días",
-        "texto": "Tejeda, Roque Nublo y el Pico de las Nieves. Amanecer por encima de las nubes con un café en la mano: eso no se olvida.",
-        "foto": "content/img/ruta-nublo.jpg"
-      },
-      {
-        "titulo": "Dunas y sur salvaje",
-        "zona": "Sur",
-        "dias": "2 días",
-        "texto": "Maspalomas al amanecer, los barrancos de Fataga y una noche en el faro. El desierto y el mar en el mismo día.",
-        "foto": "content/img/ruta-dunas.jpg"
-      }
-    ]
-  },
   "explora": {
     "titulo": "Gran Canaria para recordar",
     "texto": "Miradores, pueblos, dunas y piscinas naturales: los rincones que hacen grande un viaje pequeño. Hemos preparado la guía completa, contada para quien viaja en camper.",

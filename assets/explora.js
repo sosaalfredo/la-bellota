@@ -14,8 +14,6 @@
   /* ---------- Hero ---------- */
   const H = D.hero || {};
   if (H.foto) { const hi = $("xheroImg"); hi.src = IMGBASE + H.foto; }
-  const hc = $("xheroCredit");
-  if (hc && H.credito) hc.innerHTML = 'Foto: <a href="' + esc(H.credito.url) + '" target="_blank" rel="noopener">' + esc(H.credito.autor) + " · " + esc(H.credito.lic) + "</a>";
 
   /* ---------- Categorías ---------- */
   $("xcats").innerHTML = (D.categorias || []).map((c) => {
@@ -27,17 +25,8 @@
   /* ---------- Fichas ---------- */
   const LAYOUTS = ["", "lugar--invertido", "lugar--panorama", "lugar--editorial"];
   const media = (l) => {
-    if (!l.foto) {
-      return '<div class="lugar__media"><div class="lugar__media--ph">' +
-        '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 17 Q10 8 24 8 Q38 8 38 17 L38 20 L10 20 Z" fill="#E8A03C"/><path d="M12 20 L36 20 Q36 34 24 42 Q12 34 12 20 Z" fill="#F2EDE0"/></svg>' +
-        "<span>" + esc(l.temporada || "Foto en camino") + "</span>" +
-        (l.fotoNota ? "<small>" + esc(l.fotoNota) + "</small>" : "") +
-      "</div></div>";
-    }
-    const cred = l.credito
-      ? '<span class="lugar__credit"><a href="' + esc(l.credito.url) + '" target="_blank" rel="noopener">Foto: ' + esc(l.credito.autor) + " · " + esc(l.credito.lic) + "</a></span>"
-      : "";
-    return '<figure class="lugar__media"><img src="' + IMGBASE + esc(l.foto) + '" alt="' + esc(l.fotoAlt || l.nombre) + '" loading="lazy" decoding="async">' + cred + "</figure>";
+    if (!l.foto) return "";
+    return '<figure class="lugar__media"><img src="' + IMGBASE + esc(l.foto) + '" alt="' + esc(l.fotoAlt || l.nombre) + '" loading="lazy" decoding="async"></figure>';
   };
   const facts = (l) => {
     const f = [];
@@ -55,7 +44,7 @@
 
   let html = "";
   LUGARES.forEach((l, i) => {
-    const layout = LAYOUTS[i % LAYOUTS.length];
+    const layout = l.foto ? LAYOUTS[i % LAYOUTS.length] : "lugar--nota";
     const num = String(i + 1).padStart(2, "0");
     html +=
       '<article class="lugar ' + layout + ' reveal" id="' + esc(l.slug) + '">' +
@@ -96,67 +85,18 @@
     ["waFloat", "waFooter"].forEach((id) => { const el = $(id); if (el) el.href = waUrl; });
   }
 
-  /* ---------- Mapa ---------- */
-  const proj = (lat, lng) => ({ x: Math.round(20 + (lng + 15.87) * 1000), y: Math.round(20 + (28.20 - lat) * 1000) });
-  const svg = $("mapaSvg");
-  const NS = "http://www.w3.org/2000/svg";
-  let selected = null;
-  const card = {
-    img: $("mapaImg"), nom: $("mapaNombre"), muni: $("mapaMuni"),
-    desc: $("mapaDesc"), link: $("mapaLink"), wrap: $("mapaCard")
-  };
-  const pintaCard = (l) => {
-    if (l.foto) { card.img.src = IMGBASE + l.foto; card.img.alt = l.fotoAlt || l.nombre; card.img.hidden = false; }
-    else card.img.hidden = true;
-    card.nom.textContent = l.nombre;
-    card.muni.textContent = l.municipio;
-    card.desc.textContent = (l.descripcion || "").split(". ").slice(0, 1).join(". ") + ".";
-    card.link.href = "#" + l.slug;
-  };
-  LUGARES.forEach((l, i) => {
-    const p = proj(l.lat, l.lng);
-    const g = document.createElementNS(NS, "g");
-    g.setAttribute("class", "marker");
-    g.setAttribute("tabindex", "0");
-    g.setAttribute("role", "button");
-    g.setAttribute("aria-label", l.nombre + " (" + l.municipio + ")");
-    const c = document.createElementNS(NS, "circle");
-    c.setAttribute("cx", p.x); c.setAttribute("cy", p.y); c.setAttribute("r", "10");
-    const t = document.createElementNS(NS, "text");
-    t.setAttribute("x", p.x); t.setAttribute("y", p.y + 4);
-    t.setAttribute("text-anchor", "middle");
-    t.setAttribute("style", "font:700 10.5px var(--font-body);fill:var(--on-miel);stroke:none;paint-order:normal");
-    t.textContent = i + 1;
-    g.appendChild(c); g.appendChild(t);
-    const pick = () => {
-      if (selected) selected.classList.remove("on");
-      selected = g; g.classList.add("on");
-      pintaCard(l);
-    };
-    g.addEventListener("click", pick);
-    g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
-    svg.appendChild(g);
-  });
-  /* Base de La Bellota (Ojos de Garza) */
-  (function base() {
-    const g = document.createElementNS(NS, "g");
-    g.setAttribute("class", "marker base");
-    const c = document.createElementNS(NS, "circle");
-    c.setAttribute("cx", 487); c.setAttribute("cy", 292); c.setAttribute("r", "11");
-    const t = document.createElementNS(NS, "text");
-    t.setAttribute("x", 487); t.setAttribute("y", 297);
-    t.setAttribute("text-anchor", "middle");
-    t.setAttribute("style", "font:700 11px var(--font-body);stroke:none");
-    t.textContent = "🚐";
-    const lbl = document.createElementNS(NS, "text");
-    lbl.setAttribute("x", 474); lbl.setAttribute("y", 296);
-    lbl.setAttribute("text-anchor", "end");
-    lbl.textContent = "Base La Bellota";
-    g.appendChild(c); g.appendChild(t); g.appendChild(lbl);
-    g.addEventListener("click", () => { location.href = "../index.html#contacto"; });
-    svg.appendChild(g);
+  /* ---------- Créditos fotográficos (atribución CC, plegado) ---------- */
+  (function creditos() {
+    const ul = $("xcreditosLista");
+    if (!ul) return;
+    const items = [];
+    if (H.credito) items.push({ nombre: "Portada (Caldera de Tejeda)", c: H.credito });
+    LUGARES.forEach((l) => { if (l.foto && l.credito) items.push({ nombre: l.nombre, c: l.credito }); });
+    ul.innerHTML = items.map((it) =>
+      "<li>" + esc(it.nombre) + ': <a href="' + esc(it.c.url) + '" target="_blank" rel="noopener">' +
+      esc(it.c.autor) + "</a> · " + esc(it.c.lic) + "</li>"
+    ).join("");
   })();
-  if (LUGARES.length) pintaCard(LUGARES[0]);
 
   /* ---------- FAQ ---------- */
   $("xfaq").innerHTML = (D.faq || []).map((f) =>
