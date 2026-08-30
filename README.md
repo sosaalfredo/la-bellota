@@ -61,10 +61,14 @@ descuentos −10 %), fianza 800 €, 200 km/día, aeropuerto 20 € i/v, sin mas
 
 ## Pendiente
 
-- **Teléfono/WhatsApp y email**: los de Alfredo (temporal) — cambiar a los de Nahum
-  y crear buzón `reservas@labellotacampers.com` en Hostalia.
-- **Legales**: quedan huecos amarillos (NIF, dirección, señal, franquicia del seguro,
-  tramos de cancelación) — completar con Nahum y revisión profesional.
+- **Teléfono/WhatsApp** (609 56 83 15) y **lugar de entrega** (Estetic Park, Ojos de Garza):
+  datos reales de Nahum, pero avisó de que sacará un número nuevo y busca base más
+  cercana a la capital — cambiar en `content.js`/legales cuando lo haga.
+- **Email**: labellotaextremena@gmail.com — sustituir por `reservas@labellotacampers.com`
+  cuando se cree el buzón en Hostalia (1 buzón de 2 GB incluido, sin usar).
+- **Legales**: quedan huecos amarillos (señal, franquicia del seguro, exclusiones de póliza,
+  cargos por retraso/gestión de multas, tramos de cancelación, edad mínima del conductor)
+  — completar con Nahum y revisión profesional.
 - **Reseñas**: la camper es nueva; la web enlaza a la ficha de Yescapa mientras llegan.
 - **DNS**: crear en Hostalia `A @ → 216.198.79.1` y `CNAME www → 18d97c7a40c02a4e.vercel-dns-017.com`.
 

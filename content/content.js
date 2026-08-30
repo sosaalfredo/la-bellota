@@ -7,18 +7,18 @@
    ========================================================= */
 window.SITE_CONTENT = {
   "meta": {
-    "version": 3,
-    "actualizado": "2026-08-29"
+    "version": 4,
+    "actualizado": "2026-08-30"
   },
   "negocio": {
     "nombre": "La Bellota Campers",
     "claim": "Alquiler de furgoneta camper en Gran Canaria",
-    "telefono": "+34 636 87 94 02",
-    "whatsapp": "34636879402",
-    "email": "sosa.alfredo@gmail.com",
+    "telefono": "+34 609 56 83 15",
+    "whatsapp": "34609568315",
+    "email": "labellotaextremena@gmail.com",
     "instagram": "labellotacampers",
     "base": "Ojos de Garza (Telde) · a 5 min del aeropuerto",
-    "horario": "Todos los días · 9:00 – 20:00"
+    "horario": "Teléfono: 9:00–20:00 · Entregas: 8:00–11:00 y 16:30–18:30"
   },
   "hero": {
     "eyebrow": "Alquiler de camper · Gran Canaria",
@@ -98,6 +98,7 @@ window.SITE_CONTENT = {
       { "label": "Km adicional", "valor": "0,25 €/km" },
       { "label": "Carnet", "valor": "B (vehículo de menos de 3.500 kg)" },
       { "label": "Traslado aeropuerto", "valor": "20 € ida y vuelta" },
+      { "label": "Entrega y devolución", "valor": "8:00–11:00 · 16:30–18:30" },
       { "label": "Limpieza final (opcional)", "valor": "50 € — gratis si la devuelves limpia" },
       { "label": "Combustible", "valor": "Se entrega y devuelve lleno" },
       { "label": "Mascotas y fumar", "valor": "No se admiten" }
@@ -181,7 +182,7 @@ window.SITE_CONTENT = {
     { "p": "¿Dónde puedo pasar la noche con la camper?", "r": "En Gran Canaria puedes pernoctar donde esté permitido estacionar, siempre que no despliegues campamento (mesa, toldo, sillas…) fuera de zonas autorizadas. En la sección «Áreas para acampar y pernoctar» tienes nuestra selección — zonas gratuitas del Cabildo y campings — y con la camper te entregamos el mapa completo. Repasamos la normativa en el tutorial de bienvenida." },
     { "p": "¿Puedo llevar a mi mascota? ¿Se puede fumar?", "r": "Lo sentimos: no se admiten mascotas ni fumar a bordo. Así mantenemos la camper impecable y sin alergias para todos los viajeros." },
     { "p": "¿Podéis recogerme en el aeropuerto?", "r": "Sí, y nos pilla al lado: la base está en Ojos de Garza, a 5 minutos del aeropuerto de Gran Canaria. El traslado (ida y vuelta) cuesta 20 € por reserva y lo coordinamos con tu vuelo." },
-    { "p": "¿Y si tengo un problema durante el viaje?", "r": "La Bellota tiene asistencia en carretera 24/7 y, además, nuestro teléfono directo. Somos un negocio pequeño: te responde una persona, no una centralita." },
+    { "p": "¿Y si tengo un problema durante el viaje?", "r": "La Bellota tiene asistencia en carretera 24/7 y, además, nuestra línea de urgencias 24 horas para vehículos alquilados. Somos un negocio pequeño: te responde una persona, no una centralita." },
     { "p": "¿Qué necesito llevar?", "r": "Poca cosa: tu ropa y ganas de isla. La camper sale con ropa de cama, toallas, menaje completo, cafetera y un pequeño welcome pack. Si echas algo en falta, dínoslo y lo intentamos conseguir." }
   ],
   "contacto": {
