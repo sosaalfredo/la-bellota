@@ -28,6 +28,12 @@ reseñas…) vive en `content/content.js` y la página se rellena al cargar.
 
 ## Panel de administración (`/admin`)
 
+- **Login**: el panel está protegido con usuario y contraseña (HTTP Basic Auth) mediante
+  Vercel Edge Middleware ([middleware.js](middleware.js)). Las credenciales se definen en
+  las variables de entorno `ADMIN_USER` y `ADMIN_PASS` del proyecto en Vercel (nunca en el
+  repo); sin ellas el panel responde 503 (cerrado). En el espejo de GitHub Pages el panel
+  redirige al dominio, donde sí hay login.
+
 - **Editar**: cada sección de la web tiene su formulario. Los cambios se guardan como
   **borrador** en el navegador (localStorage), no tocan la web publicada.
 - **Vista previa**: abre `index.html?preview=1`, que pinta el borrador con una barra
