@@ -117,6 +117,15 @@ button{font:inherit}
 .brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;font-family:var(--font-display);font-weight:800;font-size:1.3rem;letter-spacing:-.01em}
 .brand svg{width:36px;height:36px;flex:none}
 .brand b{color:var(--miel)}
+/* Logomark: emblema real de La Bellota Campers como máscara tintable —
+   toma el color del texto (tinta en cabecera, crema en footer) y se adapta
+   solo al modo oscuro. Un único asset monocromo. */
+.logomark{
+  display:inline-block;flex:none;background:currentColor;
+  -webkit-mask:url("../content/img/marca/logo-campers-mask.png") center/contain no-repeat;
+  mask:url("../content/img/marca/logo-campers-mask.png") center/contain no-repeat;
+}
+.brand .logomark{width:46px;height:50px}
 .nav{margin-left:auto}
 .nav ul{display:flex;gap:1.5rem;list-style:none;align-items:center}
 .nav a{text-decoration:none;font-weight:600;font-size:.95rem;color:var(--muted);transition:color .15s}
@@ -221,6 +230,7 @@ h2{
 .intro__text p strong{color:var(--ink)}
 .intro__firma{display:flex;align-items:center;gap:.9rem;margin-top:1.6rem}
 .intro__firma svg{width:44px;height:44px}
+.intro__firma .logomark{width:54px;height:59px}
 .intro__firma b{display:block;font-family:var(--font-display)}
 .intro__firma span{font-size:.88rem;color:var(--muted)}
 @media (max-width:900px){.intro{grid-template-columns:1fr}}
@@ -415,6 +425,9 @@ h2{
 .hermano{background:var(--pino-deep);color:var(--on-pino)}
 .hermano__in{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(1.4rem,4vw,3rem);align-items:center;padding-block:clamp(2.4rem,6vw,3.6rem)}
 .hermano__icon svg{width:clamp(64px,8vw,92px);height:auto}
+/* Logo real de La Bellota Extremeña sobre tarjeta clara (conserva sus colores corporativos) */
+.hermano__logo{background:#FFFFFF;border-radius:24px;padding:clamp(.9rem,1.6vw,1.3rem);box-shadow:var(--shadow-m);width:clamp(150px,16vw,196px);flex:none;transform:rotate(-2deg)}
+.hermano__logo img{width:100%;height:auto;display:block}
 .hermano .kicker{color:#F7CF8E}
 .hermano h2{color:var(--on-pino);font-size:clamp(1.6rem,3.2vw,2.2rem);margin:.45rem 0 .55rem}
 .hermano p{color:color-mix(in srgb,var(--on-pino) 78%,transparent);font-size:1.02rem;max-width:38rem}
@@ -432,7 +445,7 @@ h2{
 .hermano__links a:hover{border-color:var(--miel);background:rgba(255,255,255,.14);color:var(--miel)}
 @media (max-width:860px){
   .hermano__in{grid-template-columns:1fr;text-align:left}
-  .hermano__icon{display:none}
+  .hermano__icon,.hermano__logo{display:none}
   .hermano__links{flex-direction:row;flex-wrap:wrap}
   .hermano__links a{flex:1;min-width:10rem}
 }
@@ -542,6 +555,7 @@ h2{
 .footer{background:var(--pino-deep);color:var(--on-pino);padding:3.2rem 0 2rem}
 .footer__in{display:flex;flex-wrap:wrap;gap:2.2rem;justify-content:space-between;align-items:flex-start}
 .footer .brand{color:var(--on-pino)}
+.footer .logomark{width:72px;height:79px}
 .footer p{font-size:.92rem;color:color-mix(in srgb,var(--on-pino) 68%,transparent);max-width:23rem;margin-top:.6rem}
 .footer nav ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
 .footer nav a{text-decoration:none;font-size:.95rem;color:color-mix(in srgb,var(--on-pino) 80%,transparent)}
