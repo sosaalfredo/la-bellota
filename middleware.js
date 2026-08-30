@@ -40,11 +40,17 @@ export default function middleware(request) {
     } catch (e) { /* cabecera malformada -> 401 */ }
   }
 
-  return new Response("Autenticación requerida", {
-    status: 401,
-    headers: {
-      "WWW-Authenticate": 'Basic realm="Panel La Bellota", charset="UTF-8"',
-      "content-type": "text/plain; charset=utf-8",
-    },
+  // Fricción anti fuerza-bruta: cada intento fallido espera ~1 s antes de
+  // responder. Sin estado y gratis en Edge; encarece el diccionario.
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(new Response("Autenticación requerida", {
+        status: 401,
+        headers: {
+          "WWW-Authenticate": 'Basic realm="Panel La Bellota", charset="UTF-8"',
+          "content-type": "text/plain; charset=utf-8",
+        },
+      }));
+    }, 1000);
   });
 }
