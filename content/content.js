@@ -156,7 +156,7 @@ window.SITE_CONTENT = {
       {
         "nombre": "Precio por noche",
         "meses": "Según fechas y duración",
-        "precio": -1
+        "precio": "desde 110 €"
       },
       {
         "nombre": "Reserva anticipada",

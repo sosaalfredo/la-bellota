@@ -261,7 +261,7 @@ const SECTIONS = [
   { id:"tarifas", nombre:"💶 Tarifas", desc:"Temporadas, precios y condiciones del alquiler.", cards:[
     { t:"Encabezado", f:[ ["tarifas.titulo","Título"], ["tarifas.nota","Nota bajo los precios","ta"] ]}
   ], lists:[
-    { path:"tarifas.temporadas", titulo:"Temporadas", labelItem:"Temporada", campos:[ ["nombre","Nombre"],["meses","Meses"],["precio","Precio €/noche","num"] ]},
+    { path:"tarifas.temporadas", titulo:"Temporadas", labelItem:"Temporada", campos:[ ["nombre","Nombre"],["meses","Meses"],["precio","Precio (número = €/noche, o texto libre: «desde 110 €», «−10 %»)"] ]},
     { path:"tarifas.condiciones", titulo:"Condiciones", labelItem:"Condición", campos:[ ["label","Concepto"],["valor","Valor"] ]}
   ]},
   { id:"disponibilidad", nombre:"📅 Disponibilidad", desc:"Marca los días OCUPADOS haciendo clic en el calendario (o por rango). Lo que publiques es lo que verá el cliente.", cards:[
