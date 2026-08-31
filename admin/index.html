@@ -188,6 +188,7 @@ code{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding
 
 const LS_DRAFT = "labellota_draft";
 const LS_GH    = "labellota_gh";
+const LS_BASE  = "labellota_base"; // instantánea de la web sobre la que nació el borrador
 const PUBLISHED = JSON.parse(JSON.stringify(window.SITE_CONTENT || {}));
 
 let DRAFT = loadDraft();
@@ -196,8 +197,13 @@ let dirty = false;
 function loadDraft(){
   try{
     const d = localStorage.getItem(LS_DRAFT);
-    if (d) return JSON.parse(d);
+    if (d){
+      // Borrador previo sin base registrada (versión antigua del panel): ancla la base ahora.
+      if (!localStorage.getItem(LS_BASE)) localStorage.setItem(LS_BASE, JSON.stringify(PUBLISHED));
+      return JSON.parse(d);
+    }
   }catch(e){}
+  localStorage.setItem(LS_BASE, JSON.stringify(PUBLISHED));
   return JSON.parse(JSON.stringify(PUBLISHED));
 }
 function saveDraft(){
@@ -553,6 +559,7 @@ $("btnPreview").addEventListener("click",()=>{
 $("btnReset").addEventListener("click",()=>{
   if (!confirm("¿Descartar el borrador y volver al contenido publicado?")) return;
   localStorage.removeItem(LS_DRAFT);
+  localStorage.setItem(LS_BASE, JSON.stringify(PUBLISHED));
   DRAFT = JSON.parse(JSON.stringify(PUBLISHED));
   dirty=false; renderSection(); paintStatus(); toast("Borrador descartado","ok");
 });
@@ -621,6 +628,28 @@ const b64encode = (str)=>{
   return btoa(bin);
 };
 
+/* Guardián de versión: ¿ha cambiado la web publicada desde que nació este borrador?
+   Evita pisar sin querer cambios hechos por otra vía (otro navegador, la consola…).
+   Ante cualquier duda o error devuelve false para no bloquear la publicación. */
+async function remoteChangedSinceBase(){
+  try{
+    const base = localStorage.getItem(LS_BASE);
+    if (!base) return false;
+    const g = ghConfig();
+    if (!g.token) return false;
+    const api = `https://api.github.com/repos/${g.owner}/${g.repo}/contents/content/content.js?ref=${g.branch}`;
+    const r = await fetch(api,{headers:ghHeaders(g.token)});
+    if (!r.ok) return false;
+    const j = await r.json();
+    const bin = atob((j.content||"").replace(/\n/g,""));
+    const bytes = Uint8Array.from(bin, c=>c.charCodeAt(0));
+    const text = new TextDecoder().decode(bytes);
+    const m = text.match(/window\.SITE_CONTENT\s*=\s*([\s\S]*?);\s*$/);
+    if (!m) return false;
+    return JSON.stringify(JSON.parse(m[1])) !== JSON.stringify(JSON.parse(base));
+  }catch(e){ return false; }
+}
+
 async function ghPut(path, base64, message){
   const g = ghConfig();
   if (!g.token) throw new Error("Configura GitHub primero (menú ⚙️ Publicación).");
@@ -642,11 +671,22 @@ async function ghPut(path, base64, message){
 $("btnPublish").addEventListener("click", async ()=>{
   const b=$("btnPublish");
   if (!ghConfig().token){ currentSec="_github"; renderSection(); toast("Configura GitHub para poder publicar","err"); return; }
-  if (!confirm("¿Publicar los cambios en la web?")) return;
+  b.disabled=true; b.textContent="Comprobando…";
+  const cambiado = await remoteChangedSinceBase();
+  b.disabled=false; b.textContent="🚀 Publicar";
+  if (cambiado && !confirm(
+    "⚠️ ATENCIÓN: la web publicada ha CAMBIADO desde que empezaste este borrador\n" +
+    "(otra publicación del panel o un cambio desde la consola).\n\n" +
+    "Si publicas ahora, tu borrador SUSTITUIRÁ esos cambios y podrían perderse.\n\n" +
+    "Recomendado: Cancelar → «Descartar borrador» → rehacer tus cambios sobre lo último.\n\n" +
+    "¿Publicar de todos modos?")) return;
+  if (!cambiado && !confirm("¿Publicar los cambios en la web?")) return;
   b.disabled=true; b.textContent="Publicando…";
   try{
     await ghPut("content/content.js", b64encode(contentFileBody()), "content: actualización desde el panel");
-    localStorage.removeItem(LS_DRAFT); dirty=false; paintStatus();
+    localStorage.removeItem(LS_DRAFT);
+    localStorage.setItem(LS_BASE, JSON.stringify(DRAFT));
+    dirty=false; paintStatus();
     toast("✅ Publicado. La web pública se actualiza en 1–2 min.","ok");
   }catch(e){ toast("Error al publicar: "+e.message,"err"); }
   b.disabled=false; b.textContent="🚀 Publicar";
