@@ -11,8 +11,15 @@ administración propio para editar textos, precios, fotos y contenido sin tocar 
 
 ## Arquitectura
 
-Sitio 100 % estático (sin build, sin backend). Se sirve desde cualquier hosting estático
-(GitHub Pages, Vercel, Netlify…).
+Sitio estático con un único paso de build en Vercel: **prerender para SEO/GEO**.
+`scripts/prerender.mjs` ejecuta en build el mismo render que hace el navegador
+(jsdom + `content.js`) y escribe en `dist/` el HTML ya relleno — los bots de IA
+(GPTBot, ClaudeBot, PerplexityBot…) no ejecutan JavaScript y sin esto verían la web
+vacía. También genera `sitemap.xml`, `robots.txt`, `llms.txt` y el JSON-LD de la home,
+siempre en sincronía con `content.js`. El cliente sigue ejecutando los mismos scripts
+(repinta idéntico contenido), y si el render sale incompleto **el build falla** y
+Vercel conserva el deploy anterior. El espejo de GitHub Pages sirve la versión sin
+prerender (el canonical apunta al dominio).
 
 ```
 index.html            La web pública

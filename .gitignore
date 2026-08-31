@@ -7,3 +7,6 @@ Dominio_La_Bellota.jpeg
 .env
 .env.*
 node_modules/
+
+# Salida del prerender (se genera en cada build de Vercel)
+dist/
