@@ -10,8 +10,8 @@ window.SITE_CONTENT = {
   "negocio": {
     "nombre": "La Bellota Campers",
     "claim": "Alquiler de furgoneta camper en Gran Canaria",
-    "telefono": "+34 624 22 07 78",
-    "whatsapp": "34624220778",
+    "telefono": "+34 609 56 83 15",
+    "whatsapp": "34609568315",
     "email": "labellotaextremena@gmail.com",
     "instagram": "labellotacampers",
     "base": "Ojos de Garza (Telde) · a 5 min del aeropuerto",
