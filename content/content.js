@@ -5,13 +5,13 @@
 window.SITE_CONTENT = {
   "meta": {
     "version": 4,
-    "actualizado": "2026-08-30"
+    "actualizado": "2026-08-31"
   },
   "negocio": {
     "nombre": "La Bellota Campers",
     "claim": "Alquiler de furgoneta camper en Gran Canaria",
-    "telefono": "+34 609 56 83 15",
-    "whatsapp": "34609568315",
+    "telefono": "+34 624 22 07 78",
+    "whatsapp": "34624220778",
     "email": "labellotaextremena@gmail.com",
     "instagram": "labellotacampers",
     "base": "Ojos de Garza (Telde) · a 5 min del aeropuerto",
@@ -45,7 +45,7 @@ window.SITE_CONTENT = {
     {
       "icono": "avion",
       "titulo": "Junto al aeropuerto",
-      "texto": "Base en Ojos de Garza · traslado ida y vuelta por 20 €"
+      "texto": "Base en Ojos de Garza · traslado ida y vuelta por 40 €"
     },
     {
       "icono": "limpio",
@@ -109,12 +109,12 @@ window.SITE_CONTENT = {
       {
         "icono": "cama",
         "valor": "2 camas dobles",
-        "detalle": "150×190 transversal + 135×190 litera"
+        "detalle": "150×190 transversal + 135×180 litera"
       },
       {
         "icono": "medidas",
         "valor": "6,0 × 2,05 m",
-        "detalle": "2,8 m de alto · aparca como una furgo"
+        "detalle": "2,82 m de alto · aparca como una furgo"
       },
       {
         "icono": "motor",
@@ -133,16 +133,17 @@ window.SITE_CONTENT = {
       }
     ],
     "equipamiento": [
-      "Cocina de gas con fregadero y menaje para 4",
-      "Nevera con congelador (12 V)",
-      "Baño con ducha interior, WC y lavabo",
+      "Cocina de gas de 2 fuegos con fregadero y menaje para 4",
+      "Nevera con congelador de 50 litros (12 V)",
+      "Baño con lavamanos, WC portátil y ducha extensible",
       "Ducha exterior para después de la playa",
       "Calefacción y aire acondicionado en el habitáculo",
       "Aire acondicionado también en cabina",
       "Asientos de cabina giratorios",
       "Cámara de marcha atrás, GPS y Bluetooth",
       "Placas solares, batería auxiliar y enchufes USB / 12 V / 220 V",
-      "Toldo lateral, mesa y sillas de exterior",
+      "Iluminación LED en todo el habitáculo",
+      "Toldo lateral, mesas y sillas de exterior",
       "Bodega-maletero para el equipaje",
       "Ropa de cama, toallas y welcome pack",
       "Cafetera",
@@ -151,28 +152,36 @@ window.SITE_CONTENT = {
   },
   "tarifas": {
     "titulo": "Tarifas claras, sin sorpresas",
-    "nota": "Incluye asistencia en carretera 24/7, 200 km al día, menaje completo y ropa de cama y baño. Estancia mínima 3 noches. El precio exacto depende de fechas y duración: te lo confirmamos al momento por WhatsApp.",
+    "nota": "Incluye asistencia en carretera 24/7, 200 km al día, menaje completo y ropa de cama y baño. Estancia mínima 3 noches (4 en temporada alta). El precio exacto depende de fechas y duración: te lo confirmamos al momento por WhatsApp.",
     "temporadas": [
       {
-        "nombre": "Precio por noche",
-        "meses": "Según fechas y duración",
-        "precio": "desde 110 €"
+        "nombre": "Temporada baja",
+        "meses": "Abril, mayo y junio (excepto Semana Santa)",
+        "precio": "110 €/noche · mín. 3 noches"
       },
       {
-        "nombre": "Reserva anticipada",
-        "meses": "Reservando con 5+ meses",
-        "precio": "−10 %"
+        "nombre": "Temporada media",
+        "meses": "Octubre, noviembre, diciembre, enero, febrero y marzo (excepto Navidades)",
+        "precio": "120 €/noche · mín. 3 noches"
       },
       {
-        "nombre": "Larga duración",
-        "meses": "Viajes de 7 noches o más",
-        "precio": "−10 %"
+        "nombre": "Temporada alta",
+        "meses": "Junio, julio, agosto y septiembre",
+        "precio": "Consultar · mín. 4 noches"
       }
     ],
     "condiciones": [
       {
-        "label": "Fianza (se devuelve)",
-        "valor": "800 € por transferencia"
+        "label": "Señal de reserva",
+        "valor": "25 % por transferencia"
+      },
+      {
+        "label": "Fianza (se devuelve íntegra)",
+        "valor": "800 € por transferencia, 7 días antes"
+      },
+      {
+        "label": "Formas de pago",
+        "valor": "Transferencia y tarjeta"
       },
       {
         "label": "Kilometraje",
@@ -183,12 +192,16 @@ window.SITE_CONTENT = {
         "valor": "0,25 €/km"
       },
       {
-        "label": "Carnet",
-        "valor": "B (vehículo de menos de 3.500 kg)"
+        "label": "Conductor",
+        "valor": "Carnet B · mín. 25 años y 2 años de carnet"
+      },
+      {
+        "label": "Seguro",
+        "valor": "Todo riesgo (Generali) · franquicia 800 €"
       },
       {
         "label": "Traslado aeropuerto",
-        "valor": "20 € ida y vuelta"
+        "valor": "40 € ida y vuelta"
       },
       {
         "label": "Entrega y devolución",
@@ -203,6 +216,10 @@ window.SITE_CONTENT = {
         "valor": "Se entrega y devuelve lleno"
       },
       {
+        "label": "Gestión de multas",
+        "valor": "50 € por sanción"
+      },
+      {
         "label": "Mascotas y fumar",
         "valor": "No se admiten"
       }
@@ -213,10 +230,10 @@ window.SITE_CONTENT = {
     "texto": "Mira los días libres y elige tus fechas directamente en el calendario: te preparamos la consulta por WhatsApp con todo puesto.",
     "nota": "Calendario orientativo — te confirmamos la disponibilidad al momento por WhatsApp.",
     "ocupado": [
+      "2026-09-05",
+      "2026-09-06",
       "2026-09-07",
       "2026-09-08",
-      "2026-09-09",
-      "2026-09-10",
       "2026-09-11",
       "2026-09-12",
       "2026-09-13"
@@ -229,11 +246,11 @@ window.SITE_CONTENT = {
     },
     {
       "titulo": "Resérvala con una señal",
-      "texto": "Una señal por adelantado bloquea tus fechas; el resto se paga el día de la recogida."
+      "texto": "Una señal del 25 % por transferencia bloquea tus fechas; el resto se paga por transferencia o tarjeta antes de la recogida."
     },
     {
       "titulo": "Recógela lista para salir",
-      "texto": "Tutorial de 20 minutos, depósito lleno y camas hechas. Estamos a 5 minutos del aeropuerto y podemos recogerte por 20 € ida y vuelta."
+      "texto": "Tutorial de 20 minutos, depósito lleno y camas hechas. Estamos a 5 minutos del aeropuerto y podemos recogerte por 40 € ida y vuelta."
     },
     {
       "titulo": "Carretera y manta",
@@ -398,11 +415,15 @@ window.SITE_CONTENT = {
   "faq": [
     {
       "p": "¿Qué carnet necesito?",
-      "r": "El carnet B de toda la vida: La Bellota pesa menos de 3.500 kg y se conduce como una furgoneta normal. Al reservar dinos tu edad y años de carnet y te confirmamos los requisitos del seguro."
+      "r": "El carnet B de toda la vida: La Bellota pesa menos de 3.500 kg y se conduce como una furgoneta normal. Eso sí, el seguro exige tener al menos 25 años y 2 años de antigüedad de carnet."
+    },
+    {
+      "p": "¿Cómo reservo y cómo se paga?",
+      "r": "Tus fechas quedan bloqueadas con una señal del 25 % por transferencia. El resto puedes pagarlo por transferencia o con tarjeta. Y si cancelas con 30 días o más, te devolvemos la señal íntegra."
     },
     {
       "p": "¿Hay fianza? ¿Cuánto es?",
-      "r": "Sí, una fianza de 800 € por transferencia bancaria antes de la recogida. Se devuelve tras una revisión rápida juntos a la entrega de la camper."
+      "r": "Sí, una fianza de 800 € por transferencia bancaria, al menos 7 días antes de la recogida. Se devuelve íntegramente tras la revisión rápida que hacemos juntos al entregar la camper."
     },
     {
       "p": "¿Cuántos kilómetros incluye?",
@@ -418,7 +439,7 @@ window.SITE_CONTENT = {
     },
     {
       "p": "¿Podéis recogerme en el aeropuerto?",
-      "r": "Sí, y nos pilla al lado: la base está en Ojos de Garza, a 5 minutos del aeropuerto de Gran Canaria. El traslado (ida y vuelta) cuesta 20 € por reserva y lo coordinamos con tu vuelo."
+      "r": "Sí, y nos pilla al lado: la base está en Ojos de Garza, a 5 minutos del aeropuerto de Gran Canaria. El traslado (ida y vuelta) cuesta 40 € por reserva y lo coordinamos con tu vuelo."
     },
     {
       "p": "¿Y si tengo un problema durante el viaje?",

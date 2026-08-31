@@ -77,9 +77,11 @@ descuentos −10 %), fianza 800 €, 200 km/día, aeropuerto 20 € i/v, sin mas
 
 ## Pendiente
 
-- **Teléfono/WhatsApp** (609 56 83 15) y **lugar de entrega** (Estetic Park, Ojos de Garza):
-  datos reales de Nahum, pero avisó de que sacará un número nuevo y busca base más
-  cercana a la capital — cambiar en `content.js`/legales cuando lo haga.
+- **Lugar de entrega** (Estetic Park, Ojos de Garza): Nahum busca base más cercana a la
+  capital — cambiar en `content.js`/legales cuando la tenga. (El teléfono nuevo
+  624 22 07 78 ya está puesto — verificar que su WhatsApp está activo.)
+- **Precio de temporada alta**: Nahum no lo pasó (solo "mínimo 4 noches") — está como
+  "Consultar". Preguntar también si junio es baja o alta (lo puso en ambas).
 - **Email**: labellotaextremena@gmail.com — sustituir por `reservas@labellotacampers.com`
   cuando se cree el buzón en Hostalia (1 buzón de 2 GB incluido, sin usar).
 - **Legales**: quedan huecos amarillos (señal, franquicia del seguro, exclusiones de póliza,
