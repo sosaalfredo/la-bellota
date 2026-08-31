@@ -135,6 +135,20 @@ textarea{min-height:86px;resize:vertical}
 .pill.err{color:var(--err)}
 .warn{background:#3A2A18;border:1px solid #6E4E22;border-radius:11px;padding: .8rem .95rem;font-size:.85rem;color:#F4D9A8;margin-bottom:1rem}
 code{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:.1rem .4rem;font-size:.85em}
+/* --- Estadísticas --- */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-bottom:1.3rem}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:.9rem 1rem}
+.kpi b{display:block;font-family:var(--font-display);font-size:1.7rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi span{font-size:.78rem;color:var(--muted)}
+.stats table{width:100%;border-collapse:collapse;font-size:.88rem}
+.stats td{padding:.4rem .5rem;border-bottom:1px solid var(--line);position:relative}
+.stats td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;width:4.5rem}
+.stats tr:last-child td{border-bottom:none}
+.statbar{position:absolute;left:0;top:15%;bottom:15%;background:color-mix(in srgb,var(--miel) 22%,transparent);border-radius:5px;pointer-events:none}
+.statlbl{position:relative;overflow-wrap:anywhere}
+.dchart{display:flex;align-items:flex-end;gap:2px;height:120px}
+.dbar{flex:1;min-width:2px;background:var(--miel);opacity:.85;border-radius:3px 3px 0 0}
+.dbar:hover{opacity:1}
 </style>
 </head>
 <body>
@@ -155,6 +169,7 @@ code{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding
     <div>
       <div class="tag">Sistema</div>
       <nav class="menu">
+        <button data-sec="_stats">📊 Estadísticas</button>
         <button data-sec="_github">⚙️ Publicación (GitHub)</button>
         <button data-sec="_datos">💾 Copias y datos</button>
       </nav>
@@ -382,6 +397,8 @@ function renderSection(){
     html = githubHtml();
   } else if (currentSec==="_datos"){
     html = datosHtml();
+  } else if (currentSec==="_stats"){
+    html = statsHtml();
   }
   $("content").innerHTML = html;
   bindInputs();
@@ -423,6 +440,7 @@ function bindInputs(){
   document.querySelectorAll("[data-upload]").forEach(b=>b.addEventListener("click",()=>uploadImage(b.getAttribute("data-upload"))));
   if (currentSec==="_github") bindGithub();
   if (currentSec==="_datos") bindDatos();
+  if (currentSec==="_stats") bindStats();
   if (currentSec==="disponibilidad") bindAdmCal();
   if (currentSec==="resenas") bindBandeja();
 }
@@ -563,6 +581,114 @@ $("btnReset").addEventListener("click",()=>{
   DRAFT = JSON.parse(JSON.stringify(PUBLISHED));
   dirty=false; renderSection(); paintStatus(); toast("Borrador descartado","ok");
 });
+
+/* ---------------- Estadísticas ---------------- */
+let statsDias = 30;
+const EV_NOMBRES = {
+  whatsapp:"Clic en WhatsApp", telefono:"Clic en teléfono", email:"Clic en email",
+  form_fechas:"Consulta rápida de fechas", form_reserva:"Formulario de reserva", form_opinion:"Opinión enviada",
+  calendario:"Calendario (días tocados)", galeria:"Galería de fotos", explora:"Ir a Explora GC",
+  nav:"Navegación entre secciones", legal:"Páginas legales", externo:"Enlaces externos",
+  instagram:"Instagram", scroll:"Lectura de la página (scroll)", campana:"Llegadas de campaña (utm)",
+  opinion_estrellas:"Estrellas de opinión"
+};
+function statsHtml(){
+  return `<h1>📊 Estadísticas</h1>
+  <p class="sub">Medición propia, anónima y sin cookies. Las visitas desde navegadores con este panel configurado no cuentan. Las cifras de Vercel Analytics (países, orígenes…) se ven en vercel.com → proyecto → Analytics.</p>
+  <div style="display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap">
+    ${[7,30,90].map(d=>`<button class="btn${d===statsDias?" btn--miel":""}" data-statdias="${d}">Últimos ${d} días</button>`).join("")}
+    <span class="pill" id="statsEstado">Cargando…</span>
+  </div>
+  <div id="statsOut"></div>`;
+}
+function statsUrl(){
+  const base = location.pathname.replace(/\/(index\.html)?$/,"");
+  return base + "/api/stats?dias=" + statsDias;
+}
+function statsFila(nombre, n, max){
+  const pct = max ? Math.round(n/max*100) : 0;
+  return `<tr><td><span class="statbar" style="width:${pct}%"></span><span class="statlbl">${esc(nombre)}</span></td><td>${n}</td></tr>`;
+}
+function statsTabla(titulo, pares){
+  if (!pares.length) return "";
+  const max = pares[0][1];
+  return `<div class="card stats"><h3>${titulo}</h3><table><tbody>` +
+    pares.map(([k,v])=>statsFila(k,v,max)).join("") + `</tbody></table></div>`;
+}
+async function cargarStats(){
+  const pill=$("statsEstado"), out=$("statsOut");
+  try{
+    const r = await fetch(statsUrl(), {cache:"no-store"});
+    if (r.status===401) throw new Error("Sin autorización (recarga y vuelve a identificarte)");
+    if (!r.ok) throw new Error("HTTP "+r.status);
+    const j = await r.json();
+    if (!j.configurado){
+      pill.textContent="Almacén sin configurar"; pill.className="pill err";
+      out.innerHTML = `<div class="warn">📦 Falta el almacén de datos (gratuito). En <b>vercel.com → proyecto la-bellota → Storage → Create database → Upstash (Redis)</b>, plan gratuito, y conectarlo al proyecto (crea solo las variables <code>KV_REST_API_URL</code> y <code>KV_REST_API_TOKEN</code>). Tras el siguiente deploy, esta página empezará a registrar visitas y clics.</div>`;
+      return;
+    }
+    if (j.error) throw new Error(j.error);
+    render(j.dias);
+    pill.textContent="✓ Al día"; pill.className="pill ok";
+  }catch(e){
+    pill.textContent="✗ "+e.message; pill.className="pill err";
+    out.innerHTML = `<div class="warn">No se pudieron cargar las estadísticas. Solo funcionan en la web publicada (no en local). Detalle: ${esc(e.message)}</div>`;
+  }
+
+  function render(dias){
+    // Agregados sobre el rango
+    const tot = {pv:0, unicos:0, pag:{}, ref:{}, geo:{}, dev:{}, ev:{}, el:{}};
+    dias.forEach(d=>{
+      tot.unicos += d.unicos;
+      Object.entries(d.f).forEach(([k,v])=>{
+        const [tipo,...resto]=k.split("|"); const clave=resto.join("|");
+        if (tipo==="pv"){ tot.pv+=v; tot.pag[clave]=(tot.pag[clave]||0)+v; }
+        else if (tipo==="ref") tot.ref[clave]=(tot.ref[clave]||0)+v;
+        else if (tipo==="geo") tot.geo[clave]=(tot.geo[clave]||0)+v;
+        else if (tipo==="dev") tot.dev[clave]=(tot.dev[clave]||0)+v;
+        else if (tipo==="ev") tot.ev[clave]=(tot.ev[clave]||0)+v;
+        else if (tipo==="el") tot.el[clave]=(tot.el[clave]||0)+v;
+      });
+    });
+    const orden = o=>Object.entries(o).sort((a,b)=>b[1]-a[1]);
+    const kpi = (n,l)=>`<div class="kpi"><b>${n}</b><span>${l}</span></div>`;
+
+    // Gráfico diario (de más antiguo a hoy)
+    const serie=[...dias].reverse();
+    const maxPv=Math.max(1,...serie.map(d=>{
+      let s=0; Object.entries(d.f).forEach(([k,v])=>{ if(k.startsWith("pv|")) s+=v; }); d._pv=s; return s;
+    }));
+    const barras=serie.map(d=>`<div class="dbar" style="height:${Math.max(2,Math.round(d._pv/maxPv*100))}%" title="${d.fecha}: ${d._pv} visitas, ${d.unicos} únicos"></div>`).join("");
+
+    const evPares = orden(tot.ev).map(([k,v])=>[EV_NOMBRES[k]||k, v]);
+    const detalle = orden(tot.el).map(([k,v])=>{
+      const [n,...l]=k.split("|");
+      return `<tr><td><span class="statlbl">${esc((EV_NOMBRES[n]||n)+" · "+l.join("|"))}</span></td><td>${v}</td></tr>`;
+    }).join("");
+
+    out.innerHTML = `
+      <div class="kpis">
+        ${kpi(tot.pv,"páginas vistas")}
+        ${kpi(tot.unicos,"visitantes únicos (suma diaria)")}
+        ${kpi(tot.ev.whatsapp||0,"clics en WhatsApp")}
+        ${kpi((tot.ev.form_fechas||0)+(tot.ev.form_reserva||0),"consultas de reserva")}
+      </div>
+      <div class="card stats"><h3>Visitas por día</h3><div class="dchart">${barras}</div></div>
+      ${statsTabla("Qué páginas miran", orden(tot.pag))}
+      ${statsTabla("Qué hacen (interacciones)", evPares)}
+      ${detalle ? `<div class="card stats"><details><summary style="cursor:pointer;font-weight:700">Detalle de interacciones (dónde exactamente)</summary><table><tbody>${detalle}</tbody></table></details></div>` : ""}
+      ${statsTabla("De dónde llegan (referencias externas)", orden(tot.ref))}
+      ${statsTabla("Países", orden(tot.geo))}
+      ${statsTabla("Dispositivo", orden(tot.dev))}
+      <p class="sub" style="margin-top:.8rem">Los «visitantes únicos» son únicos <b>por día</b> (estimación anónima); si alguien vuelve otro día cuenta de nuevo.</p>`;
+  }
+}
+function bindStats(){
+  document.querySelectorAll("[data-statdias]").forEach(b=>b.addEventListener("click",()=>{
+    statsDias=+b.getAttribute("data-statdias"); renderSection();
+  }));
+  cargarStats();
+}
 
 /* ---------------- GitHub ---------------- */
 function ghConfig(){

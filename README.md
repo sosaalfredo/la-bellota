@@ -18,6 +18,9 @@ Sitio 100 % estático (sin build, sin backend). Se sirve desde cualquier hosting
 index.html            La web pública
 assets/styles.css     Estilos
 assets/main.js        Render (pinta el contenido) e interacciones
+assets/track.js       Medición de audiencia sin cookies (visitas + clics)
+api/e.js              Ingesta de métricas (Edge Function → Redis/Upstash)
+api/stats.js          Consulta de métricas para el panel (tras Basic Auth)
 content/content.js    ⭐ TODO el contenido editable (window.SITE_CONTENT)
 content/img/          Imágenes subidas desde el panel
 admin/index.html      Panel de administración
@@ -82,3 +85,19 @@ descuentos −10 %), fianza 800 €, 200 km/día, aeropuerto 20 € i/v, sin mas
 
 Sin backend: los formularios componen el mensaje y abren WhatsApp con el texto listo
 para que el cliente lo envíe.
+
+## Estadísticas de uso (sin cookies)
+
+Dos capas, ambas anónimas y servidas desde el propio dominio (la CSP no cambia):
+
+1. **Vercel Web Analytics** — visitas, páginas, orígenes, países y dispositivos.
+   Se activa una vez en vercel.com → proyecto → Analytics → Enable (plan gratuito:
+   50 000 eventos/mes, retención 1 mes). `track.js` inyecta su script solo en producción.
+2. **Registro propio** — `assets/track.js` envía beacons a `api/e.js` (Edge Function),
+   que acumula contadores diarios en Redis (Upstash gratuito vía Vercel Marketplace):
+   páginas vistas, únicos/día (HyperLogLog con hash diario irreversible, sin guardar IP),
+   clics en WhatsApp/teléfono/email, formularios, calendario, galería, Explora, scroll…
+   Se consulta en el panel **/admin → 📊 Estadísticas** (`api/stats.js`, tras el login).
+   Sin la base de datos configurada todo queda en no-op y la web no se ve afectada.
+   Los navegadores con el panel configurado (localStorage `labellota_gh`) no se cuentan;
+   `localStorage.setItem("labellota_notrack","1")` excluye cualquier otro navegador propio.

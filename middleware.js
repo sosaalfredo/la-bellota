@@ -1,10 +1,12 @@
 /* LA BELLOTA CAMPERS — protección del panel /admin (Vercel Edge Middleware)
-   Exige usuario y contraseña (HTTP Basic Auth sobre HTTPS) para todo /admin.
+   Exige usuario y contraseña (HTTP Basic Auth sobre HTTPS) para todo /admin
+   y para la API de estadísticas (/api/stats, también accesible como
+   /admin/api/stats vía rewrite para reutilizar las credenciales del panel).
    Las credenciales viven en variables de entorno del proyecto en Vercel
    (ADMIN_USER y ADMIN_PASS) — nunca en este repositorio, que es público.
    Si las variables no están configuradas, el panel queda CERRADO (503). */
 
-export const config = { matcher: ["/admin", "/admin/:path*"] };
+export const config = { matcher: ["/admin", "/admin/:path*", "/api/stats"] };
 
 // Comparación en tiempo constante para no filtrar información por timing.
 function safeEqual(a, b) {
