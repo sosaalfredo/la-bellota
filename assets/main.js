@@ -97,10 +97,17 @@
   /* ---------- Tarifas ---------- */
   const mesActual = ["", "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"][new Date().getMonth() + 1];
   const enTemporada = (t) => (t.meses || "").toLowerCase().includes(mesActual);
+  // Número → "110 €" + "por noche". Texto con "·" ("120 €/noche · mín. 3 noches") → precio grande + condición en pequeño.
+  const precioHTML = (p) => {
+    if (typeof p === "number") return esc(p) + " €<small>por noche</small>";
+    const s = String(p || ""), i = s.indexOf("·");
+    if (i === -1) return esc(s);
+    return esc(s.slice(0, i).trim()) + "<small>" + esc(s.slice(i + 1).trim()) + "</small>";
+  };
   $("temporadas").innerHTML = (get("tarifas.temporadas") || []).map((t) =>
     '<div class="temporada' + (enTemporada(t) ? " destacada" : "") + '">' +
       "<div><b>" + esc(t.nombre) + "</b><span>" + esc(t.meses) + "</span></div>" +
-      '<div class="precio">' + (typeof t.precio === "number" ? esc(t.precio) + " €<small>por noche</small>" : esc(t.precio)) + "</div>" +
+      '<div class="precio">' + precioHTML(t.precio) + "</div>" +
     "</div>"
   ).join("");
   $("condiciones").innerHTML = (get("tarifas.condiciones") || []).map((c) =>
