@@ -93,10 +93,15 @@ const ld = [
     "description": "Camper Weinsberg 2026 sobre Fiat Ducato para 4 personas: 2 camas dobles, cocina, ducha y WC, nevera, placas solares. Entrega junto al aeropuerto de Gran Canaria.",
     "brand": { "@type": "Brand", "name": "Weinsberg" },
     "image": BASE + "content/img/camper-real-00-frontal.jpg",
+    // Sin "review" ni "aggregateRating" A PROPÓSITO: las reseñas de la web son de
+    // ejemplo y Google penaliza las valoraciones no reales. Search Console los
+    // lista como campos recomendados que faltan (no críticos). Añadirlos solo
+    // cuando content.js tenga opiniones reales de clientes recogidas por la web.
     "offers": {
       "@type": "AggregateOffer",
       "lowPrice": Math.min(...precios),
       "highPrice": Math.max(...precios),
+      "offerCount": precios.length, // temporadas con precio (la alta va "Consultar")
       "priceCurrency": "EUR",
       "url": BASE + "#tarifas",
       "availability": "https://schema.org/InStock",
