@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/prerender.mjs"
+    "build": "node scripts/prerender.mjs && node scripts/indexnow.mjs",
+    "indexnow": "node scripts/indexnow.mjs --force"
   },
   "devDependencies": {
     "jsdom": "^24.1.3"

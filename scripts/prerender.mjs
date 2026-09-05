@@ -9,7 +9,8 @@
 
    Además genera, siempre en sincronía con content.js:
    - JSON-LD estático en la home (AutoRental + Product/Offer + FAQPage)
-   - sitemap.xml, robots.txt y llms.txt
+   - sitemap.xml (solo páginas indexables), robots.txt, llms.txt y el
+     fichero de clave de IndexNow (scripts/indexnow.key → /<clave>.txt)
 
    Si el render sale vacío, el build FALLA (Vercel mantiene el deploy
    anterior): mejor sin actualizar que publicar una web sin contenido.
@@ -82,6 +83,7 @@ const ld = [
       "addressCountry": "ES",
     },
     "areaServed": { "@type": "Place", "name": "Gran Canaria" },
+    "priceRange": precios.length ? Math.min(...precios) + "–" + Math.max(...precios) + " € por noche" : undefined,
     "sameAs": neg.instagram ? ["https://instagram.com/" + neg.instagram] : [],
   },
   precios.length && {
@@ -120,6 +122,12 @@ const homeHtml = home.dom.serialize();
 if (!homeHtml.includes("800 €") || (homeHtml.match(/<details>/g) || []).length < 3) {
   throw new Error("Prerender de la home incompleto (faltan condiciones o FAQ) — abortando build");
 }
+// La barra de "vista previa del borrador" solo debe existir en el navegador
+// (la crea main.js con ?preview=1). Si se cuela en el HTML estático, los bots
+// de IA leen "estos cambios aún no están publicados" como primer texto.
+if (homeHtml.includes("Vista previa del borrador")) {
+  throw new Error("El HTML prerenderizado contiene la barra de vista previa — abortando build");
+}
 fs.writeFileSync(path.join(DIST, "index.html"), homeHtml);
 
 /* ---------- 4. Explora Gran Canaria ---------- */
@@ -137,11 +145,11 @@ fs.writeFileSync(path.join(DIST, "explora-gran-canaria", "index.html"), expHtml)
 
 /* ---------- 5. sitemap.xml ---------- */
 const lastmod = C.meta?.actualizado || HOY;
+// Solo páginas indexables: las legales llevan <meta name="robots" content="noindex">
+// y listarlas aquí solo genera avisos en Search Console.
 const urls = [
   { loc: BASE, lastmod, priority: "1.0" },
   { loc: BASE + "explora-gran-canaria/", lastmod, priority: "0.8" },
-  { loc: BASE + "legal/aviso-legal", lastmod, priority: "0.2" },
-  { loc: BASE + "legal/condiciones", lastmod, priority: "0.3" },
 ];
 fs.writeFileSync(
   path.join(DIST, "sitemap.xml"),
@@ -180,6 +188,13 @@ Disallow: /api/
 
 Sitemap: ${BASE}sitemap.xml
 `);
+
+/* ---------- 6b. Clave de IndexNow (Bing, DuckDuckGo, Yandex…) ---------- */
+// scripts/indexnow.mjs avisa a api.indexnow.org tras cada build de producción;
+// el buscador valida la petición leyendo https://host/<clave>.txt.
+const indexnowKey = read("scripts/indexnow.key").trim();
+if (!/^[a-f0-9]{32}$/.test(indexnowKey)) throw new Error("scripts/indexnow.key inválida");
+fs.writeFileSync(path.join(DIST, indexnowKey + ".txt"), indexnowKey + "\n");
 
 /* ---------- 7. llms.txt ---------- */
 const cond = (C.tarifas?.condiciones || []).map((c) => `- ${c.label}: ${c.valor}`).join("\n");

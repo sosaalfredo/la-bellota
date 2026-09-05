@@ -15,11 +15,17 @@ Sitio estático con un único paso de build en Vercel: **prerender para SEO/GEO*
 `scripts/prerender.mjs` ejecuta en build el mismo render que hace el navegador
 (jsdom + `content.js`) y escribe en `dist/` el HTML ya relleno — los bots de IA
 (GPTBot, ClaudeBot, PerplexityBot…) no ejecutan JavaScript y sin esto verían la web
-vacía. También genera `sitemap.xml`, `robots.txt`, `llms.txt` y el JSON-LD de la home,
-siempre en sincronía con `content.js`. El cliente sigue ejecutando los mismos scripts
+vacía. También genera `sitemap.xml` (solo las páginas indexables; las legales llevan
+`noindex`), `robots.txt`, `llms.txt`, el JSON-LD de la home y el fichero de clave de
+IndexNow, siempre en sincronía con `content.js`. Tras el prerender, `scripts/indexnow.mjs`
+avisa a Bing/IndexNow de las URLs del sitemap (solo en el build de producción de Vercel;
+a mano: `npm run indexnow`). La barra de «vista previa del borrador» no existe en el HTML:
+la crea `main.js` solo con `?preview=1`, para que no se cuele en lo que leen los bots.
+El cliente sigue ejecutando los mismos scripts
 (repinta idéntico contenido), y si el render sale incompleto **el build falla** y
 Vercel conserva el deploy anterior. El espejo de GitHub Pages sirve la versión sin
-prerender (el canonical apunta al dominio).
+prerender (el canonical apunta al dominio) y el alias `la-bellota.vercel.app` responde
+además con `X-Robots-Tag: noindex` (regla por host en `vercel.json`).
 
 ```
 index.html            La web pública
@@ -31,6 +37,8 @@ api/stats.js          Consulta de métricas para el panel (tras Basic Auth)
 content/content.js    ⭐ TODO el contenido editable (window.SITE_CONTENT)
 content/img/          Imágenes subidas desde el panel
 admin/index.html      Panel de administración
+scripts/prerender.mjs Build: prerender + sitemap/robots/llms.txt/JSON-LD/clave IndexNow
+scripts/indexnow.mjs  Aviso IndexNow (Bing) tras el build de producción
 ```
 
 `index.html` no contiene textos de negocio: todo (textos, precios, fotos, FAQ, rutas,

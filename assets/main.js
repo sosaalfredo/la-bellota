@@ -12,7 +12,13 @@
       const draft = localStorage.getItem("labellota_draft");
       if (draft) {
         C = JSON.parse(draft);
-        document.getElementById("previewbar").classList.add("show");
+        // La barra NO vive en el HTML: así no se cuela en el prerender que
+        // leen Google y los bots de IA. Solo existe en modo vista previa.
+        const bar = document.createElement("div");
+        bar.id = "previewbar";
+        bar.className = "previewbar show";
+        bar.innerHTML = '🔍 Vista previa del borrador — estos cambios aún no están publicados. <a href="admin/">Volver al panel</a>';
+        document.body.prepend(bar);
       }
     } catch (e) { /* corrupted draft -> fall back to published content */ }
   }
