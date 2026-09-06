@@ -11,9 +11,27 @@
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   const IMGBASE = "../content/img/explora/";
 
+  /* Imágenes responsive: variantes -w480/-w960 junto a cada foto (scripts/img-variants.py);
+     si falta alguna, el listener de error quita el srcset y carga el original. */
+  const RESP = /\.(jpe?g|png)$/i;
+  const srcset = (url) => {
+    if (!url || !RESP.test(url) || /-w\d+\.\w+$/.test(url)) return "";
+    const b = url.replace(RESP, ""), e = url.slice(b.length);
+    return b + "-w480" + e + " 480w, " + b + "-w960" + e + " 960w, " + url + " 1400w";
+  };
+  const respAttrs = (url, sizes) => { const s = srcset(url); return s ? ' srcset="' + esc(s) + '" sizes="' + sizes + '"' : ""; };
+  document.addEventListener("error", (e) => {
+    const t = e.target;
+    if (t && t.tagName === "IMG" && t.hasAttribute("srcset")) { t.removeAttribute("srcset"); t.removeAttribute("sizes"); }
+  }, true);
+
   /* ---------- Hero ---------- */
   const H = D.hero || {};
-  if (H.foto) { const hi = $("xheroImg"); hi.src = IMGBASE + H.foto; }
+  if (H.foto) {
+    const hi = $("xheroImg"), u = IMGBASE + H.foto, s = srcset(u);
+    if (s) { hi.setAttribute("srcset", s); hi.setAttribute("sizes", "100vw"); }
+    hi.src = u;
+  }
 
   /* ---------- Categorías ---------- */
   $("xcats").innerHTML = (D.categorias || []).map((c) => {
@@ -26,7 +44,8 @@
   const LAYOUTS = ["", "lugar--invertido", "lugar--panorama", "lugar--editorial"];
   const media = (l) => {
     if (!l.foto) return "";
-    return '<figure class="lugar__media"><img src="' + IMGBASE + esc(l.foto) + '" alt="' + esc(l.fotoAlt || l.nombre) + '" loading="lazy" decoding="async"></figure>';
+    const u = IMGBASE + l.foto;
+    return '<figure class="lugar__media"><img src="' + esc(u) + '"' + respAttrs(u, "(min-width: 900px) 50vw, 100vw") + ' alt="' + esc(l.fotoAlt || l.nombre) + '" loading="lazy" decoding="async"></figure>';
   };
   const facts = (l) => {
     const f = [];

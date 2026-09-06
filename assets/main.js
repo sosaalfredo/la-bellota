@@ -56,11 +56,32 @@
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + "</svg>";
   };
 
-  /* ---------- Images ---------- */
-  const setImg = (id, url, alt) => { const el = $(id); if (el && url) { el.src = url; if (alt) el.alt = alt; } };
-  setImg("heroImg", get("hero.foto"), "La Bellota, camper Weinsberg 2026, en la cumbre de Gran Canaria sobre el mar de nubes");
-  setImg("introImg", get("intro.foto"));
-  setImg("nocheImg", get("noche.foto"), "La camper al atardecer en la cumbre de Gran Canaria, con el sol cayendo sobre el mar de nubes");
+  /* ---------- Images ----------
+     Imágenes responsive: cada foto JPEG tiene variantes -w480 y -w960 junto al
+     original (scripts/img-variants.py). Si una variante no existe (foto subida
+     desde el panel sin pasar por el script), el listener de error quita el
+     srcset y el navegador vuelve al original: nunca se rompe una imagen. */
+  const RESP = /\.(jpe?g|png)$/i;
+  const srcset = (url) => {
+    if (!url || !RESP.test(url) || /-w\d+\.\w+$/.test(url)) return "";
+    const b = url.replace(RESP, ""), e = url.slice(b.length);
+    return b + "-w480" + e + " 480w, " + b + "-w960" + e + " 960w, " + url + " 1600w";
+  };
+  const respAttrs = (url, sizes) => { const s = srcset(url); return s ? ' srcset="' + esc(s) + '" sizes="' + sizes + '"' : ""; };
+  const setResp = (el, url, sizes) => {
+    if (!el || !url) return;
+    const s = srcset(url);
+    if (s) { el.setAttribute("srcset", s); el.setAttribute("sizes", sizes); } else { el.removeAttribute("srcset"); el.removeAttribute("sizes"); }
+    el.src = url;
+  };
+  document.addEventListener("error", (e) => {
+    const t = e.target;
+    if (t && t.tagName === "IMG" && t.hasAttribute("srcset")) { t.removeAttribute("srcset"); t.removeAttribute("sizes"); }
+  }, true);
+  const setImg = (id, url, alt, sizes) => { const el = $(id); if (el && url) { setResp(el, url, sizes || "100vw"); if (alt) el.alt = alt; } };
+  setImg("heroImg", get("hero.foto"), "La Bellota, camper Weinsberg 2026, en la cumbre de Gran Canaria sobre el mar de nubes", "100vw");
+  setImg("introImg", get("intro.foto"), null, "(min-width: 900px) 42vw, 100vw");
+  setImg("nocheImg", get("noche.foto"), "La camper al atardecer en la cumbre de Gran Canaria, con el sol cayendo sobre el mar de nubes", "100vw");
 
   /* ---------- Claves ---------- */
   $("claves").innerHTML = (C.claves || []).map((c) =>
@@ -74,12 +95,12 @@
   const renderFoto = () => {
     if (!fotos.length) return;
     const f = fotos[fotoIdx];
-    mainImg.src = f.url; mainImg.alt = f.alt || "";
+    setResp(mainImg, f.url, "(min-width: 900px) 62vw, 100vw"); mainImg.alt = f.alt || "";
     $("galeriaCount").textContent = (fotoIdx + 1) + " / " + fotos.length;
     document.querySelectorAll("#galeriaThumbs button").forEach((b, i) => b.classList.toggle("active", i === fotoIdx));
   };
   $("galeriaThumbs").innerHTML = fotos.map((f, i) =>
-    '<button type="button" aria-label="Foto ' + (i + 1) + '"><img src="' + esc(f.url) + '" alt="" loading="lazy"></button>'
+    '<button type="button" aria-label="Foto ' + (i + 1) + '"><img src="' + esc(f.url) + '"' + respAttrs(f.url, "120px") + ' alt="" loading="lazy" decoding="async"></button>'
   ).join("");
   document.querySelectorAll("#galeriaThumbs button").forEach((b, i) =>
     b.addEventListener("click", () => { fotoIdx = i; renderFoto(); }));
@@ -129,7 +150,7 @@
   const star = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .5-5.4 4.8L18.5 22 12 17.7 5.5 22l1.9-7.7L2 9.5 9 9z"/></svg>';
   $("reviews").innerHTML = (get("resenas.lista") || []).map((r) => {
     const n = Math.min(5, Math.max(1, +r.estrellas || 5));
-    return '<article class="review reveal"><div class="stars" aria-label="' + n + ' de 5 estrellas">' + star.repeat(n) + "</div>" +
+    return '<article class="review reveal"><div class="stars" role="img" aria-label="' + n + ' de 5 estrellas">' + star.repeat(n) + "</div>" +
       "<p>“" + esc(r.texto) + "”</p><footer>" + esc(r.nombre) + "<span>" + esc(r.viaje) + "</span></footer></article>";
   }).join("");
 
@@ -301,7 +322,7 @@
     }
     document.getElementById("exploraCards").innerHTML = E.lista.map((l) =>
       '<a class="explorecard reveal" href="explora-gran-canaria/#' + esc(l.slug) + '">' +
-        '<img src="' + esc(l.foto) + '" alt="' + esc(l.nombre) + '" loading="lazy" decoding="async">' +
+        '<img src="' + esc(l.foto) + '"' + respAttrs(l.foto, "(min-width: 900px) 25vw, (min-width: 600px) 50vw, 100vw") + ' alt="' + esc(l.nombre) + '" loading="lazy" decoding="async">' +
         '<div class="in"><b>' + esc(l.nombre) + "</b><span>" + esc(l.municipio) + "</span><p>" + esc(l.texto) + "</p></div>" +
       "</a>"
     ).join("");

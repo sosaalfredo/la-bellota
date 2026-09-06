@@ -42,7 +42,7 @@ function copyDir(src, dst) {
 for (const dir of ["assets", "content", "legal", "admin", "explora-gran-canaria"]) {
   copyDir(path.join(ROOT, dir), path.join(DIST, dir));
 }
-for (const f of ["index.html", "sources.md"]) {
+for (const f of ["index.html", "sources.md", "404.html", "favicon.ico", "site.webmanifest"]) {
   fs.copyFileSync(path.join(ROOT, f), path.join(DIST, f));
 }
 

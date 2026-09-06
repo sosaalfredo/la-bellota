@@ -34,7 +34,7 @@
 .lugar__muni{display:inline-flex;align-items:center;gap:.4rem;font-size:.86rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
 .lugar__tag{display:inline-block;font-size:.78rem;font-weight:700;background:color-mix(in srgb,var(--miel) 18%,var(--surface));color:var(--ink);border:1px solid color-mix(in srgb,var(--miel) 45%,var(--line));border-radius:999px;padding:.2rem .65rem;margin-left:.5rem;vertical-align:middle}
 .lugar__body p.desc{margin:.8rem 0 1rem;color:var(--muted)}
-.lugar__temporada{display:inline-block;font-size:.8rem;font-weight:700;color:var(--teja);margin-bottom:.3rem}
+.lugar__temporada{display:inline-block;font-size:.8rem;font-weight:700;color:var(--teja-text);margin-bottom:.3rem}
 
 /* Datos prácticos */
 .facts{display:grid;grid-template-columns:1fr 1fr;gap:.55rem .9rem;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:.95rem 1.05rem;box-shadow:var(--shadow-s)}

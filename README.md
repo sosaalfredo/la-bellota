@@ -91,6 +91,27 @@ recibidas el 06/09/2026). Los originales viven fuera del repo en `websizephotos/
 ignorada por git); las versiones web están en `content/img/camper-*.jpg` (máx. 1600 px, JPEG progresivo,
 sin metadatos EXIF). Para añadir otra foto: optimizarla igual y subirla desde el panel o al repo.
 
+**Imágenes responsive (06/09/2026)**: cada JPEG de `content/img/` y `content/img/explora/` tiene dos
+variantes junto al original, `-w480.jpg` y `-w960.jpg` (generadas con `python scripts/img-variants.py .`,
+idempotente). `main.js` y `explora.js` construyen el `srcset` por convención de nombre; si una variante
+no existe (foto subida desde el panel sin pasar por el script), un listener de `error` quita el `srcset`
+y el navegador carga el original — nunca se rompe una imagen. En móvil el peso de la home pasó de
+~7,6 MB a ~1,5 MB. Al subir una foto nueva al repo, ejecutar el script para crear sus variantes.
+
+## Fuentes, iconos y página 404
+
+- **Fuentes autoalojadas**: Bricolage Grotesque, Figtree y Caveat (latin + latin-ext) en
+  `assets/fonts/*.woff2`, declaradas al principio de `assets/styles.css` con `font-display: swap`;
+  la home y Explora precargan las dos principales. Ya no hay petición a fonts.googleapis.com en las
+  páginas públicas (el panel `/admin` sí la conserva). Regenerar con `python scripts/fonts-selfhost.py .`.
+- **Iconos**: `favicon.ico` (raíz), `assets/icons/favicon.svg`, PNG 16/32, `apple-touch-icon.png`
+  (180) e `icon-192/512.png` para `site.webmanifest`. Google Search no acepta favicons en `data:`,
+  por eso existen ficheros reales. Regenerar con `python scripts/make-icons.py .`.
+- **404**: `404.html` en la raíz (Vercel lo sirve automáticamente para rutas inexistentes), con
+  enlaces a portada, Explora, tarifas, disponibilidad y contacto.
+- **Contraste (WCAG AA)**: los textos pequeños en miel/teja sobre fondo claro usan `--miel-text` y
+  `--teja-text` (tonos oscurecidos); iconos, bordes y fondos siguen con `--miel`/`--teja`.
+
 ## Pendiente
 
 - **Lugar de entrega** (Estetic Park, Ojos de Garza): Nahum busca base más cercana a la
@@ -105,8 +126,8 @@ sin metadatos EXIF). Para añadir otra foto: optimizarla igual y subirla desde e
 - **Legales**: quedan huecos amarillos (señal, franquicia del seguro, exclusiones de póliza,
   cargos por retraso/gestión de multas, tramos de cancelación, edad mínima del conductor)
   — completar con Nahum y revisión profesional.
-- **Reseñas**: la camper es nueva; la web enlaza a la ficha de Yescapa mientras llegan.
-- **DNS**: crear en Hostalia `A @ → 216.198.79.1` y `CNAME www → 18d97c7a40c02a4e.vercel-dns-017.com`.
+- **Reseñas**: las tres de la web son de EJEMPLO (con aviso visible). Sustituirlas por reales en
+  cuanto lleguen (bandeja del panel) o retirar la sección hasta entonces.
 
 ## Formulario
 
