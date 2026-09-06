@@ -68,3 +68,11 @@ sin sobrecargar las fotos). Las imágenes solo se han redimensionado y recomprim
 3. Datos operativos no verificados (horarios, tarifas de parking, estado del mar/accesos) →
    lenguaje prudente o omisión.
 4. Mapa: SVG propio orientativo (sin APIs externas, sin cookies, sin coste).
+
+## Fotografías de la camper (home)
+
+Todas las imágenes de la home en las que aparece la camper (`content/img/camper-*.jpg`) son
+**fotografías propias de La Bellota Campers**, entregadas por Nahum el 06/09/2026 (sesión en la
+cumbre de Gran Canaria: exteriores en carretera y miradores, e interiores). Sustituyen a las fotos de
+la ficha de Yescapa y a los dos placeholders de Unsplash (`hero-costa.jpg`, `noche-vialactea.jpg`),
+que se han retirado del repositorio. No requieren atribución.

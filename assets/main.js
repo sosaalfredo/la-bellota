@@ -58,9 +58,9 @@
 
   /* ---------- Images ---------- */
   const setImg = (id, url, alt) => { const el = $(id); if (el && url) { el.src = url; if (alt) el.alt = alt; } };
-  setImg("heroImg", get("hero.foto"), "La Bellota, camper Weinsberg 2026, lista para salir en Gran Canaria");
+  setImg("heroImg", get("hero.foto"), "La Bellota, camper Weinsberg 2026, en la cumbre de Gran Canaria sobre el mar de nubes");
   setImg("introImg", get("intro.foto"));
-  setImg("nocheImg", get("noche.foto"), "Cielo estrellado sobre la camper");
+  setImg("nocheImg", get("noche.foto"), "La camper al atardecer en la cumbre de Gran Canaria, con el sol cayendo sobre el mar de nubes");
 
   /* ---------- Claves ---------- */
   $("claves").innerHTML = (C.claves || []).map((c) =>

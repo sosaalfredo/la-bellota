@@ -80,8 +80,16 @@ python -m http.server 8642
 
 ## Datos reales (sincronizados de Yescapa el 29/08/2026)
 
-Ficha técnica (Weinsberg 2026, 6 m, 4 plazas), fotos de la furgo, precios (desde 110 €/noche,
+Ficha técnica (Weinsberg 2026, 6 m, 4 plazas), precios (desde 110 €/noche,
 descuentos −10 %), fianza 800 €, 200 km/día, aeropuerto 20 € i/v, sin mascotas ni fumar.
+
+## Fotos de la camper
+
+Todas las fotos en las que aparece la camper (portada, bloque de introducción, galería, banda del
+atardecer y `og:image`) son las **fotos propias de La Bellota** (sesión en la cumbre de Gran Canaria,
+recibidas el 06/09/2026). Los originales viven fuera del repo en `websizephotos/` (Cumbre/ e Interior/,
+ignorada por git); las versiones web están en `content/img/camper-*.jpg` (máx. 1600 px, JPEG progresivo,
+sin metadatos EXIF). Para añadir otra foto: optimizarla igual y subirla desde el panel o al repo.
 
 ## Pendiente
 

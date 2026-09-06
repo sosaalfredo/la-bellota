@@ -10,3 +10,6 @@ node_modules/
 
 # Salida del prerender (se genera en cada build de Vercel)
 dist/
+
+# Originales de las fotos de la camper (se optimizan a content/img/, no se publican tal cual)
+websizephotos/

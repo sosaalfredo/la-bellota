@@ -29,8 +29,18 @@ const HOY = new Date().toISOString().slice(0, 10);
 /* ---------- 1. Copia del sitio estático ---------- */
 fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
+// Copia recursiva "a mano": fs.cpSync({recursive:true}) hace caer a Node
+// (0xC0000409) cuando el repo vive en una unidad de Google Drive en Windows.
+function copyDir(src, dst) {
+  fs.mkdirSync(dst, { recursive: true });
+  for (const e of fs.readdirSync(src, { withFileTypes: true })) {
+    const s = path.join(src, e.name), d = path.join(dst, e.name);
+    if (e.isDirectory()) copyDir(s, d);
+    else if (e.isFile()) fs.copyFileSync(s, d);
+  }
+}
 for (const dir of ["assets", "content", "legal", "admin", "explora-gran-canaria"]) {
-  fs.cpSync(path.join(ROOT, dir), path.join(DIST, dir), { recursive: true });
+  copyDir(path.join(ROOT, dir), path.join(DIST, dir));
 }
 for (const f of ["index.html", "sources.md"]) {
   fs.copyFileSync(path.join(ROOT, f), path.join(DIST, f));
@@ -73,7 +83,7 @@ const ld = [
     "url": BASE,
     "telephone": neg.telefono,
     "email": neg.email,
-    "image": BASE + (C.hero?.foto || "content/img/camper-real-00-frontal.jpg"),
+    "image": BASE + (C.hero?.foto || "content/img/camper-exterior-lateral.jpg"),
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "C/ Luis Morote 45, bajo",
@@ -92,7 +102,7 @@ const ld = [
     "name": "Alquiler de furgoneta camper Weinsberg 2026 (4 plazas) en Gran Canaria",
     "description": "Camper Weinsberg 2026 sobre Fiat Ducato para 4 personas: 2 camas dobles, cocina, ducha y WC, nevera, placas solares. Entrega junto al aeropuerto de Gran Canaria.",
     "brand": { "@type": "Brand", "name": "Weinsberg" },
-    "image": BASE + "content/img/camper-real-00-frontal.jpg",
+    "image": BASE + "content/img/camper-exterior-lateral.jpg",
     // Sin "review" ni "aggregateRating" A PROPÓSITO: las reseñas de la web son de
     // ejemplo y Google penaliza las valoraciones no reales. Search Console los
     // lista como campos recomendados que faltan (no críticos). Añadirlos solo
