@@ -5,7 +5,7 @@
 window.SITE_CONTENT = {
   "meta": {
     "version": 4,
-    "actualizado": "2026-09-14"
+    "actualizado": "2026-09-06"
   },
   "negocio": {
     "nombre": "La Bellota Campers",
@@ -23,8 +23,8 @@ window.SITE_CONTENT = {
     "subtitulo": "Descubre Gran Canaria en una camper de 2026 totalmente equipada para 4 personas. Desde 110 € por noche, con la base a 5 minutos del aeropuerto: aterriza, recoge y arranca.",
     "cta1": "Consultar fechas",
     "cta2": "Conoce la camper",
-    "foto": "content/img/camper-real-00-frontal.jpg",
-    "badge": "Camper 2026 a estrenar · Desde 110 €/noche"
+    "foto": "content/img/camper-cumbre-mar-de-nubes.jpg",
+    "badge": "Camper 2026 a estrenar · desde 110 €/noche"
   },
   "claves": [
     {
@@ -58,7 +58,7 @@ window.SITE_CONTENT = {
     "titulo": "Un continente en miniatura, a las puertas de tu cama",
     "texto1": "Gran Canaria cambia de paisaje cada veinte minutos: dunas doradas, pinares por encima de las nubes, acantilados que caen al Atlántico y pueblos donde el tiempo va más despacio. La única forma de vivirla entera es no tener que volver cada noche al mismo sitio.",
     "texto2": "No somos una flota anónima. Somos un negocio familiar que lleva 11 años recibiendo personas en La Bellota Extremeña, en Las Palmas, y ahora llevamos ese mismo cariño al mundo camper: un vehículo cuidado al detalle y alguien al otro lado del teléfono que conoce cada rincón de la isla.",
-    "foto": "content/img/hero-costa.jpg",
+    "foto": "content/img/camper-carretera-eucaliptos.jpg",
     "fotoPie": "Los planes buenos no caben en un hotel"
   },
   "camper": {
@@ -68,36 +68,100 @@ window.SITE_CONTENT = {
     "descripcion": "Una Weinsberg de gran volumen sobre Fiat Ducato, matriculada en 2026 y equipada con todo lo que importa: dos camas dobles, cocina de gas con nevera y congelador, baño con ducha interior y exterior, y placas solares con hasta 4 días de autonomía. Incluimos menaje de cocina, ropa de cama y baño y un pequeño welcome pack para que tu experiencia camper en Gran Canaria sea inolvidable.",
     "fotos": [
       {
-        "url": "content/img/camper-real-00-frontal.jpg",
-        "alt": "La Bellota, camper Weinsberg 2026, con la puerta lateral abierta"
+        "url": "content/img/camper-exterior-lateral.jpg",
+        "alt": "La Bellota, camper Weinsberg 2026, aparcada en la cumbre de Gran Canaria sobre el mar de nubes"
       },
       {
-        "url": "content/img/camper-real-02-trasera.jpg",
-        "alt": "Vista trasera de la camper"
+        "url": "content/img/camper-exterior-puerta-abierta.jpg",
+        "alt": "Camper con la puerta lateral abierta y el escalón desplegado, lista para entrar"
       },
       {
-        "url": "content/img/camper-real-05-comedor.jpg",
-        "alt": "Salón-comedor con mesa y asientos para cuatro"
+        "url": "content/img/camper-exterior-trasera-cama.jpg",
+        "alt": "Portón trasero abierto con la cama doble y vistas al pinar"
       },
       {
-        "url": "content/img/camper-real-06-cocina.jpg",
-        "alt": "Cocina con cajones y menaje completo"
+        "url": "content/img/camper-carretera-roques-atardecer.jpg",
+        "alt": "La camper en una carretera de cumbre al atardecer, con los roques recortados sobre las nubes"
       },
       {
-        "url": "content/img/camper-real-03-cama.jpg",
-        "alt": "Cama doble con la ropa de cama puesta"
+        "url": "content/img/camper-atardecer-roques-pino.jpg",
+        "alt": "Atardecer en la cumbre: la camper en la carretera, con un pino en primer plano y los roques al fondo"
       },
       {
-        "url": "content/img/camper-real-04-litera.jpg",
-        "alt": "Dormitorio trasero visto desde el salón"
+        "url": "content/img/camper-carretera-sobre-las-nubes.jpg",
+        "alt": "Carretera de montaña por encima de las nubes al atardecer, con la camper en camino"
       },
       {
-        "url": "content/img/camper-real-07-banno.jpg",
-        "alt": "Baño con ducha, WC y lavabo"
+        "url": "content/img/camper-carretera-mar-de-nubes.jpg",
+        "alt": "La camper en una curva de la cumbre, con el mar de nubes cubriendo el valle"
       },
       {
-        "url": "content/img/camper-real-08-nevera.jpg",
-        "alt": "Nevera con congelador"
+        "url": "content/img/camper-carretera-curvas-atardecer.jpg",
+        "alt": "Carretera de curvas sobre las nubes al atardecer, con la camper en un mirador"
+      },
+      {
+        "url": "content/img/camper-carretera-cumbre.jpg",
+        "alt": "La camper recorriendo una carretera de montaña con los barrancos del interior al fondo"
+      },
+      {
+        "url": "content/img/camper-carretera-mirador-barrancos.jpg",
+        "alt": "La camper en la carretera de la cumbre, con vistas a los barrancos y a las nubes sobre la costa"
+      },
+      {
+        "url": "content/img/camper-carretera-pinar.jpg",
+        "alt": "La camper entre pinos canarios y tierra roja en la cumbre de Gran Canaria"
+      },
+      {
+        "url": "content/img/camper-carretera-tierra-roja.jpg",
+        "alt": "La camper avanzando por una carretera entre laderas de tierra roja y pinar"
+      },
+      {
+        "url": "content/img/camper-entre-pinos.jpg",
+        "alt": "La camper aparcada bajo los pinos, en la sombra del bosque de cumbre"
+      },
+      {
+        "url": "content/img/camper-carretera-roca-pinar-panoramica.jpg",
+        "alt": "La camper cruzando bajo una roca volcánica en una carretera rodeada de pinos"
+      },
+      {
+        "url": "content/img/camper-carretera-roca-pinar.jpg",
+        "alt": "Carretera estrecha entre rocas y pinos con la camper de frente"
+      },
+      {
+        "url": "content/img/camper-frontal-carretera-pinar.jpg",
+        "alt": "La camper de frente en una carretera de la cumbre, entre pinos y roca"
+      },
+      {
+        "url": "content/img/camper-curva-desde-arriba.jpg",
+        "alt": "La camper vista desde arriba tomando una curva cerrada entre el pinar"
+      },
+      {
+        "url": "content/img/camper-interior-salon-cama.jpg",
+        "alt": "Interior de la camper: asientos, cocina y la cama doble al fondo con vistas"
+      },
+      {
+        "url": "content/img/camper-interior-cocina.jpg",
+        "alt": "Cocina de dos fuegos con cafetera y la puerta abierta al paisaje"
+      },
+      {
+        "url": "content/img/camper-interior-cocina-vistas.jpg",
+        "alt": "Encimera y placa de cocina junto a la puerta corredera abierta al campo"
+      },
+      {
+        "url": "content/img/camper-interior-cocina-dormitorio.jpg",
+        "alt": "Mobiliario de madera de la cocina y dormitorio trasero con ropa de cama"
+      },
+      {
+        "url": "content/img/camper-interior-armarios-dormitorio.jpg",
+        "alt": "Armarios altos, nevera y paso al dormitorio trasero con la cama hecha"
+      },
+      {
+        "url": "content/img/camper-interior-cama-claraboya.jpg",
+        "alt": "Cama doble trasera con claraboya y ventana al mar de nubes"
+      },
+      {
+        "url": "content/img/camper-interior-banno.jpg",
+        "alt": "Baño completo con ducha, WC y lavabo, y los asientos giratorios de la cabina"
       }
     ],
     "specs": [
@@ -262,7 +326,7 @@ window.SITE_CONTENT = {
     "titulo": "El mejor hotel no tiene paredes",
     "texto": "Cena viendo cómo el sol se apaga en el Atlántico. Duerme arropado por un cielo que aquí sí tiene estrellas. Desayuna donde el navegador ya no sabe llegar. Tú pones el rumbo; La Bellota pone el resto.",
     "cita": "“La felicidad es pequeña: cabe en una bellota.”",
-    "foto": "content/img/noche-vialactea.jpg"
+    "foto": "content/img/camper-atardecer-cumbre.jpg"
   },
   "explora": {
     "titulo": "Gran Canaria para recordar",
