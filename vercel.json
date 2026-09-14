@@ -4,7 +4,8 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/admin/api/stats", "destination": "/api/stats" }
+    { "source": "/admin/api/stats", "destination": "/api/stats" },
+    { "source": "/admin/api/gh", "destination": "/api/gh" }
   ],
   "headers": [
     {

@@ -562,11 +562,10 @@ document.querySelectorAll("[data-sec]").forEach(b=>b.addEventListener("click",()
 }));
 
 function paintStatus(){
-  const gh = ghConfig();
   $("status").innerHTML = (dirty||localStorage.getItem(LS_DRAFT))
     ? `📝 <b>Borrador con cambios</b> sin publicar`
     : `✅ Sin cambios pendientes`;
-  if (!gh.token) $("status").innerHTML += ` · <span style="color:var(--teja)">GitHub sin configurar</span>`;
+  if (!puedePublicar()) $("status").innerHTML += ` · <span style="color:var(--teja)">GitHub sin configurar</span>`;
 }
 
 /* ---------------- Vista previa / descartar ---------------- */
@@ -691,14 +690,48 @@ function bindStats(){
 }
 
 /* ---------------- GitHub ---------------- */
+/* Hay dos maneras de publicar:
+   — Por el SERVIDOR (lo normal): el token vive en Vercel y el panel llama a
+     /admin/api/gh con las credenciales que el navegador ya tiene. Quien entra
+     solo necesita el enlace del panel y su contraseña.
+   — Con TOKEN PROPIO: si alguien guarda su token en ⚙️, el panel lo usa y habla
+     directamente con api.github.com, como se hacía antes. Tiene prioridad. */
+let GH_SERVER = null; // {owner,repo,branch} si el servidor publica; null si no
+
 function ghConfig(){
   try{ return JSON.parse(localStorage.getItem(LS_GH)||"{}"); }catch(e){ return {}; }
 }
+const ghApiUrl = ()=> location.pathname.replace(/\/(index\.html)?$/,"") + "/api/gh";
+const puedePublicar = ()=> !!ghConfig().token || !!GH_SERVER;
+
+async function ghDetectarServidor(){
+  try{
+    const r = await fetch(ghApiUrl(),{cache:"no-store"});
+    if (!r.ok) return;
+    const j = await r.json();
+    if (j && j.ok) GH_SERVER = j;
+  }catch(e){ /* sin servidor: queda la vía del token propio */ }
+}
+
+/* Lee un fichero del repo, por el servidor o con el token propio. */
+async function ghGet(path){
+  const g = ghConfig();
+  if (g.token){
+    const api = `https://api.github.com/repos/${g.owner}/${g.repo}/contents/${path}?ref=${g.branch}`;
+    return fetch(api,{headers:ghHeaders(g.token)});
+  }
+  return fetch(ghApiUrl()+"?path="+encodeURIComponent(path),{cache:"no-store"});
+}
 function githubHtml(){
   const g = ghConfig();
+  const porServidor = !g.token && GH_SERVER;
   return `<h1>⚙️ Publicación (GitHub)</h1>
-  <p class="sub">El panel publica los cambios directamente en el repositorio. GitHub Pages actualiza la web pública en 1–2 minutos.</p>
-  <div class="warn">🔐 El token es como una llave: créalo <b>fine-grained</b>, solo para el repositorio de la web y solo con permiso <b>Contents → Read and write</b>. Se guarda únicamente en este navegador. Nunca lo compartas por chat o email.</div>
+  <p class="sub">El panel publica los cambios directamente en el repositorio. La web pública se actualiza en 1–2 minutos.</p>
+  ${porServidor
+    ? `<div class="card"><h3>✅ Todo listo</h3>
+        <p class="sub" style="margin-bottom:0">Publicas a través del servidor de la web: no tienes que crear ni pegar ningún token. Basta con entrar en este panel con tu usuario y tu contraseña. Se publica en <b>${esc(GH_SERVER.owner)}/${esc(GH_SERVER.repo)}</b>, rama <b>${esc(GH_SERVER.branch)}</b>.</p></div>
+       <details><summary class="sub" style="cursor:pointer;margin:.6rem 0">Avanzado: usar mi propio token de GitHub</summary>`
+    : `<div class="warn">🔐 El token es como una llave: créalo <b>fine-grained</b>, solo para el repositorio de la web y solo con permiso <b>Contents → Read and write</b>. Se guarda únicamente en este navegador. Nunca lo compartas por chat o email.</div>`}
   <div class="card"><h3>Repositorio</h3>
     <div class="grid2">
       <label class="field"><span>Usuario/organización</span><input type="text" id="ghOwner" value="${esc(g.owner||"sosaalfredo")}"></label>
@@ -715,7 +748,8 @@ function githubHtml(){
   <div class="card"><h3>Cómo crear el token (una vez)</h3>
     <p class="sub" style="margin-bottom:.6rem">GitHub → tu foto → <b>Settings</b> → <b>Developer settings</b> → <b>Fine-grained tokens</b> → <b>Generate new token</b>:</p>
     <p class="sub" style="margin-bottom:0">1) Resource owner: tu usuario · 2) Repository access: <b>Only select repositories</b> → el repo de la web · 3) Permissions → Repository → <b>Contents: Read and write</b> · 4) Generate y pégalo aquí.</p>
-  </div>`;
+  </div>
+  ${porServidor ? `</details>` : ``}`;
 }
 function bindGithub(){
   $("ghSave").addEventListener("click",()=>{
@@ -729,6 +763,13 @@ function bindGithub(){
     const g={owner:$("ghOwner").value.trim(),repo:$("ghRepo").value.trim(),token:$("ghToken").value.trim()};
     const pill=$("ghStatus"); pill.textContent="Probando…"; pill.className="pill";
     try{
+      if (!g.token){
+        if (!GH_SERVER) throw new Error("Escribe un token, o espera a que el servidor esté configurado");
+        const s=await fetch(ghApiUrl()+"?path=content/content.js",{cache:"no-store"});
+        if(!s.ok) throw new Error("El servidor no puede leer el repo (HTTP "+s.status+")");
+        pill.textContent=`✓ Publicación por el servidor (${GH_SERVER.owner}/${GH_SERVER.repo})`; pill.className="pill ok";
+        return;
+      }
       const r=await fetch(`https://api.github.com/repos/${g.owner}/${g.repo}`,{headers:ghHeaders(g.token)});
       if(!r.ok) throw new Error(r.status===404?"Repo no encontrado (¿existe? ¿token con acceso?)":"HTTP "+r.status);
       const j=await r.json();
@@ -761,10 +802,8 @@ async function remoteChangedSinceBase(){
   try{
     const base = localStorage.getItem(LS_BASE);
     if (!base) return false;
-    const g = ghConfig();
-    if (!g.token) return false;
-    const api = `https://api.github.com/repos/${g.owner}/${g.repo}/contents/content/content.js?ref=${g.branch}`;
-    const r = await fetch(api,{headers:ghHeaders(g.token)});
+    if (!puedePublicar()) return false;
+    const r = await ghGet("content/content.js");
     if (!r.ok) return false;
     const j = await r.json();
     const bin = atob((j.content||"").replace(/\n/g,""));
@@ -778,7 +817,18 @@ async function remoteChangedSinceBase(){
 
 async function ghPut(path, base64, message){
   const g = ghConfig();
-  if (!g.token) throw new Error("Configura GitHub primero (menú ⚙️ Publicación).");
+  if (!g.token){
+    if (!GH_SERVER) throw new Error("Configura GitHub primero (menú ⚙️ Publicación).");
+    const r = await fetch(ghApiUrl(),{
+      method:"PUT", headers:{"content-type":"application/json"},
+      body: JSON.stringify({ path, content:base64, message })
+    });
+    if (!r.ok){
+      const j = await r.json().catch(()=>({}));
+      throw new Error(j.error || j.message || "HTTP "+r.status);
+    }
+    return r.json();
+  }
   const api = `https://api.github.com/repos/${g.owner}/${g.repo}/contents/${path}`;
   let sha;
   const head = await fetch(api+`?ref=${g.branch}`,{headers:ghHeaders(g.token)});
@@ -796,7 +846,7 @@ async function ghPut(path, base64, message){
 
 $("btnPublish").addEventListener("click", async ()=>{
   const b=$("btnPublish");
-  if (!ghConfig().token){ currentSec="_github"; renderSection(); toast("Configura GitHub para poder publicar","err"); return; }
+  if (!puedePublicar()){ currentSec="_github"; renderSection(); toast("Configura GitHub para poder publicar","err"); return; }
   b.disabled=true; b.textContent="Comprobando…";
   const cambiado = await remoteChangedSinceBase();
   b.disabled=false; b.textContent="🚀 Publicar";
@@ -820,7 +870,7 @@ $("btnPublish").addEventListener("click", async ()=>{
 
 /* Subir imagen al repo */
 async function uploadImage(fieldPath){
-  if (!ghConfig().token){ toast("Configura GitHub (⚙️) para subir imágenes","err"); return; }
+  if (!puedePublicar()){ toast("Configura GitHub (⚙️) para subir imágenes","err"); return; }
   const input=document.createElement("input");
   input.type="file"; input.accept="image/jpeg,image/png,image/webp";
   input.onchange=async()=>{
@@ -882,9 +932,13 @@ function toast(msg,cls){
 
 /* ---------------- Init ---------------- */
 document.querySelector('[data-sec="negocio"]').classList.add("active");
+// Quien administra la web no debe contar como visita en las estadísticas.
+try{ localStorage.setItem("labellota_notrack","1"); }catch(e){}
 renderSection();
 paintStatus();
 if (localStorage.getItem(LS_DRAFT)) toast("Hay un borrador guardado de una sesión anterior");
+// La sonda tarda un instante: al volver, repinta el estado y la pantalla de ⚙️.
+ghDetectarServidor().then(()=>{ paintStatus(); if (currentSec==="_github") renderSection(); });
 </script>
 </body>
 </html>
