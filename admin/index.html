@@ -204,7 +204,15 @@ code{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding
 const LS_DRAFT = "labellota_draft";
 const LS_GH    = "labellota_gh";
 const LS_BASE  = "labellota_base"; // instantánea de la web sobre la que nació el borrador
+const LS_TS    = "labellota_draft_ts"; // cuándo se tocó por última vez el borrador
 const PUBLISHED = JSON.parse(JSON.stringify(window.SITE_CONTENT || {}));
+
+/* Un borrador es SOSPECHOSO cuando no consta sobre qué versión de la web nació,
+   o cuando nació sobre una distinta de la publicada ahora. Publicarlo sustituye
+   la web entera por él, así que eso hay que decirlo al entrar y no al final.
+   El 14/09/2026 un borrador de días atrás se publicó sin un solo aviso y se
+   llevó por delante el reportaje de fotos entero. */
+let borradorSospechoso = false;
 
 let DRAFT = loadDraft();
 let dirty = false;
@@ -213,16 +221,27 @@ function loadDraft(){
   try{
     const d = localStorage.getItem(LS_DRAFT);
     if (d){
-      // Borrador previo sin base registrada (versión antigua del panel): ancla la base ahora.
-      if (!localStorage.getItem(LS_BASE)) localStorage.setItem(LS_BASE, JSON.stringify(PUBLISHED));
+      const base = localStorage.getItem(LS_BASE);
+      // Antes, un borrador sin base registrada se anclaba aquí a lo publicado, y
+      // eso lo bendecía en silencio aunque viniera de semanas atrás.
+      borradorSospechoso = !base || normaliza(base) !== JSON.stringify(PUBLISHED);
       return JSON.parse(d);
     }
   }catch(e){}
   localStorage.setItem(LS_BASE, JSON.stringify(PUBLISHED));
+  localStorage.removeItem(LS_TS);
   return JSON.parse(JSON.stringify(PUBLISHED));
+}
+function normaliza(txt){ try{ return JSON.stringify(JSON.parse(txt)); }catch(e){ return ""; } }
+function edadBorrador(){
+  const ts = Number(localStorage.getItem(LS_TS) || 0);
+  if (!ts) return "";
+  const dias = Math.floor((Date.now() - ts) / 86400000);
+  return dias >= 1 ? ` de hace ${dias} día${dias > 1 ? "s" : ""}` : " de hoy";
 }
 function saveDraft(){
   localStorage.setItem(LS_DRAFT, JSON.stringify(DRAFT));
+  localStorage.setItem(LS_TS, String(Date.now()));
   dirty = true; paintStatus();
 }
 let saveTimer;
@@ -562,9 +581,11 @@ document.querySelectorAll("[data-sec]").forEach(b=>b.addEventListener("click",()
 }));
 
 function paintStatus(){
-  $("status").innerHTML = (dirty||localStorage.getItem(LS_DRAFT))
-    ? `📝 <b>Borrador con cambios</b> sin publicar`
-    : `✅ Sin cambios pendientes`;
+  $("status").innerHTML = borradorSospechoso
+    ? `<span style="color:var(--teja)">⚠️ <b>Borrador${edadBorrador()} que no coincide con la web publicada</b> · revísalo o descártalo antes de publicar</span>`
+    : (dirty||localStorage.getItem(LS_DRAFT))
+      ? `📝 <b>Borrador con cambios</b> sin publicar`
+      : `✅ Sin cambios pendientes`;
   if (!puedePublicar()) $("status").innerHTML += ` · <span style="color:var(--teja)">GitHub sin configurar</span>`;
 }
 
@@ -576,8 +597,10 @@ $("btnPreview").addEventListener("click",()=>{
 $("btnReset").addEventListener("click",()=>{
   if (!confirm("¿Descartar el borrador y volver al contenido publicado?")) return;
   localStorage.removeItem(LS_DRAFT);
+  localStorage.removeItem(LS_TS);
   localStorage.setItem(LS_BASE, JSON.stringify(PUBLISHED));
   DRAFT = JSON.parse(JSON.stringify(PUBLISHED));
+  borradorSospechoso=false;
   dirty=false; renderSection(); paintStatus(); toast("Borrador descartado","ok");
 });
 
@@ -718,7 +741,9 @@ async function ghGet(path){
   const g = ghConfig();
   if (g.token){
     const api = `https://api.github.com/repos/${g.owner}/${g.repo}/contents/${path}?ref=${g.branch}`;
-    return fetch(api,{headers:ghHeaders(g.token)});
+    // no-store obligatorio: la API de GitHub responde con Cache-Control de 60 s y
+    // el navegador devolvía un sha caducado, que tumbaba la publicación con un 409.
+    return fetch(api,{headers:ghHeaders(g.token), cache:"no-store"});
   }
   return fetch(ghApiUrl()+"?path="+encodeURIComponent(path),{cache:"no-store"});
 }
@@ -830,13 +855,18 @@ async function ghPut(path, base64, message){
     return r.json();
   }
   const api = `https://api.github.com/repos/${g.owner}/${g.repo}/contents/${path}`;
-  let sha;
-  const head = await fetch(api+`?ref=${g.branch}`,{headers:ghHeaders(g.token)});
-  if (head.ok) sha = (await head.json()).sha;
-  const r = await fetch(api,{
+  const leerSha = async ()=>{
+    const head = await fetch(api+`?ref=${g.branch}`,{headers:ghHeaders(g.token), cache:"no-store"});
+    return head.ok ? (await head.json()).sha : undefined;
+  };
+  const escribir = (sha)=> fetch(api,{
     method:"PUT", headers:ghHeaders(g.token),
     body: JSON.stringify({ message, branch:g.branch, content:base64, ...(sha?{sha}:{}) })
   });
+  let r = await escribir(await leerSha());
+  // 409 = el fichero cambió entre que leímos el sha y escribimos. Se relee y se
+  // reintenta una vez; si vuelve a chocar, que lo cuente en vez de insistir.
+  if (r.status === 409) r = await escribir(await leerSha());
   if (!r.ok){
     const j = await r.json().catch(()=>({}));
     throw new Error(j.message || "HTTP "+r.status);
@@ -847,6 +877,13 @@ async function ghPut(path, base64, message){
 $("btnPublish").addEventListener("click", async ()=>{
   const b=$("btnPublish");
   if (!puedePublicar()){ currentSec="_github"; renderSection(); toast("Configura GitHub para poder publicar","err"); return; }
+  if (borradorSospechoso && !confirm(
+    "⚠️ ATENCIÓN: este borrador" + edadBorrador() + " NO coincide con la web publicada.\n" +
+    "No consta que se hiciera sobre lo que hay hoy en la web.\n\n" +
+    "Si publicas, la web ENTERA pasará a ser este borrador y se perderá todo lo\n" +
+    "publicado desde entonces: textos, fotos, tarifas, fechas…\n\n" +
+    "Recomendado: Cancelar → «Descartar borrador» → rehacer los cambios sobre lo último.\n\n" +
+    "¿Publicar de todos modos?")) return;
   b.disabled=true; b.textContent="Comprobando…";
   const cambiado = await remoteChangedSinceBase();
   b.disabled=false; b.textContent="🚀 Publicar";
@@ -861,7 +898,9 @@ $("btnPublish").addEventListener("click", async ()=>{
   try{
     await ghPut("content/content.js", b64encode(contentFileBody()), "content: actualización desde el panel");
     localStorage.removeItem(LS_DRAFT);
+    localStorage.removeItem(LS_TS);
     localStorage.setItem(LS_BASE, JSON.stringify(DRAFT));
+    borradorSospechoso=false;
     dirty=false; paintStatus();
     toast("✅ Publicado. La web pública se actualiza en 1–2 min.","ok");
   }catch(e){ toast("Error al publicar: "+e.message,"err"); }
@@ -936,7 +975,10 @@ document.querySelector('[data-sec="negocio"]').classList.add("active");
 try{ localStorage.setItem("labellota_notrack","1"); }catch(e){}
 renderSection();
 paintStatus();
-if (localStorage.getItem(LS_DRAFT)) toast("Hay un borrador guardado de una sesión anterior");
+if (localStorage.getItem(LS_DRAFT)){
+  if (borradorSospechoso) toast("⚠️ Ese borrador no coincide con la web publicada. Revísalo o descártalo antes de publicar.","err");
+  else toast("Hay un borrador guardado de una sesión anterior");
+}
 // La sonda tarda un instante: al volver, repinta el estado y la pantalla de ⚙️.
 ghDetectarServidor().then(()=>{ paintStatus(); if (currentSec==="_github") renderSection(); });
 </script>

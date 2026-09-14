@@ -75,17 +75,24 @@ export default async function handler(req) {
     }
 
     // GitHub exige el sha del fichero actual para sustituirlo; si no existe, se crea.
-    let sha;
-    const head = await fetch(contents(ruta) + "?ref=" + branch, { headers: cab, cache: "no-store" });
-    if (head.ok) sha = (await head.json()).sha;
+    const leerSha = async () => {
+      const head = await fetch(contents(ruta) + "?ref=" + branch, { headers: cab, cache: "no-store" });
+      return head.ok ? (await head.json()).sha : undefined;
+    };
 
     // El mensaje lleva quién ha publicado: en el historial se ve de un vistazo.
     const mensaje = String(b.message || "content: actualización desde el panel").slice(0, 120) + " · " + quien;
-    const r = await fetch(contents(ruta), {
-      method: "PUT",
-      headers: { ...cab, "content-type": "application/json" },
-      body: JSON.stringify({ message: mensaje, branch, content: contenido, ...(sha ? { sha } : {}) }),
-    });
+    const escribir = (sha) =>
+      fetch(contents(ruta), {
+        method: "PUT",
+        headers: { ...cab, "content-type": "application/json" },
+        body: JSON.stringify({ message: mensaje, branch, content: contenido, ...(sha ? { sha } : {}) }),
+      });
+
+    let r = await escribir(await leerSha());
+    // 409: el fichero cambió entre la lectura y la escritura. Se relee y se
+    // reintenta una vez; si vuelve a chocar, que lo cuente en vez de insistir.
+    if (r.status === 409) r = await escribir(await leerSha());
     return json(await r.json().catch(() => ({})), r.status);
   }
 
