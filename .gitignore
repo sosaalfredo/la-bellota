@@ -13,3 +13,6 @@ dist/
 
 # Originales de las fotos de la camper (se optimizan a content/img/, no se publican tal cual)
 websizephotos/
+
+.vercel
+.env*
