@@ -310,24 +310,6 @@
     if (!A.aviso) $("areasAviso").hidden = true;
   })();
 
-  /* ---------- Explora Gran Canaria (teaser) ---------- */
-  (function explora() {
-    const sec = document.getElementById("explora");
-    if (!sec) return;
-    const E = C.explora;
-    if (!E || !(E.lista || []).length) {
-      sec.hidden = true;
-      document.querySelectorAll('a[href^="explora-gran-canaria"]').forEach((a) => { if (a.closest("nav")) (a.parentElement || a).remove(); });
-      return;
-    }
-    document.getElementById("exploraCards").innerHTML = E.lista.map((l) =>
-      '<a class="explorecard reveal" href="explora-gran-canaria/#' + esc(l.slug) + '">' +
-        '<img src="' + esc(l.foto) + '"' + respAttrs(l.foto, "(min-width: 900px) 25vw, (min-width: 600px) 50vw, 100vw") + ' alt="' + esc(l.nombre) + '" loading="lazy" decoding="async">' +
-        '<div class="in"><b>' + esc(l.nombre) + "</b><span>" + esc(l.municipio) + "</span><p>" + esc(l.texto) + "</p></div>" +
-      "</a>"
-    ).join("");
-  })();
-
   /* ---------- La Bellota Extremeña ---------- */
   (function hermano() {
     const sec = document.getElementById("extremena");
