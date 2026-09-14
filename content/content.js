@@ -5,7 +5,7 @@
 window.SITE_CONTENT = {
   "meta": {
     "version": 4,
-    "actualizado": "2026-09-06"
+    "actualizado": "2026-09-14"
   },
   "negocio": {
     "nombre": "La Bellota Campers",
@@ -24,7 +24,7 @@ window.SITE_CONTENT = {
     "cta1": "Consultar fechas",
     "cta2": "Conoce la camper",
     "foto": "content/img/camper-cumbre-mar-de-nubes.jpg",
-    "badge": "Camper 2026 a estrenar · desde 110 €/noche"
+    "badge": "Camper 2026 a estrenar · Desde 110 €/noche"
   },
   "claves": [
     {
