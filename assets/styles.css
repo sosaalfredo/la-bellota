@@ -186,6 +186,23 @@ button{font:inherit}
 }
 .kicker::before{content:"";width:22px;height:2.5px;border-radius:2px;background:currentColor}
 .hero .kicker{color:#FFCF8A}
+/* En la portada, el lema conserva el peso visual del titular y el H1 pasa a
+   llevar la consulta de búsqueda ("alquiler de camper en Gran Canaria") con el
+   aspecto del antetítulo: lo que lee una persona no cambia, lo que lee un
+   buscador sí. En el resto de páginas, h1 sigue siendo el titular grande. */
+.hero__lema{
+  font-family:var(--font-display);font-weight:800;
+  font-size:clamp(2.5rem,5.6vw,4.3rem);line-height:1.02;letter-spacing:-.025em;
+  text-wrap:balance;margin:.8rem 0 .6rem;white-space:pre-line;
+  text-shadow:0 2px 24px rgba(0,0,0,.35);
+}
+.hero h1{
+  display:inline-flex;align-items:center;gap:.55rem;
+  font-family:var(--font-body);font-size:.84rem;font-weight:700;letter-spacing:.16em;
+  line-height:1.35;text-transform:uppercase;color:#FFCF8A;
+  margin:0 0 1.1rem;white-space:normal;text-shadow:0 1px 12px rgba(0,0,0,.45);
+}
+.hero h1::before{content:"";width:22px;height:2.5px;border-radius:2px;background:currentColor;flex:0 0 auto}
 h1{
   font-family:var(--font-display);font-weight:800;
   font-size:clamp(2.5rem,5.6vw,4.3rem);line-height:1.02;letter-spacing:-.025em;
@@ -251,6 +268,13 @@ h2{
 }
 .intro__text p{margin-bottom:1rem;color:var(--muted);font-size:1.08rem}
 .intro__text p strong{color:var(--ink)}
+/* Resumen en una frase: quién somos, dónde y a qué precio. Es lo que copian
+   los buscadores y los asistentes de IA, y de paso resuelve la duda rápida. */
+.intro__text p.intro__ficha{
+  border-left:3px solid var(--miel);padding:.1rem 0 .1rem 1rem;
+  font-size:.97rem;color:var(--ink);margin-top:1.4rem;
+}
+.intro__ficha:empty{display:none}
 .intro__firma{display:flex;align-items:center;gap:.9rem;margin-top:1.6rem}
 .intro__firma svg{width:44px;height:44px}
 .intro__firma .logomark{width:54px;height:59px}
@@ -372,7 +396,13 @@ h2{
   color:color-mix(in srgb,var(--ink) 78%,transparent);
   text-decoration:line-through;cursor:not-allowed;
 }
-.cal__dia.pasado{opacity:.3;cursor:default}
+/* Los días pasados se apagan con color propio, no con opacidad: con opacity:.3
+   el texto quedaba en 1,87:1 sobre blanco y suspendía el contraste AA. */
+.cal__dia.pasado{
+  color:var(--muted);background:transparent;border-color:var(--line-soft,var(--line));
+  text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--muted) 45%,transparent);
+  cursor:default;
+}
 .cal__dia.hoy{box-shadow:inset 0 0 0 2px var(--miel)}
 .cal__dia.sel{background:var(--miel);color:var(--on-miel);border-color:var(--miel)}
 .cal__dia.enrango{background:color-mix(in srgb,var(--miel) 38%,var(--surface));border-color:color-mix(in srgb,var(--miel) 60%,var(--line))}

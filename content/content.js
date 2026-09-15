@@ -18,8 +18,8 @@ window.SITE_CONTENT = {
     "horario": "Teléfono: 9:00–20:00 · Entregas: 8:00–11:00 y 16:30–18:30"
   },
   "hero": {
-    "eyebrow": "Alquiler de camper · Gran Canaria",
-    "titulo": "La isla entera.\nSin horarios. Sin maletas.",
+    "lema": "La isla entera.\nSin horarios. Sin maletas.",
+    "titulo": "Alquiler de camper en Gran Canaria",
     "subtitulo": "Descubre Gran Canaria en una camper de 2026 totalmente equipada para 4 personas. Desde 110 € por noche, con la base a 5 minutos del aeropuerto: aterriza, recoge y arranca.",
     "cta1": "Consultar fechas",
     "cta2": "Conoce la camper",
@@ -58,6 +58,7 @@ window.SITE_CONTENT = {
     "titulo": "Un continente en miniatura, a las puertas de tu cama",
     "texto1": "Gran Canaria cambia de paisaje cada veinte minutos: dunas doradas, pinares por encima de las nubes, acantilados que caen al Atlántico y pueblos donde el tiempo va más despacio. La única forma de vivirla entera es no tener que volver cada noche al mismo sitio.",
     "texto2": "No somos una flota anónima. Somos un negocio familiar que lleva 11 años recibiendo personas en La Bellota Extremeña, en Las Palmas, y ahora llevamos ese mismo cariño al mundo camper: un vehículo cuidado al detalle y alguien al otro lado del teléfono que conoce cada rincón de la isla.",
+    "resumen": "La Bellota Campers alquila furgonetas camper en Gran Canaria. Somos La Bellota Extremeña S.L.U., con base en Ojos de Garza (Telde), a cinco minutos del aeropuerto de Gran Canaria: una Weinsberg de 2026 para cuatro personas, desde 110 € por noche con 200 km al día incluidos. Atendemos en español e inglés, todo el año.",
     "foto": "content/img/camper-carretera-eucaliptos.jpg",
     "fotoPie": "Los planes buenos no caben en un hotel"
   },
