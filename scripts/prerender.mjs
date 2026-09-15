@@ -39,7 +39,7 @@ function copyDir(src, dst) {
     else if (e.isFile()) fs.copyFileSync(s, d);
   }
 }
-for (const dir of ["assets", "content", "legal", "admin", "explora-gran-canaria"]) {
+for (const dir of ["assets", "content", "legal", "admin", "explora-gran-canaria", "dormir-en-camper-gran-canaria"]) {
   copyDir(path.join(ROOT, dir), path.join(DIST, dir));
 }
 for (const f of ["index.html", "sources.md", "404.html", "favicon.ico", "site.webmanifest"]) {
@@ -213,6 +213,19 @@ if ((expHtml.match(/<article/g) || []).length < nLugares) {
 }
 fs.writeFileSync(path.join(DIST, "explora-gran-canaria", "index.html"), expHtml);
 
+/* ---------- 4b. Dormir en camper (guía de pernocta) ---------- */
+// La prosa es estática; pernocta.js solo pinta las áreas desde content.js y
+// escribe el JSON-LD. Se prerenderiza igual para que los bots lo lean sin JS.
+const dormir = render("dormir-en-camper-gran-canaria/index.html", BASE + "dormir-en-camper-gran-canaria/", [
+  "content/content.js",
+  "assets/pernocta.js",
+]);
+const dormirHtml = dormir.dom.serialize();
+if (!dormirHtml.includes("ld-pernocta") || !dormirHtml.includes("areacard")) {
+  throw new Error("Prerender de la guía de pernocta incompleto (faltan áreas o JSON-LD) — abortando build");
+}
+fs.writeFileSync(path.join(DIST, "dormir-en-camper-gran-canaria", "index.html"), dormirHtml);
+
 /* ---------- 5. sitemap.xml ---------- */
 const lastmod = C.meta?.actualizado || HOY;
 // Solo páginas indexables: las legales llevan <meta name="robots" content="noindex">
@@ -223,6 +236,7 @@ const lastmod = C.meta?.actualizado || HOY;
 const mtime = (p) => fs.statSync(path.join(ROOT, p)).mtime.toISOString().slice(0, 10);
 const urls = [
   { loc: BASE, lastmod, priority: "1.0" },
+  { loc: BASE + "dormir-en-camper-gran-canaria/", lastmod: mtime("dormir-en-camper-gran-canaria/index.html"), priority: "0.9" },
   { loc: BASE + "explora-gran-canaria/", lastmod: mtime("content/explora-lugares.js"), priority: "0.8" },
 ];
 fs.writeFileSync(
@@ -302,8 +316,14 @@ Guía editorial propia con ${nLugares} lugares imprescindibles de la isla, con c
 
 ${lugares}
 
+## Dónde dormir con la camper en Gran Canaria
+Se puede pernoctar (dormir dentro del vehículo correctamente estacionado, sin sacar nada al exterior) allí donde esté permitido aparcar. Acampar (desplegar toldo, mesa o sillas) solo se permite en zonas habilitadas: las zonas de acampada del Cabildo de Gran Canaria, que son gratuitas y requieren permiso previo online, los campings y las áreas privadas. En las playas no se puede estacionar ni acampar, y los espacios naturales protegidos tienen normas propias. Guía completa: ${BASE}dormir-en-camper-gran-canaria/
+
+${(C.areas?.lista || []).map((a) => `- ${a.nombre} (${a.zona}): ${a.servicios || ""}`).join("\n")}
+
 ## Páginas
 - [Inicio — la camper, tarifas, disponibilidad y reserva](${BASE})
+- [Dormir en camper en Gran Canaria — normativa y zonas de pernocta](${BASE}dormir-en-camper-gran-canaria/)
 - [Explora Gran Canaria — guía de lugares en camper](${BASE}explora-gran-canaria/)
 - [Aviso legal y privacidad](${BASE}legal/aviso-legal)
 - [Condiciones de alquiler](${BASE}legal/condiciones)

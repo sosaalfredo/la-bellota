@@ -92,3 +92,55 @@
   .lugar--panorama .facts{grid-template-columns:1fr}
   .xcats{justify-content:flex-start}
 }
+
+/* =========================================================
+   GUÍA DE PERNOCTA (/dormir-en-camper-gran-canaria/)
+   Reutiliza el esqueleto de Explora (.xhero, .miga, .xcta) y añade los
+   bloques propios de una guía de texto: respuesta destacada, comparativa,
+   avisos y fuentes.
+   ========================================================= */
+.respuesta{
+  background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--miel);
+  border-radius:var(--radius);padding:clamp(1.3rem,3vw,2rem);margin-top:1.6rem;box-shadow:var(--shadow-s);
+}
+.respuesta h2{font-family:var(--font-display);font-size:clamp(1.3rem,2.6vw,1.7rem);margin:0 0 .8rem}
+.respuesta p{margin:0 0 .8rem;font-size:1.04rem;line-height:1.65}
+.respuesta p:last-child{margin-bottom:0}
+
+.comparo{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1.6rem}
+.comparo__col{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:1.4rem 1.5rem}
+.comparo__col h3{font-family:var(--font-display);font-size:1.25rem;margin:0 0 .5rem;display:flex;align-items:center;gap:.5rem}
+.comparo__col h3::before{content:"";width:12px;height:12px;border-radius:50%;flex:0 0 auto}
+.comparo__col--si{border-top:4px solid var(--pino)}
+.comparo__col--si h3::before{background:var(--pino)}
+.comparo__col--no{border-top:4px solid var(--teja)}
+.comparo__col--no h3::before{background:var(--teja)}
+.comparo__col p{color:var(--muted);margin:0 0 .9rem}
+.comparo__col ul{margin:0;padding-left:1.1rem}
+.comparo__col li{margin-bottom:.4rem}
+
+.aviso-legal-box{
+  margin-top:1.4rem;background:var(--surface-2);border:1px dashed var(--line);
+  border-radius:var(--radius);padding:1.2rem 1.4rem;
+}
+.aviso-legal-box p{margin:0;font-size:.97rem;color:var(--muted)}
+.aviso-legal-box b{color:var(--ink)}
+
+.pasos-lista{margin:1.4rem 0 0;padding-left:1.3rem;max-width:70ch}
+.pasos-lista li{margin-bottom:.9rem;line-height:1.6}
+.pasos-lista li::marker{color:var(--miel-text);font-weight:700}
+.nota-pequena{margin-top:1.2rem;font-size:.92rem;color:var(--muted);max-width:70ch}
+
+.donde-no{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin-top:1.4rem}
+.donde-no article{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--teja);
+  border-radius:var(--radius);padding:1.3rem 1.4rem}
+.donde-no h3{font-family:var(--font-display);font-size:1.12rem;margin:0 0 .5rem}
+.donde-no p{margin:0;color:var(--muted);font-size:.97rem}
+
+.fuentes{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line)}
+.fuentes h3{font-family:var(--font-display);font-size:1.05rem;margin:0 0 .6rem}
+.fuentes p{margin:0 0 .6rem;font-size:.92rem;color:var(--muted);max-width:75ch}
+
+@media (max-width:760px){
+  .comparo{grid-template-columns:1fr}
+}

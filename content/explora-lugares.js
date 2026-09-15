@@ -24,7 +24,7 @@ window.EXPLORA_LUGARES = {
     { "nombre": "Rutas en camper", "activa": false },
     { "nombre": "Playas y piscinas naturales", "activa": false },
     { "nombre": "Miradores", "activa": false },
-    { "nombre": "Dónde pernoctar", "activa": false, "url": "../#areas" },
+    { "nombre": "Dónde pernoctar", "activa": false, "url": "../dormir-en-camper-gran-canaria/" },
     { "nombre": "Gastronomía", "activa": false }
   ],
 

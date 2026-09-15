@@ -93,7 +93,7 @@
     if (i === 14) {
       html += ctaBlock("", "¿Y dónde duermo con la camper?",
         "Zonas de acampada del Cabildo con permiso gratuito, campings y áreas privadas: tenemos la selección hecha.",
-        '<a class="btn" href="../#areas">Ver áreas de pernocta</a>');
+        '<a class="btn" href="../dormir-en-camper-gran-canaria/">Ver dónde dormir</a>');
     }
   });
   $("lugaresLista").innerHTML = html;
