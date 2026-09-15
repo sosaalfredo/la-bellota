@@ -57,17 +57,20 @@
   };
 
   /* ---------- Images ----------
-     Imágenes responsive: cada foto JPEG tiene variantes -w480 y -w960 junto al
-     original (scripts/img-variants.py). Si una variante no existe (foto subida
-     desde el panel sin pasar por el script), el listener de error quita el
-     srcset y el navegador vuelve al original: nunca se rompe una imagen. */
+     Imágenes responsive: cada foto JPEG tiene variantes WebP -w320/-w480/-w960
+     y una copia WebP del original (scripts/img-variants.py). El srcset pide
+     WebP (pesa la mitad) y el src sigue siendo el JPEG: si el navegador no
+     entiende WebP, o falta la variante porque la foto se subió desde el panel
+     sin pasar por el script, el listener de error quita el srcset y se carga
+     el JPEG original. Nunca se rompe una imagen. */
   const RESP = /\.(jpe?g|png)$/i;
-  const srcset = (url) => {
+  const srcset = (url, anchos) => {
     if (!url || !RESP.test(url) || /-w\d+\.\w+$/.test(url)) return "";
-    const b = url.replace(RESP, ""), e = url.slice(b.length);
-    return b + "-w480" + e + " 480w, " + b + "-w960" + e + " 960w, " + url + " 1600w";
+    const b = url.replace(RESP, "");
+    return (anchos || [480, 960]).map((w) => b + "-w" + w + ".webp " + w + "w")
+      .concat(b + ".webp 1600w").join(", ");
   };
-  const respAttrs = (url, sizes) => { const s = srcset(url); return s ? ' srcset="' + esc(s) + '" sizes="' + sizes + '"' : ""; };
+  const respAttrs = (url, sizes, anchos) => { const s = srcset(url, anchos); return s ? ' srcset="' + esc(s) + '" sizes="' + sizes + '"' : ""; };
   const setResp = (el, url, sizes) => {
     if (!el || !url) return;
     const s = srcset(url);
@@ -100,7 +103,7 @@
     document.querySelectorAll("#galeriaThumbs button").forEach((b, i) => b.classList.toggle("active", i === fotoIdx));
   };
   $("galeriaThumbs").innerHTML = fotos.map((f, i) =>
-    '<button type="button" aria-label="Foto ' + (i + 1) + '"><img src="' + esc(f.url) + '"' + respAttrs(f.url, "120px") + ' alt="" loading="lazy" decoding="async"></button>'
+    '<button type="button" aria-label="Foto ' + (i + 1) + '"><img src="' + esc(f.url) + '"' + respAttrs(f.url, "120px", [320, 480]) + ' alt="" loading="lazy" decoding="async"></button>'
   ).join("");
   document.querySelectorAll("#galeriaThumbs button").forEach((b, i) =>
     b.addEventListener("click", () => { fotoIdx = i; renderFoto(); }));

@@ -11,13 +11,15 @@
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   const IMGBASE = "../content/img/explora/";
 
-  /* Imágenes responsive: variantes -w480/-w960 junto a cada foto (scripts/img-variants.py);
-     si falta alguna, el listener de error quita el srcset y carga el original. */
+  /* Imágenes responsive: variantes WebP -w480/-w960 y copia WebP del original
+     junto a cada foto (scripts/img-variants.py). El src sigue siendo el JPEG:
+     si falta la variante o el navegador no entiende WebP, el listener de error
+     quita el srcset y carga el original. */
   const RESP = /\.(jpe?g|png)$/i;
   const srcset = (url) => {
     if (!url || !RESP.test(url) || /-w\d+\.\w+$/.test(url)) return "";
-    const b = url.replace(RESP, ""), e = url.slice(b.length);
-    return b + "-w480" + e + " 480w, " + b + "-w960" + e + " 960w, " + url + " 1400w";
+    const b = url.replace(RESP, "");
+    return b + "-w480.webp 480w, " + b + "-w960.webp 960w, " + b + ".webp 1400w";
   };
   const respAttrs = (url, sizes) => { const s = srcset(url); return s ? ' srcset="' + esc(s) + '" sizes="' + sizes + '"' : ""; };
   document.addEventListener("error", (e) => {
@@ -81,17 +83,17 @@
     if (i === 3) {
       html += ctaBlock("", "¿Te imaginas recorriendo estos lugares con La Bellota?",
         "Comprueba las fechas disponibles y empieza a preparar tu ruta por Gran Canaria.",
-        '<a class="btn" href="../index.html#disponibilidad">Consultar disponibilidad</a>');
+        '<a class="btn" href="../#disponibilidad">Consultar disponibilidad</a>');
     }
     if (i === 9) {
       html += ctaBlock("xcta--miel", "Tu casa para esta ruta ya existe",
         "Weinsberg 2026 para 4 personas, con cocina, ducha y energía solar. Así se viaja por la isla.",
-        '<a class="btn" href="../index.html#camper">Conoce La Bellota</a>');
+        '<a class="btn" href="../#camper">Conoce La Bellota</a>');
     }
     if (i === 14) {
       html += ctaBlock("", "¿Y dónde duermo con la camper?",
         "Zonas de acampada del Cabildo con permiso gratuito, campings y áreas privadas: tenemos la selección hecha.",
-        '<a class="btn" href="../index.html#areas">Ver áreas de pernocta</a>');
+        '<a class="btn" href="../#areas">Ver áreas de pernocta</a>');
     }
   });
   $("lugaresLista").innerHTML = html;
