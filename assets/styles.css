@@ -194,13 +194,16 @@ button{font:inherit}
 /* En escritorio va detrás del menú (order), y en móvil a la izquierda del icono
    de menú. Sin margin-left:auto propio: el que reparte el hueco es .nav. */
 .langsel{position:relative;display:flex;align-items:center;order:3}
+/* La barra de cabecera toma el color del fondo de la página, así que el botón
+   usa los tokens de tinta y línea: se ve igual en claro y en oscuro. */
 .langsel__btn{
-  display:inline-flex;align-items:center;gap:.4rem;background:transparent;cursor:pointer;
-  border:1px solid rgba(242,237,224,.28);border-radius:999px;padding:.34rem .7rem;
-  color:var(--on-pino);font:inherit;font-size:.8rem;font-weight:600;letter-spacing:.04em;
+  display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);cursor:pointer;
+  border:1px solid var(--line);border-radius:999px;padding:.38rem .75rem;
+  color:var(--ink);font:inherit;font-size:.84rem;font-weight:700;letter-spacing:.04em;
+  transition:border-color .15s, color .15s;
 }
-.langsel__btn svg{width:15px;height:15px;opacity:.85}
-.langsel__btn:hover{border-color:var(--miel);color:var(--miel)}
+.langsel__btn svg{width:16px;height:16px;color:var(--miel-text)}
+.langsel__btn:hover{border-color:var(--miel);color:var(--miel-text)}
 .langsel__menu{
   position:absolute;top:calc(100% + .5rem);right:0;z-index:60;margin:0;padding:.3rem;
   list-style:none;min-width:9.5rem;background:var(--surface);border:1px solid var(--line);
@@ -212,8 +215,6 @@ button{font:inherit}
 }
 .langsel__menu a:hover{background:var(--surface-2)}
 .langsel__menu a[aria-current]{color:var(--miel-text);font-weight:600}
-.topbar.scrolled .langsel__btn{border-color:var(--line);color:var(--ink)}
-.topbar.scrolled .langsel__btn:hover{border-color:var(--miel);color:var(--miel-text)}
 
 /* Aviso de idioma: aparece solo si el navegador va en el otro idioma. No
    redirige a nadie, para que los buscadores vean las dos versiones enteras. */
