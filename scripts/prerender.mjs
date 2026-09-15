@@ -19,6 +19,7 @@
 import { JSDOM } from "jsdom";
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const DIST = path.join(ROOT, "dist");
@@ -47,12 +48,17 @@ for (const f of ["index.html", "sources.md", "404.html", "favicon.ico", "site.we
 }
 
 /* ---------- 2. Render de una página en jsdom ---------- */
-function render(htmlPath, url, scripts) {
+function render(htmlPath, url, scripts, antes) {
   // runScripts "outside-only": window.eval ejecuta DENTRO del contexto de la
   // página (window/document reales), pero los <script src> del HTML no se
   // cargan solos — los inyectamos nosotros en orden controlado.
   const dom = new JSDOM(read(htmlPath), { url, runScripts: "outside-only", pretendToBeVisual: true });
   const win = dom.window;
+  // Idioma del navegador simulado: main.js lo usa para decidir si enseña la
+  // barra de "esta página también está en…", que NO debe colarse en el HTML
+  // estático. Coincidiendo con el de la página, nunca aparece.
+  Object.defineProperty(win.navigator, "language", { value: "es-ES", configurable: true });
+  if (antes) antes(win, win.document);
   // Stubs mínimos de APIs de navegador que jsdom no trae.
   // Sin IntersectionObserver, los renderers marcan todo .reveal como
   // visible: exactamente lo que queremos en el HTML estático.
@@ -65,7 +71,7 @@ function render(htmlPath, url, scripts) {
 }
 
 /* ---------- 3. Home ---------- */
-const home = render("index.html", BASE, ["content/content.js", "assets/main.js"]);
+const home = render("index.html", BASE, ["assets/i18n.js", "content/content.js", "assets/main.js"]);
 const C = home.win.SITE_CONTENT || {};
 const neg = C.negocio || {};
 
@@ -83,19 +89,59 @@ const perfiles = [
   "https://www.facebook.com/p/La-Bellota-Extreme%C3%B1a-100067590225478/",
 ].filter(Boolean);
 
-const ld = [
+// Los textos del JSON-LD que no salen de content.js, por idioma.
+const LD_TEXTOS = {
+  es: {
+    pagina: "Alquiler de camper en Gran Canaria · La Bellota Campers",
+    lang: "es-ES",
+    resumen: "Alquiler de furgoneta camper en Gran Canaria.",
+    pago: "Transferencia bancaria, tarjeta",
+    precioRango: (min, max) => min + "–" + max + " € por noche",
+    producto: "Alquiler de furgoneta camper Weinsberg 2026 (4 plazas) en Gran Canaria",
+    productoDesc: "Camper Weinsberg 2026 sobre Fiat Ducato para 4 personas: 2 camas dobles, cocina, ducha y WC, nevera, placas solares. Entrega junto al aeropuerto de Gran Canaria.",
+    combustible: "Diésel",
+    cambio: "Manual",
+    configuracion: "Camper de gran volumen sobre Fiat Ducato, 6,0 m",
+    oferta: "Precio por noche · mínimo 3 noches · 200 km/día incluidos",
+  },
+  en: {
+    pagina: "Campervan hire in Gran Canaria · La Bellota Campers",
+    lang: "en-GB",
+    resumen: "Campervan hire in Gran Canaria.",
+    pago: "Bank transfer, card",
+    precioRango: (min, max) => "€" + min + "–" + max + " per night",
+    producto: "Weinsberg 2026 campervan hire (4 berths) in Gran Canaria",
+    productoDesc: "Weinsberg 2026 campervan on a Fiat Ducato for four people: two double beds, kitchen, shower and toilet, fridge, solar panels. Handover next to Gran Canaria airport.",
+    combustible: "Diesel",
+    cambio: "Manual",
+    configuracion: "High-volume campervan on a Fiat Ducato, 6.0 m",
+    oferta: "Price per night · minimum 3 nights · 200 km a day included",
+  },
+};
+
+// El mismo bloque de datos estructurados para cada idioma. Las rutas de imagen
+// van siempre contra la raíz del dominio, aunque el contenido inglés las lleve
+// en relativo para el navegador.
+function bloquesLD(C, base, lang) {
+  const neg = C.negocio || {};
+  const t = LD_TEXTOS[lang];
+  const raiz = (p) => BASE + String(p || "").replace(/^\.\.\//, "");
+  const precios = (C.tarifas?.temporadas || [])
+    .map((x) => +(String(x.precio).match(/\d+/) || [0])[0])
+    .filter((n) => n >= 30);
+  return [
   {
     "@context": "https://schema.org",
     "@type": "AutoRental",
     "@id": BASE + "#negocio",
     "name": neg.nombre || "La Bellota Campers",
     "legalName": "La Bellota Extremeña S.L.U.",
-    "description": C.intro?.resumen || "Alquiler de furgoneta camper en Gran Canaria.",
+    "description": C.intro?.resumen || t.resumen,
     "url": BASE,
     "telephone": neg.telefono,
     "email": neg.email,
     "image": [
-      BASE + (C.hero?.foto || "content/img/camper-cumbre-mar-de-nubes.jpg"),
+      raiz(C.hero?.foto || "content/img/camper-cumbre-mar-de-nubes.jpg"),
       BASE + "content/img/camper-exterior-lateral.jpg",
       BASE + "content/img/camper-interior-salon-cama.jpg",
     ],
@@ -111,41 +157,41 @@ const ld = [
     "areaServed": { "@type": "Place", "name": "Gran Canaria" },
     "knowsLanguage": ["es", "en"],
     "currenciesAccepted": "EUR",
-    "paymentAccepted": "Transferencia bancaria, tarjeta",
+    "paymentAccepted": t.pago,
     "openingHoursSpecification": [{
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
       "opens": "09:00",
       "closes": "20:00",
     }],
-    "priceRange": precios.length ? Math.min(...precios) + "–" + Math.max(...precios) + " € por noche" : undefined,
+    "priceRange": precios.length ? t.precioRango(Math.min(...precios), Math.max(...precios)) : undefined,
     "sameAs": perfiles,
   },
   {
     // Frescura: la fecha real de la última edición del contenido.
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "@id": BASE + "#pagina",
-    "url": BASE,
-    "name": "Alquiler de camper en Gran Canaria · La Bellota Campers",
-    "inLanguage": "es-ES",
+    "@id": base + "#pagina",
+    "url": base,
+    "name": t.pagina,
+    "inLanguage": t.lang,
     "isPartOf": { "@id": BASE + "#negocio" },
     "dateModified": C.meta?.actualizado || HOY,
-    "primaryImageOfPage": BASE + (C.hero?.foto || "content/img/camper-cumbre-mar-de-nubes.jpg"),
+    "primaryImageOfPage": raiz(C.hero?.foto || "content/img/camper-cumbre-mar-de-nubes.jpg"),
   },
   precios.length && {
     "@context": "https://schema.org",
     // Product + Vehicle: los campos de vehículo (plazas, año, combustible) son
     // los que extraen los asistentes de IA cuando les preguntan por la camper.
     "@type": ["Product", "Vehicle"],
-    "name": "Alquiler de furgoneta camper Weinsberg 2026 (4 plazas) en Gran Canaria",
-    "description": "Camper Weinsberg 2026 sobre Fiat Ducato para 4 personas: 2 camas dobles, cocina, ducha y WC, nevera, placas solares. Entrega junto al aeropuerto de Gran Canaria.",
+    "name": t.producto,
+    "description": t.productoDesc,
     "brand": { "@type": "Brand", "name": "Weinsberg" },
     "vehicleModelDate": "2026",
     "vehicleSeatingCapacity": 4,
-    "fuelType": "Diésel",
-    "vehicleTransmission": "Manual",
-    "vehicleConfiguration": "Camper de gran volumen sobre Fiat Ducato, 6,0 m",
+    "fuelType": t.combustible,
+    "vehicleTransmission": t.cambio,
+    "vehicleConfiguration": t.configuracion,
     "provider": { "@id": BASE + "#negocio" },
     "image": BASE + "content/img/camper-exterior-lateral.jpg",
     // Sin "review" ni "aggregateRating" A PROPÓSITO: las reseñas de la web son de
@@ -158,9 +204,9 @@ const ld = [
       "highPrice": Math.max(...precios),
       "offerCount": precios.length, // temporadas con precio (la alta va "Consultar")
       "priceCurrency": "EUR",
-      "url": BASE + "#tarifas",
+      "url": base + "#tarifas",
       "availability": "https://schema.org/InStock",
-      "description": "Precio por noche · mínimo 3 noches · 200 km/día incluidos",
+      "description": t.oferta,
       // El precio, dicho en lenguaje de máquina: 110 € por noche, mínimo 3.
       "priceSpecification": {
         "@type": "UnitPriceSpecification",
@@ -182,12 +228,210 @@ const ld = [
       "acceptedAnswer": { "@type": "Answer", "text": f.r },
     })),
   },
-].filter(Boolean);
+  ].filter(Boolean);
+}
+
 const ldTag = home.dom.window.document.createElement("script");
 ldTag.type = "application/ld+json";
-ldTag.textContent = JSON.stringify(ld);
+ldTag.textContent = JSON.stringify(bloquesLD(C, BASE, "es"));
 home.dom.window.document.head.appendChild(ldTag);
 
+// La home se escribe más abajo, después de generar la versión inglesa: si esa
+// falla, hay que quitarle a la española los hreflang y el selector antes de
+// serializarla, para no anunciar una página que no existe.
+
+/* ---------- 3b. Versión en inglés (/en/) ----------
+   El español manda: content.js no cambia y el panel de Nahum tampoco. Las
+   traducciones viven aparte, con la huella del texto español del que salieron:
+   si Nahum reescribe un texto, la huella deja de coincidir, esa frase vuelve al
+   español y el build lo avisa. Así una edición del panel nunca publica una
+   traducción que ya no corresponde. */
+const I18N = {
+  contenido: leerJson("content/i18n/en.json"),
+  interfaz: leerJson("content/i18n/en-ui.json"),
+};
+function leerJson(rel) {
+  const p = path.join(ROOT, rel);
+  return fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, "utf8")) : null;
+}
+const huella = (s) => crypto.createHash("sha1").update(String(s), "utf8").digest("hex").slice(0, 12);
+
+// Mismas exclusiones que el extractor: identidad, contacto, rutas y fechas.
+const NO_TRADUCIBLE = (p) =>
+  /^meta\./.test(p) ||
+  // Claves internas, no texto visible: el icono que se pinta y el tipo de área,
+  // que además se usa como clase CSS. Traducirlas rompería el diseño.
+  /\.icono$/.test(p) ||
+  /^areas\.lista\.\d+\.tipo$/.test(p) ||
+  /^negocio\.(nombre|telefono|whatsapp|email|instagram)$/.test(p) ||
+  /^hermano\.(telefono|direccion)$/.test(p) ||
+  /^areas\.permisoUrl$/.test(p) ||
+  /^resenas\.lista\./.test(p) ||
+  /^disponibilidad\.ocupado/.test(p) ||
+  /\.foto$|\.url$/.test(p);
+
+function traducirContenido(obj, mapa, prefijo, informe) {
+  if (Array.isArray(obj)) return obj.map((v, i) => traducirContenido(v, mapa, prefijo + "." + i, informe));
+  if (obj && typeof obj === "object") {
+    const out = {};
+    for (const [k, v] of Object.entries(obj)) {
+      const p = prefijo ? prefijo + "." + k : k;
+      out[k] = traducirContenido(v, mapa, p, informe);
+    }
+    return out;
+  }
+  if (typeof obj !== "string" || !obj.trim()) return obj;
+  const p = prefijo;
+  // Las rutas de imagen suben un nivel: la página inglesa cuelga de /en/.
+  if (/^content\/img\//.test(obj)) return "../" + obj;
+  if (NO_TRADUCIBLE(p)) return obj;
+  const t = mapa[p];
+  if (!t) { informe.faltan.push(p); return obj; }
+  if (t.src !== huella(obj)) { informe.caducados.push(p); return obj; }
+  return t.text;
+}
+
+let enOk = false;
+if (!I18N.contenido || !I18N.interfaz) {
+  console.warn("i18n: sin content/i18n/en.json o en-ui.json — se publica solo el español");
+} else {
+  const informe = { faltan: [], caducados: [] };
+  const EN = traducirContenido(C, I18N.contenido, "", informe);
+  fs.mkdirSync(path.join(DIST, "en", "content"), { recursive: true });
+  fs.writeFileSync(
+    path.join(DIST, "en", "content", "content.js"),
+    "/* Generado por scripts/prerender.mjs desde content/content.js + content/i18n/en.json. No editar a mano. */\nwindow.SITE_CONTENT = " +
+      JSON.stringify(EN, null, 2) + ";\n"
+  );
+  fs.writeFileSync(path.join(DIST, "i18n-report.json"), JSON.stringify(informe, null, 1));
+
+  const en = render("index.html", BASE + "en/", ["assets/i18n.js", "dist/en/content/content.js", "assets/main.js"], (win, doc) => {
+    doc.documentElement.lang = "en";
+    Object.defineProperty(win.navigator, "language", { value: "en-GB", configurable: true });
+  });
+  const doc = en.dom.window.document;
+
+  // Rutas relativas: la página vive un nivel más abajo.
+  for (const el of doc.querySelectorAll("[src],[href],[srcset]")) {
+    for (const attr of ["src", "href", "srcset"]) {
+      const v = el.getAttribute(attr);
+      if (!v) continue;
+      if (attr === "srcset") {
+        el.setAttribute(attr, v.split(",").map((c) => {
+          const [u, d] = c.trim().split(/\s+/);
+          return (/^(https?:|\/|#|data:|\.\.\/)/.test(u) ? u : "../" + u) + (d ? " " + d : "");
+        }).join(", "));
+      } else if (!/^(https?:|\/\/|\/|#|mailto:|tel:|data:|\.\.\/)/.test(v)) {
+        el.setAttribute(attr, "../" + v);
+      }
+    }
+  }
+
+  // El contenido lo sirve la copia inglesa que cuelga de /en/, no la española.
+  const sc = doc.querySelector('script[src$="content/content.js"]');
+  if (sc) sc.setAttribute("src", "content/content.js");
+
+  // Las guías siguen en español en esta fase: se marca el idioma del destino
+  // para que el navegador y los buscadores lo sepan.
+  doc.querySelectorAll('a[href*="explora-gran-canaria"],a[href*="dormir-en-camper"],a[href*="/legal/"]')
+    .forEach((a) => a.setAttribute("hreflang", "es"));
+
+  // Textos fijos del HTML (los que no vienen de content.js).
+  // Para avisar solo de lo que de verdad falta, se compara contra el HTML
+  // crudo: lo que pinta main.js desde content.js ya viene traducido y sus
+  // topónimos (Presa de Las Niñas, Mogán…) no son textos pendientes.
+  const crudo = new JSDOM(read("index.html")).window.document;
+  const estaticos = new Set();
+  (function rec(n) {
+    for (const h of n.childNodes) {
+      if (h.nodeType === 3) { const v = h.textContent.replace(/\s+/g, " ").trim(); if (v) estaticos.add(v); }
+      else if (h.nodeType === 1) rec(h);
+    }
+  })(crudo.body);
+  for (const el of crudo.querySelectorAll("[aria-label],[placeholder],[alt],[title]")) {
+    for (const a of ["aria-label", "placeholder", "alt", "title"]) {
+      if (el.hasAttribute(a)) estaticos.add(el.getAttribute(a).replace(/\s+/g, " ").trim());
+    }
+  }
+  const sinTraducir = [];
+  const cambiaTexto = (s) => {
+    const k = s.trim();
+    if (!k || !/[a-záéíóúñü]/i.test(k)) return null;
+    if (I18N.interfaz[k] != null) return s.replace(k, I18N.interfaz[k]);
+    // Lo que estaba en la plantilla, sigue en español y nadie tradujo.
+    if (estaticos.has(k) && /[áéíóúñ¿¡]/i.test(k)) sinTraducir.push(k);
+    return null;
+  };
+  const recorre = (nodo) => {
+    for (const n of nodo.childNodes) {
+      if (n.nodeType === 3) {
+        if (n.parentElement && !n.parentElement.hasAttribute("data-c")) {
+          const nuevo = cambiaTexto(n.textContent);
+          if (nuevo != null) n.textContent = nuevo;
+        }
+      } else if (n.nodeType === 1 && !["SCRIPT", "STYLE", "SVG"].includes(n.tagName)) recorre(n);
+    }
+  };
+  recorre(doc.body);
+  for (const el of doc.querySelectorAll("[aria-label],[placeholder],[alt],[title]")) {
+    for (const a of ["aria-label", "placeholder", "alt", "title"]) {
+      if (!el.hasAttribute(a)) continue;
+      const nuevo = cambiaTexto(el.getAttribute(a));
+      if (nuevo != null) el.setAttribute(a, nuevo);
+    }
+  }
+
+  // Cabecera de la página inglesa.
+  const set = (sel, attr, valor) => { const el = doc.querySelector(sel); if (el && valor) el.setAttribute(attr, valor); };
+  const ui = I18N.interfaz;
+  doc.title = ui["meta.title"] || doc.title;
+  set('meta[name="description"]', "content", ui["meta.description"]);
+  set('meta[property="og:title"]', "content", ui["og.title"]);
+  set('meta[property="og:description"]', "content", ui["og.description"]);
+  set('meta[property="og:url"]', "content", BASE + "en/");
+  set('meta[property="og:locale"]', "content", "en_GB");
+  set('link[rel="canonical"]', "href", BASE + "en/");
+
+  // Selector de idioma: enlaces y etiqueta de la versión inglesa.
+  set("#langes", "href", "../");
+  set("#langen", "href", "./");
+  const cur = doc.getElementById("langcur"); if (cur) cur.textContent = "EN";
+  const les = doc.getElementById("langes"); if (les) les.removeAttribute("aria-current");
+  const len = doc.getElementById("langen"); if (len) len.setAttribute("aria-current", "true");
+
+  // La barra de "esta página también está en…" es cosa del navegador.
+  doc.querySelectorAll(".langbar").forEach((el) => el.remove());
+
+  const ldEn = doc.createElement("script");
+  ldEn.type = "application/ld+json";
+  ldEn.textContent = JSON.stringify(bloquesLD(EN, BASE + "en/", "en"));
+  doc.head.appendChild(ldEn);
+
+  const enHtml = en.dom.serialize();
+  if (!enHtml.includes("€800") && !enHtml.includes("800 €")) {
+    throw new Error("Prerender inglés incompleto (faltan las condiciones) — abortando build");
+  }
+  if (/Vista previa del borrador|Consultar fechas<|Preguntas frecuentes</.test(enHtml)) {
+    throw new Error("Prerender inglés con textos en español sin traducir — abortando build");
+  }
+  fs.writeFileSync(path.join(DIST, "en", "index.html"), enHtml);
+  enOk = true;
+  console.log(
+    `✓ Inglés OK — ${Object.keys(I18N.contenido).length} textos de contenido` +
+    (informe.faltan.length ? `, ${informe.faltan.length} SIN TRADUCIR (${informe.faltan.slice(0, 4).join(", ")}…)` : "") +
+    (informe.caducados.length ? `, ${informe.caducados.length} CADUCADOS por edición en español (${informe.caducados.slice(0, 4).join(", ")}…)` : "") +
+    (sinTraducir.length ? `, ${sinTraducir.length} textos fijos sin traducir (${sinTraducir.slice(0, 3).join(" | ")})` : "")
+  );
+}
+
+// Sin versión inglesa no puede haber hreflang apuntando a una página que no existe.
+if (!enOk) {
+  const h = home.dom.window.document;
+  h.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
+  const sel = h.getElementById("langsel"); if (sel) sel.remove();
+}
+
+/* ---------- 3c. Escritura de la home española ---------- */
 const homeHtml = home.dom.serialize();
 if (!homeHtml.includes("800 €") || (homeHtml.match(/<details>/g) || []).length < 3) {
   throw new Error("Prerender de la home incompleto (faltan condiciones o FAQ) — abortando build");
@@ -197,6 +441,10 @@ if (!homeHtml.includes("800 €") || (homeHtml.match(/<details>/g) || []).length
 // de IA leen "estos cambios aún no están publicados" como primer texto.
 if (homeHtml.includes("Vista previa del borrador")) {
   throw new Error("El HTML prerenderizado contiene la barra de vista previa — abortando build");
+}
+// La barra de idioma también es solo del navegador.
+if (homeHtml.includes("langbar")) {
+  throw new Error("El HTML prerenderizado contiene la barra de idioma — abortando build");
 }
 fs.writeFileSync(path.join(DIST, "index.html"), homeHtml);
 
@@ -234,17 +482,30 @@ const lastmod = C.meta?.actualizado || HOY;
 // la del fichero de lugares. Un lastmod compartido le dice a Google que todo
 // cambió cada vez que Nahum toca un precio, y deja de creérselo.
 const mtime = (p) => fs.statSync(path.join(ROOT, p)).mtime.toISOString().slice(0, 10);
+// La portada y su versión inglesa se declaran como alternativas la una de la
+// otra: es la forma de que Google entienda que son la misma página en dos
+// idiomas y no dos páginas compitiendo.
+const alternas = enOk
+  ? [
+      { hreflang: "es", href: BASE },
+      { hreflang: "en", href: BASE + "en/" },
+      { hreflang: "x-default", href: BASE },
+    ]
+  : null;
 const urls = [
-  { loc: BASE, lastmod, priority: "1.0" },
+  { loc: BASE, lastmod, priority: "1.0", alt: alternas },
+  ...(enOk ? [{ loc: BASE + "en/", lastmod, priority: "0.9", alt: alternas }] : []),
   { loc: BASE + "dormir-en-camper-gran-canaria/", lastmod: mtime("dormir-en-camper-gran-canaria/index.html"), priority: "0.9" },
   { loc: BASE + "explora-gran-canaria/", lastmod: mtime("content/explora-lugares.js"), priority: "0.8" },
 ];
 fs.writeFileSync(
   path.join(DIST, "sitemap.xml"),
   '<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' +
     urls.map((u) =>
-      `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod><priority>${u.priority}</priority></url>`
+      `  <url>\n    <loc>${u.loc}</loc>\n` +
+      (u.alt || []).map((a) => `    <xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${a.href}"/>\n`).join("") +
+      `    <lastmod>${u.lastmod}</lastmod>\n    <priority>${u.priority}</priority>\n  </url>`
     ).join("\n") + "\n</urlset>\n"
 );
 
@@ -322,7 +583,8 @@ Se puede pernoctar (dormir dentro del vehículo correctamente estacionado, sin s
 ${(C.areas?.lista || []).map((a) => `- ${a.nombre} (${a.zona}): ${a.servicios || ""}`).join("\n")}
 
 ## Páginas
-- [Inicio — la camper, tarifas, disponibilidad y reserva](${BASE})
+- [Inicio — la camper, tarifas, disponibilidad y reserva](${BASE})${enOk ? `
+- [Home in English — campervan hire in Gran Canaria](${BASE}en/)` : ""}
 - [Dormir en camper en Gran Canaria — normativa y zonas de pernocta](${BASE}dormir-en-camper-gran-canaria/)
 - [Explora Gran Canaria — guía de lugares en camper](${BASE}explora-gran-canaria/)
 - [Aviso legal y privacidad](${BASE}legal/aviso-legal)

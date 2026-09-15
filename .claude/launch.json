@@ -6,6 +6,12 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "8642", "--bind", "127.0.0.1"],
       "port": 8642
+    },
+    {
+      "name": "la-bellota-dist",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8643", "--bind", "127.0.0.1", "--directory", "dist"],
+      "port": 8643
     }
   ]
 }

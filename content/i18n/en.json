@@ -1,0 +1,806 @@
+{
+ "hero.lema": {
+  "src": "472678e46748",
+  "text": "The whole island.\nNo timetables. No suitcases."
+ },
+ "hero.titulo": {
+  "src": "5801862dbd8a",
+  "text": "Campervan hire in Gran Canaria"
+ },
+ "hero.subtitulo": {
+  "src": "cbc4e8bbe82d",
+  "text": "See Gran Canaria in a 2026 campervan, fully equipped for 4 people. From €110 a night, with our base 5 minutes from the airport: land, pick it up and go."
+ },
+ "hero.cta1": {
+  "src": "ed7347093da2",
+  "text": "Check dates"
+ },
+ "hero.cta2": {
+  "src": "f7a48050de90",
+  "text": "Meet the campervan"
+ },
+ "hero.badge": {
+  "src": "17d884768caf",
+  "text": "Brand new 2026 campervan · from €110/night"
+ },
+ "claves.0.titulo": {
+  "src": "a1f96fbda07a",
+  "text": "Brand new 2026 campervan"
+ },
+ "claves.0.texto": {
+  "src": "3045e74ef847",
+  "text": "Weinsberg on a Fiat Ducato, first registered in 2026"
+ },
+ "claves.1.titulo": {
+  "src": "55c5a19f0899",
+  "text": "200 km a day included"
+ },
+ "claves.1.texto": {
+  "src": "c4f736072efb",
+  "text": "Round the island again and again? Unlimited km for +€10/day"
+ },
+ "claves.2.titulo": {
+  "src": "fa99853df469",
+  "text": "Category B licence"
+ },
+ "claves.2.texto": {
+  "src": "a88f4a37bd41",
+  "text": "Under 3,500 kg: it drives like a car"
+ },
+ "claves.3.titulo": {
+  "src": "8b59e3ac98f6",
+  "text": "Right by the airport"
+ },
+ "claves.3.texto": {
+  "src": "77ff3e3cb25f",
+  "text": "Base in Ojos de Garza · return transfer for €40"
+ },
+ "claves.4.titulo": {
+  "src": "70f5043ecb01",
+  "text": "Ready to live in"
+ },
+ "claves.4.texto": {
+  "src": "4eafe1ec7ecd",
+  "text": "Kitchenware, bed and bath linen and welcome pack included"
+ },
+ "negocio.claim": {
+  "src": "32c45178e01a",
+  "text": "Campervan hire in Gran Canaria"
+ },
+ "negocio.base": {
+  "src": "5f2d832f6813",
+  "text": "Ojos de Garza (Telde) · 5 min from the airport"
+ },
+ "negocio.horario": {
+  "src": "319ce370936e",
+  "text": "Phone: 9:00-20:00 · Handovers: 8:00-11:00 and 16:30-18:30"
+ },
+ "footer.texto": {
+  "src": "c4c3a849ad74",
+  "text": "Campervan rental in Gran Canaria. A small business with its door always open, like our campervan."
+ },
+ "contacto.titulo": {
+  "src": "269b530c14a8",
+  "text": "Let's talk. We reply the same day"
+ },
+ "contacto.texto": {
+  "src": "8c30e438dd82",
+  "text": "Tell us your dates and the trip you have in mind. No obligation: we'll tell you which dates are free and help you plan the route."
+ },
+ "contacto.formNota": {
+  "src": "94bb5acea819",
+  "text": "The button opens WhatsApp with your message already written: nothing is sent until you've seen it."
+ },
+ "disponibilidad.titulo": {
+  "src": "6f218cdfec7e",
+  "text": "When are you coming over?"
+ },
+ "disponibilidad.texto": {
+  "src": "514dcf78570a",
+  "text": "See which days are free and pick your dates straight from the calendar: we'll set up your WhatsApp enquiry with everything filled in."
+ },
+ "disponibilidad.nota": {
+  "src": "e04f370499a4",
+  "text": "The calendar is a guide: we confirm availability right away on WhatsApp."
+ },
+ "tarifas.titulo": {
+  "src": "1fbd019ea23b",
+  "text": "Clear prices, no surprises"
+ },
+ "tarifas.nota": {
+  "src": "5ecaad6b74e2",
+  "text": "Includes 24/7 roadside assistance, 200 km a day, a full set of kitchenware and bed and bath linen. Minimum stay 3 nights (4 in high season). The exact price depends on your dates and how long you stay: we confirm it right away on WhatsApp."
+ },
+ "tarifas.temporadas.0.nombre": {
+  "src": "daff2f937168",
+  "text": "Low season"
+ },
+ "tarifas.temporadas.0.meses": {
+  "src": "c4ce3726a526",
+  "text": "April, May and June (except Easter week)"
+ },
+ "tarifas.temporadas.0.precio": {
+  "src": "5b8bb08edf0b",
+  "text": "€110/night · min. 3 nights"
+ },
+ "tarifas.temporadas.1.nombre": {
+  "src": "4c867c32ebd5",
+  "text": "Mid season"
+ },
+ "tarifas.temporadas.1.meses": {
+  "src": "cee882ca45fb",
+  "text": "October, November, December, January, February and March (except Christmas)"
+ },
+ "tarifas.temporadas.1.precio": {
+  "src": "f92d4460b251",
+  "text": "€120/night · min. 3 nights"
+ },
+ "tarifas.temporadas.2.nombre": {
+  "src": "69c86262e597",
+  "text": "High season"
+ },
+ "tarifas.temporadas.2.meses": {
+  "src": "00d3b00a766b",
+  "text": "June, July, August and September"
+ },
+ "tarifas.temporadas.2.precio": {
+  "src": "275c15162dee",
+  "text": "On request · min. 4 nights"
+ },
+ "tarifas.condiciones.0.label": {
+  "src": "58fe5979fd3f",
+  "text": "Booking deposit"
+ },
+ "tarifas.condiciones.0.valor": {
+  "src": "0cbb02aad892",
+  "text": "25% by bank transfer"
+ },
+ "tarifas.condiciones.1.label": {
+  "src": "16be3877503e",
+  "text": "Security deposit (returned in full)"
+ },
+ "tarifas.condiciones.1.valor": {
+  "src": "7a6e479ea954",
+  "text": "€800 by bank transfer, 7 days before"
+ },
+ "tarifas.condiciones.2.label": {
+  "src": "8415dc91f23c",
+  "text": "Payment methods"
+ },
+ "tarifas.condiciones.2.valor": {
+  "src": "fc959925dae4",
+  "text": "Bank transfer and card"
+ },
+ "tarifas.condiciones.3.label": {
+  "src": "e107eb60ddef",
+  "text": "Mileage"
+ },
+ "tarifas.condiciones.3.valor": {
+  "src": "3c8d1c3db0e8",
+  "text": "200 km/day · unlimited +€10/day"
+ },
+ "tarifas.condiciones.4.label": {
+  "src": "3816caae06b3",
+  "text": "Extra km"
+ },
+ "tarifas.condiciones.4.valor": {
+  "src": "ce20a6f744b5",
+  "text": "€0.25/km"
+ },
+ "tarifas.condiciones.5.label": {
+  "src": "b9310a5871c8",
+  "text": "Driver"
+ },
+ "tarifas.condiciones.5.valor": {
+  "src": "c27bda985a82",
+  "text": "Standard category B licence · min. age 25, held for 2 years"
+ },
+ "tarifas.condiciones.6.label": {
+  "src": "39c09230efb7",
+  "text": "Insurance"
+ },
+ "tarifas.condiciones.6.valor": {
+  "src": "5285c606f527",
+  "text": "Fully comprehensive (Generali) · €800 excess"
+ },
+ "tarifas.condiciones.7.label": {
+  "src": "c9750ffcdee6",
+  "text": "Airport transfer"
+ },
+ "tarifas.condiciones.7.valor": {
+  "src": "99f67cd2b183",
+  "text": "€40 return"
+ },
+ "tarifas.condiciones.8.label": {
+  "src": "033294d1aebe",
+  "text": "Pick-up and drop-off"
+ },
+ "tarifas.condiciones.8.valor": {
+  "src": "36307e0439c5",
+  "text": "8:00-11:00 · 16:30-18:30"
+ },
+ "tarifas.condiciones.9.label": {
+  "src": "e0fab30c92d0",
+  "text": "Final clean (optional)"
+ },
+ "tarifas.condiciones.9.valor": {
+  "src": "ead24e7dd54b",
+  "text": "€50, free if you bring it back clean"
+ },
+ "tarifas.condiciones.10.label": {
+  "src": "72c48d57fac8",
+  "text": "Fuel"
+ },
+ "tarifas.condiciones.10.valor": {
+  "src": "62f21ab31197",
+  "text": "Handed over full, returned full"
+ },
+ "tarifas.condiciones.11.label": {
+  "src": "18ecdfa7a5ef",
+  "text": "Fines admin"
+ },
+ "tarifas.condiciones.11.valor": {
+  "src": "af403c5dd1b4",
+  "text": "€50 per fine"
+ },
+ "tarifas.condiciones.12.label": {
+  "src": "ce0fafc08357",
+  "text": "Pets and smoking"
+ },
+ "tarifas.condiciones.12.valor": {
+  "src": "4fdb0d42b77c",
+  "text": "Not allowed"
+ },
+ "resenas.titulo": {
+  "src": "07e364d737c1",
+  "text": "Those who've already taken it out"
+ },
+ "resenas.aviso": {
+  "src": "d8e35ec20b3c",
+  "text": "Sample reviews: our first travellers' own words will be here soon."
+ },
+ "resenas.formTitulo": {
+  "src": "b4e02c4112b6",
+  "text": "Already travelled with La Bellota?"
+ },
+ "resenas.formTexto": {
+  "src": "2951fed7a494",
+  "text": "Tell us how it went: what you say helps the travellers who come after you. It comes to us on WhatsApp and we put it up here as soon as we've read it."
+ },
+ "intro.eyebrow": {
+  "src": "5dd69df1fda9",
+  "text": "Life on wheels"
+ },
+ "intro.titulo": {
+  "src": "02eb888d81eb",
+  "text": "A continent in miniature, a step from your bed"
+ },
+ "intro.texto1": {
+  "src": "4cfcba0050e7",
+  "text": "In Gran Canaria the landscape changes every twenty minutes: golden dunes, pine forests above the clouds, cliffs dropping into the Atlantic and villages where time runs slower. The only way to take it all in is to stop going back to the same place every night."
+ },
+ "intro.texto2": {
+  "src": "051b3cceb81d",
+  "text": "We're not an anonymous fleet. We're a family business that has spent 11 years welcoming people at La Bellota Extremeña, in Las Palmas, and now we bring that same warmth to campervans: a vehicle looked after down to the last detail, and someone at the other end of the phone who knows every corner of the island."
+ },
+ "intro.resumen": {
+  "src": "8eb0e76e7192",
+  "text": "La Bellota Campers offers campervan hire in Gran Canaria. We're La Bellota Extremeña S.L.U., based in Ojos de Garza (Telde), five minutes from Gran Canaria Airport: a 2026 Weinsberg for four people, from €110 a night with 200 km a day included. We speak Spanish and English, all year round."
+ },
+ "intro.fotoPie": {
+  "src": "a676b5470638",
+  "text": "Good plans don't fit in a hotel"
+ },
+ "noche.eyebrow": {
+  "src": "179497d83b5a",
+  "text": "The experience"
+ },
+ "noche.titulo": {
+  "src": "79578eeb875c",
+  "text": "The best hotel has no walls"
+ },
+ "noche.texto": {
+  "src": "e7d7c65d9d92",
+  "text": "Have dinner watching the sun burn out over the Atlantic. Sleep tucked in under a sky that, out here, really does have stars. Have breakfast where the sat nav no longer knows the way. You set the course; La Bellota does the rest."
+ },
+ "noche.cita": {
+  "src": "8db183045dca",
+  "text": "“Happiness is small: it fits in an acorn.”"
+ },
+ "hermano.eyebrow": {
+  "src": "d58d61be88d1",
+  "text": "Where the brand began"
+ },
+ "hermano.titulo": {
+  "src": "620d48bcbb50",
+  "text": "La Bellota Extremeña"
+ },
+ "hermano.texto": {
+  "src": "cc3c6aaeb658",
+  "text": "We've spent 11 years welcoming people at our original home, a short walk from Las Canteras: jamón ibérico (Iberian cured ham), cheeses, preserves and good wine. Now we want people to discover Gran Canaria in a different way, bringing that same quality and care to campervans. Come by before you set off, or to celebrate coming back."
+ },
+ "hermano.enlaces.0.label": {
+  "src": "95077955000a",
+  "text": "📍 Directions"
+ },
+ "hermano.enlaces.1.label": {
+  "src": "82da67b21124",
+  "text": "Facebook"
+ },
+ "hermano.enlaces.2.label": {
+  "src": "b229f1e73d0d",
+  "text": "TripAdvisor"
+ },
+ "pasos.0.titulo": {
+  "src": "d087c404cb8c",
+  "text": "Pick your dates"
+ },
+ "pasos.0.texto": {
+  "src": "b3afff045043",
+  "text": "Message us on WhatsApp or use the form, and we'll confirm availability and price the same day."
+ },
+ "pasos.1.titulo": {
+  "src": "7d4428a24226",
+  "text": "Book it with a deposit"
+ },
+ "pasos.1.texto": {
+  "src": "7f35ab44cd98",
+  "text": "A 25% booking deposit by bank transfer locks in your dates; you pay the rest by transfer or card before pick-up."
+ },
+ "pasos.2.titulo": {
+  "src": "a24d1e37ff0d",
+  "text": "Pick it up ready to go"
+ },
+ "pasos.2.texto": {
+  "src": "14a826582111",
+  "text": "A 20-minute run-through, full tank and beds made. We're 5 minutes from the airport and we can pick you up for €40 return."
+ },
+ "pasos.3.titulo": {
+  "src": "bd617a1f52a1",
+  "text": "Hit the road"
+ },
+ "pasos.3.texto": {
+  "src": "a94803202c1b",
+  "text": "The island is yours. And if anything comes up, you have 24/7 roadside assistance and our direct number."
+ },
+ "camper.eyebrow": {
+  "src": "3511dea450d1",
+  "text": "Our campervan"
+ },
+ "camper.nombre": {
+  "src": "56da3ef5ceb6",
+  "text": "La Bellota"
+ },
+ "camper.tipo": {
+  "src": "f3cb3c54664c",
+  "text": "Large campervan · Weinsberg 2026 · 6 m"
+ },
+ "camper.descripcion": {
+  "src": "e266474b88ba",
+  "text": "A big Weinsberg panel-van conversion on a Fiat Ducato, registered in 2026 and fitted with everything that matters: two double beds, a gas kitchen with fridge and freezer, a bathroom with an indoor and outdoor shower, and solar panels for up to 4 days off-grid. We include kitchenware, bed linen and towels, and a small welcome pack, so on your campervan trip in Gran Canaria all you have to plan is where you want to wake up."
+ },
+ "camper.fotos.0.alt": {
+  "src": "d1fa152cd642",
+  "text": "La Bellota, a 2026 Weinsberg campervan, parked in the Gran Canaria highlands above the sea of clouds"
+ },
+ "camper.fotos.1.alt": {
+  "src": "950f1814587b",
+  "text": "Campervan with the side door open and the step down, ready to climb in"
+ },
+ "camper.fotos.2.alt": {
+  "src": "9c83b5592770",
+  "text": "Rear door open, showing the double bed and views over the pine forest"
+ },
+ "camper.fotos.3.alt": {
+  "src": "10af93257ef7",
+  "text": "The campervan on a highland road at sunset, with the rock pinnacles outlined against the clouds"
+ },
+ "camper.fotos.4.alt": {
+  "src": "3d8577d3a79c",
+  "text": "Sunset in the highlands: the campervan on the road, a pine in the foreground and the rock pinnacles behind"
+ },
+ "camper.fotos.5.alt": {
+  "src": "59f5d7f8c809",
+  "text": "Mountain road above the clouds at sunset, with the campervan on its way"
+ },
+ "camper.fotos.6.alt": {
+  "src": "15d0ae1d1dff",
+  "text": "The campervan on a bend in the highlands, with the sea of clouds filling the valley"
+ },
+ "camper.fotos.7.alt": {
+  "src": "3f678fbf7e6a",
+  "text": "Winding road above the clouds at sunset, with the campervan at a viewpoint"
+ },
+ "camper.fotos.8.alt": {
+  "src": "612a3d0ec608",
+  "text": "The campervan on a mountain road with the inland ravines behind"
+ },
+ "camper.fotos.9.alt": {
+  "src": "1794ad522a30",
+  "text": "The campervan on the highland road, looking out over the ravines and the clouds above the coast"
+ },
+ "camper.fotos.10.alt": {
+  "src": "ab5452d2795b",
+  "text": "The campervan among Canary pines and red earth in the Gran Canaria highlands"
+ },
+ "camper.fotos.11.alt": {
+  "src": "0763ca13ada8",
+  "text": "The campervan driving along a road between slopes of red earth and pine forest"
+ },
+ "camper.fotos.12.alt": {
+  "src": "6076d6fc1535",
+  "text": "The campervan parked under the pines, in the shade of the highland forest"
+ },
+ "camper.fotos.13.alt": {
+  "src": "acb279a411c8",
+  "text": "The campervan passing under a volcanic rock on a road surrounded by pines"
+ },
+ "camper.fotos.14.alt": {
+  "src": "5482f6a28fd1",
+  "text": "Narrow road between rocks and pines, with the campervan head-on"
+ },
+ "camper.fotos.15.alt": {
+  "src": "2d423b81fce3",
+  "text": "Front view of the campervan on a highland road, between pines and rock"
+ },
+ "camper.fotos.16.alt": {
+  "src": "44e69bf4b9fb",
+  "text": "The campervan seen from above taking a hairpin bend through the pine forest"
+ },
+ "camper.fotos.17.alt": {
+  "src": "0b9b917fc7b5",
+  "text": "Campervan interior: seats, kitchen and the double bed at the back with a view"
+ },
+ "camper.fotos.18.alt": {
+  "src": "f074d6337fa9",
+  "text": "Two-ring hob with coffee maker and the door open onto the landscape"
+ },
+ "camper.fotos.19.alt": {
+  "src": "d155d401dbc9",
+  "text": "Worktop and hob beside the sliding door, open onto the countryside"
+ },
+ "camper.fotos.20.alt": {
+  "src": "adecaa3d2997",
+  "text": "Wooden kitchen units and the rear bedroom made up with bed linen"
+ },
+ "camper.fotos.21.alt": {
+  "src": "7a676309cf3d",
+  "text": "Overhead lockers, fridge and the way through to the rear bedroom with the bed made"
+ },
+ "camper.fotos.22.alt": {
+  "src": "283bfe176a90",
+  "text": "Rear double bed with skylight and a window onto the sea of clouds"
+ },
+ "camper.fotos.23.alt": {
+  "src": "7270e038e391",
+  "text": "Full bathroom with shower, toilet and basin, and the swivel cab seats"
+ },
+ "camper.specs.0.valor": {
+  "src": "cb75f86d87d7",
+  "text": "4 people"
+ },
+ "camper.specs.0.detalle": {
+  "src": "0ad4756bb7ca",
+  "text": "4 seats, 4 berths"
+ },
+ "camper.specs.1.valor": {
+  "src": "99e7b3bfab04",
+  "text": "2 double beds"
+ },
+ "camper.specs.1.detalle": {
+  "src": "8bb8462b410b",
+  "text": "150×190 transverse + 135×180 bunk"
+ },
+ "camper.specs.2.valor": {
+  "src": "5944a0cf4318",
+  "text": "6.0 × 2.05 m"
+ },
+ "camper.specs.2.detalle": {
+  "src": "2a20e41557e7",
+  "text": "2.82 m high · parks like a van"
+ },
+ "camper.specs.3.valor": {
+  "src": "e57c42a0d9d9",
+  "text": "Diesel · manual"
+ },
+ "camper.specs.3.detalle": {
+  "src": "0052b5e26e45",
+  "text": "Fiat Ducato · 6-8 l/100 km"
+ },
+ "camper.specs.4.valor": {
+  "src": "e78e54132bbc",
+  "text": "100 L of water"
+ },
+ "camper.specs.4.detalle": {
+  "src": "6f29a3d32c5c",
+  "text": "+100 L grey water · shower inside and out"
+ },
+ "camper.specs.5.valor": {
+  "src": "a517c05675b0",
+  "text": "Solar panels"
+ },
+ "camper.specs.5.detalle": {
+  "src": "2c62433e654c",
+  "text": "leisure battery · up to 4 days off-grid"
+ },
+ "camper.equipamiento.0": {
+  "src": "52d345960922",
+  "text": "2-ring gas hob with sink, and kitchenware for 4"
+ },
+ "camper.equipamiento.1": {
+  "src": "c823d8b5424b",
+  "text": "50-litre fridge with freezer (12 V)"
+ },
+ "camper.equipamiento.2": {
+  "src": "514efd0c17f0",
+  "text": "Bathroom with basin, portable toilet and extendable shower"
+ },
+ "camper.equipamiento.3": {
+  "src": "f17402dc9f90",
+  "text": "Outdoor shower for after the beach"
+ },
+ "camper.equipamiento.4": {
+  "src": "6517faf0728a",
+  "text": "Heating and air conditioning in the living area"
+ },
+ "camper.equipamiento.5": {
+  "src": "73125a00d0b6",
+  "text": "Air conditioning in the cab too"
+ },
+ "camper.equipamiento.6": {
+  "src": "ad3083029a26",
+  "text": "Swivel cab seats"
+ },
+ "camper.equipamiento.7": {
+  "src": "c7112aa54150",
+  "text": "Reversing camera, GPS and Bluetooth"
+ },
+ "camper.equipamiento.8": {
+  "src": "a21b8ca154de",
+  "text": "Solar panels, leisure battery and USB / 12 V / 220 V sockets"
+ },
+ "camper.equipamiento.9": {
+  "src": "884e1d4b691e",
+  "text": "LED lighting throughout the living area"
+ },
+ "camper.equipamiento.10": {
+  "src": "2cb64fb6bde7",
+  "text": "Side awning, outdoor tables and chairs"
+ },
+ "camper.equipamiento.11": {
+  "src": "e3c248733174",
+  "text": "Rear garage for luggage"
+ },
+ "camper.equipamiento.12": {
+  "src": "b890d17edf45",
+  "text": "Bed linen, towels and welcome pack"
+ },
+ "camper.equipamiento.13": {
+  "src": "37ca9e872e6e",
+  "text": "Coffee maker"
+ },
+ "camper.equipamiento.14": {
+  "src": "b70393276c01",
+  "text": "Child seat available on request"
+ },
+ "faq.0.p": {
+  "src": "aa34c7bc2c6b",
+  "text": "What licence do I need?"
+ },
+ "faq.0.r": {
+  "src": "0f2657981a05",
+  "text": "The standard category B licence, nothing special. La Bellota weighs under 3,500 kg and drives like an ordinary van. One condition from the insurer, though: you must be at least 25 and have held your licence for 2 years."
+ },
+ "faq.1.p": {
+  "src": "dce1aff53b5c",
+  "text": "How do I book and how do I pay?"
+ },
+ "faq.1.r": {
+  "src": "6ca63623abc5",
+  "text": "Your dates are held with a 25% booking deposit by bank transfer. You can pay the rest by transfer or by card. And if you cancel 30 days or more in advance, we refund the booking deposit in full."
+ },
+ "faq.2.p": {
+  "src": "7e70f6af23f7",
+  "text": "Is there a security deposit? How much is it?"
+ },
+ "faq.2.r": {
+  "src": "cead22f90710",
+  "text": "Yes, a €800 security deposit by bank transfer, at least 7 days before pick-up. You get it back in full after the quick check we do together when you hand the campervan back."
+ },
+ "faq.3.p": {
+  "src": "f7cc515911bc",
+  "text": "How many kilometres are included?"
+ },
+ "faq.3.r": {
+  "src": "2355a8334349",
+  "text": "200 km per rental day, plenty for getting round the island. If you'd rather not keep an eye on the odometer, upgrade to unlimited kilometres for €10/day; outside that package, each extra km is €0.25."
+ },
+ "faq.4.p": {
+  "src": "f4029d405d16",
+  "text": "Where can I spend the night in the campervan?"
+ },
+ "faq.4.r": {
+  "src": "ed54031e19af",
+  "text": "In Gran Canaria you can spend the night anywhere parking is allowed, as long as you don't set up camp (table, awning, chairs…) outside authorised areas. Our selection is in the “Places to camp and spend the night” section: free Cabildo camping zones (the Cabildo is the island council) and campsites. We hand you the full map with the campervan, and we go over the rules in the welcome tutorial."
+ },
+ "faq.5.p": {
+  "src": "4ade5493551a",
+  "text": "Can I bring my pet? Is smoking allowed?"
+ },
+ "faq.5.r": {
+  "src": "d4fb3bb874cf",
+  "text": "Sorry: no pets and no smoking on board. That's how we keep the campervan spotless and allergy-free for everyone who travels in it."
+ },
+ "faq.6.p": {
+  "src": "3fcb87b47ab6",
+  "text": "Can you pick me up at the airport?"
+ },
+ "faq.6.r": {
+  "src": "34dba265f0ea",
+  "text": "Yes, and we're right next door: our campervan hire base is in Ojos de Garza, 5 minutes from Gran Canaria airport. The transfer (there and back) is €40 per booking and we arrange it around your flight."
+ },
+ "faq.7.p": {
+  "src": "d7c193d70ab9",
+  "text": "What if something goes wrong during the trip?"
+ },
+ "faq.7.r": {
+  "src": "84760b12b1d0",
+  "text": "La Bellota has 24/7 roadside assistance, plus our own 24-hour emergency line for hire vehicles. We're a small business: a person answers, not a call centre."
+ },
+ "faq.8.p": {
+  "src": "274b61abcea1",
+  "text": "What do I need to bring?"
+ },
+ "faq.8.r": {
+  "src": "cb5dbddb746e",
+  "text": "Not much: your clothes and an appetite for the island. The campervan comes with bed linen, towels, a full set of kitchenware, a coffee maker and a small welcome pack. If something's missing, tell us and we'll try to get hold of it."
+ },
+ "areas.eyebrow": {
+  "src": "836df09d27a0",
+  "text": "Sleep easy"
+ },
+ "areas.titulo": {
+  "src": "181fb01c7050",
+  "text": "Places to camp and spend the night"
+ },
+ "areas.texto": {
+  "src": "d2f3f8b55e85",
+  "text": "Our pick of places to spend the night with La Bellota: official zones run by the Cabildo (the island council), free with a permit you request online, plus campsites and private areas with facilities. The campervan comes with the full map, our favourite spots included."
+ },
+ "areas.permisoLabel": {
+  "src": "9f4857373d7a",
+  "text": "Request your Cabildo permit"
+ },
+ "areas.aviso": {
+  "src": "45a3681a7c88",
+  "text": "Cabildo zones need a permit in advance (free, online). Facilities, prices and conditions can change, so check them before you go. Spending the night in the campervan is not camping: outside these zones, don't set up camp around it."
+ },
+ "areas.lista.0.nombre": {
+  "src": "279471115e43",
+  "text": "Llanos de la Pez"
+ },
+ "areas.lista.0.zona": {
+  "src": "bd7ca9cc5346",
+  "text": "Tejeda · Highlands"
+ },
+ "areas.lista.0.servicios": {
+  "src": "f5e62561851d",
+  "text": "Free with permit · Pine forest at 1,600 m · Tables and barbecues"
+ },
+ "areas.lista.0.nota": {
+  "src": "0209326c2783",
+  "text": "The classic spot below Roque Nublo: sunrise over the sea of clouds, a short walk away."
+ },
+ "areas.lista.1.nombre": {
+  "src": "a9912210eb51",
+  "text": "Presa de Las Niñas"
+ },
+ "areas.lista.1.zona": {
+  "src": "bd7ca9cc5346",
+  "text": "Tejeda · Highlands"
+ },
+ "areas.lista.1.servicios": {
+  "src": "fb294aa7ac6e",
+  "text": "Free with permit · Beside the reservoir · Shade"
+ },
+ "areas.lista.1.nota": {
+  "src": "52411bd15843",
+  "text": "The most photogenic corner of the highlands; perfect for a dip when you wake up."
+ },
+ "areas.lista.2.nombre": {
+  "src": "04746a7d3535",
+  "text": "Llanos de la Mimbre"
+ },
+ "areas.lista.2.zona": {
+  "src": "c9e0634e92ce",
+  "text": "Agaete · Tamadaba"
+ },
+ "areas.lista.2.servicios": {
+  "src": "354fd8e73383",
+  "text": "Free with permit · Canarian pine forest"
+ },
+ "areas.lista.2.nota": {
+  "src": "305608aab785",
+  "text": "In the heart of Tamadaba, with Teide on the horizon at sunset."
+ },
+ "areas.lista.3.nombre": {
+  "src": "b4d7cf9c5c34",
+  "text": "Morro de Santiago"
+ },
+ "areas.lista.3.zona": {
+  "src": "9178e2dba470",
+  "text": "San Bartolomé de Tirajana"
+ },
+ "areas.lista.3.servicios": {
+  "src": "bdfffb695e22",
+  "text": "Free with permit · High altitude"
+ },
+ "areas.lista.3.nota": {
+  "src": "aadc6895df8b",
+  "text": "Total quiet and the starry skies of a Starlight reserve."
+ },
+ "areas.lista.4.nombre": {
+  "src": "df0869a70b2a",
+  "text": "Camping Temisas"
+ },
+ "areas.lista.4.zona": {
+  "src": "13eca5c5d6a1",
+  "text": "Agüimes · South-east"
+ },
+ "areas.lista.4.servicios": {
+  "src": "0da666840729",
+  "text": "Paid · Campsite facilities"
+ },
+ "areas.lista.4.nota": {
+  "src": "d89a0f974d1f",
+  "text": "Among olive groves, next to one of the prettiest villages on the island."
+ },
+ "areas.lista.5.nombre": {
+  "src": "a804dd759826",
+  "text": "Camping El Pinillo"
+ },
+ "areas.lista.5.zona": {
+  "src": "b604ed7d7f1a",
+  "text": "Mogán · South-west"
+ },
+ "areas.lista.5.servicios": {
+  "src": "493a8d882d10",
+  "text": "Paid · Motorhome-friendly"
+ },
+ "areas.lista.5.nota": {
+  "src": "f6b198a43fb1",
+  "text": "A handy base for the southern beaches and the Mogán ravines."
+ },
+ "areas.lista.6.nombre": {
+  "src": "3951388480c0",
+  "text": "Salinetas Area"
+ },
+ "areas.lista.6.zona": {
+  "src": "80f8cf0c249b",
+  "text": "Telde · East coast"
+ },
+ "areas.lista.6.servicios": {
+  "src": "31e27c707a7d",
+  "text": "Paid · Water · Waste disposal · Showers"
+ },
+ "areas.lista.6.nota": {
+  "src": "e78b1a59d84e",
+  "text": "Camping by the sea with full facilities for the campervan."
+ },
+ "areas.lista.7.nombre": {
+  "src": "8549b624e247",
+  "text": "Tejeda Camper Parking"
+ },
+ "areas.lista.7.zona": {
+  "src": "fb0579599dfe",
+  "text": "Tejeda · Village"
+ },
+ "areas.lista.7.servicios": {
+  "src": "fcf27ea182c7",
+  "text": "Paid · Overnight parking allowed"
+ },
+ "areas.lista.7.nota": {
+  "src": "e0ad1459df97",
+  "text": "Wake up with the Nublo in view, then almond pastries for breakfast in the village."
+ }
+}

@@ -10,6 +10,10 @@
 <meta property="og:image" content="https://www.labellotacampers.com/content/img/camper-exterior-lateral.jpg">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://www.labellotacampers.com/">
+<link rel="alternate" hreflang="es" href="https://www.labellotacampers.com/">
+<link rel="alternate" hreflang="en" href="https://www.labellotacampers.com/en/">
+<link rel="alternate" hreflang="x-default" href="https://www.labellotacampers.com/">
+<meta property="og:locale" content="es_ES">
 <meta name="theme-color" content="#182B20">
 <title>La Bellota Campers — Alquiler de furgoneta camper en Gran Canaria</title>
 <!-- Producción: https://www.labellotacampers.com (Vercel) · Alias: https://la-bellota.vercel.app · Espejo: https://sosaalfredo.github.io/la-bellota/ · Contenido editable en content/content.js (panel en /admin) -->
@@ -30,6 +34,16 @@
       <i class="logomark" aria-hidden="true"></i>
       <span>La <b>Bellota</b></span>
     </a>
+    <div class="langsel" id="langsel">
+      <button class="langsel__btn" id="langbtn" type="button" aria-expanded="false" aria-haspopup="true" aria-label="Idioma · Language">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3.2 9h17.6M3.2 15h17.6M12 3c2.4 2.7 3.6 5.7 3.6 9s-1.2 6.3-3.6 9c-2.4-2.7-3.6-5.7-3.6-9S9.6 5.7 12 3z"/></svg>
+        <span id="langcur">ES</span>
+      </button>
+      <ul class="langsel__menu" id="langmenu" hidden>
+        <li><a id="langes" href="./" lang="es" hreflang="es" aria-current="true">Español</a></li>
+        <li><a id="langen" href="en/" lang="en" hreflang="en">English</a></li>
+      </ul>
+    </div>
     <button class="navtoggle" id="navtoggle" aria-expanded="false" aria-controls="mainnav" aria-label="Abrir menú">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
@@ -386,6 +400,7 @@
   <button id="lightboxClose" aria-label="Cerrar">✕</button>
 </div>
 
+<script src="assets/i18n.js"></script>
 <script src="content/content.js"></script>
 <script src="assets/main.js"></script>
 <script defer src="assets/track.js"></script>

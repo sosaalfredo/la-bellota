@@ -23,10 +23,56 @@
     } catch (e) { /* corrupted draft -> fall back to published content */ }
   }
 
+  /* ---------- Idioma ----------
+     El idioma de la página lo manda <html lang>. El contenido editable viene
+     ya traducido en su propio content.js (lo genera el prerender); lo que la
+     web escribe en caliente sale del diccionario de assets/i18n.js. */
+  const LANG = (document.documentElement.getAttribute("lang") || "es").slice(0, 2);
+  const LOCALE = LANG === "en" ? "en-GB" : "es-ES";
+  const DICT = (window.I18N && (window.I18N[LANG] || window.I18N.es)) || {};
+  const T = (clave, vars) => {
+    let s = DICT[clave];
+    if (s == null) s = (window.I18N && window.I18N.es && window.I18N.es[clave]) || "";
+    return vars ? String(s).replace(/\{(\w+)\}/g, (m, v) => (vars[v] != null ? vars[v] : m)) : String(s);
+  };
+
   const $ = (id) => document.getElementById(id);
   const get = (path) => path.split(".").reduce((o, k) => (o == null ? o : o[k]), C);
   const esc = (s) => String(s == null ? "" : s)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+  /* ---------- Selector de idioma ----------
+     El menú se abre con clic o con teclado y se cierra al elegir, al pulsar
+     Escape o al tocar fuera. Los enlaces ya vienen puestos en el HTML (los
+     ajusta el prerender para cada versión), así que funciona sin JavaScript. */
+  (function idioma() {
+    const btn = $("langbtn"), menu = $("langmenu");
+    if (!btn || !menu) return;
+    const abrir = (v) => { menu.hidden = !v; btn.setAttribute("aria-expanded", String(v)); };
+    btn.addEventListener("click", (e) => { e.stopPropagation(); abrir(menu.hidden); });
+    document.addEventListener("click", (e) => { if (!menu.hidden && !menu.contains(e.target)) abrir(false); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") abrir(false); });
+
+    // Aviso cuando el idioma del navegador no es el de la página. No redirige a
+    // nadie: los buscadores tienen que poder ver las dos versiones enteras.
+    const otro = LANG === "es" ? "en" : "es";
+    const nav = (navigator.language || "").slice(0, 2).toLowerCase();
+    if (nav !== otro) return;
+    try { if (localStorage.getItem("labellota_lang_ok")) return; } catch (e) { /* sin almacenamiento */ }
+    const destino = $(otro === "en" ? "langen" : "langes");
+    if (!destino) return;
+    const bar = document.createElement("div");
+    bar.className = "langbar";
+    bar.innerHTML = '<span>' + (otro === "en"
+      ? 'This page is also available in <a href="' + destino.getAttribute("href") + '">English</a>.'
+      : 'Esta página también está en <a href="' + destino.getAttribute("href") + '">español</a>.') +
+      '</span><button type="button" aria-label="' + (otro === "en" ? "Dismiss" : "Cerrar") + '">✕</button>';
+    bar.querySelector("button").addEventListener("click", () => {
+      bar.remove();
+      try { localStorage.setItem("labellota_lang_ok", "1"); } catch (e) { /* sin almacenamiento */ }
+    });
+    document.body.appendChild(bar);
+  })();
 
   /* ---------- Simple text bindings ---------- */
   document.querySelectorAll("[data-c]").forEach((el) => {
@@ -82,9 +128,9 @@
     if (t && t.tagName === "IMG" && t.hasAttribute("srcset")) { t.removeAttribute("srcset"); t.removeAttribute("sizes"); }
   }, true);
   const setImg = (id, url, alt, sizes) => { const el = $(id); if (el && url) { setResp(el, url, sizes || "100vw"); if (alt) el.alt = alt; } };
-  setImg("heroImg", get("hero.foto"), "La Bellota, camper Weinsberg 2026, en la cumbre de Gran Canaria sobre el mar de nubes", "100vw");
+  setImg("heroImg", get("hero.foto"), T("altHero"), "100vw");
   setImg("introImg", get("intro.foto"), null, "(min-width: 900px) 42vw, 100vw");
-  setImg("nocheImg", get("noche.foto"), "La camper al atardecer en la cumbre de Gran Canaria, con el sol cayendo sobre el mar de nubes", "100vw");
+  setImg("nocheImg", get("noche.foto"), T("altNoche"), "100vw");
 
   /* ---------- Claves ---------- */
   $("claves").innerHTML = (C.claves || []).map((c) =>
@@ -103,7 +149,7 @@
     document.querySelectorAll("#galeriaThumbs button").forEach((b, i) => b.classList.toggle("active", i === fotoIdx));
   };
   $("galeriaThumbs").innerHTML = fotos.map((f, i) =>
-    '<button type="button" aria-label="Foto ' + (i + 1) + '"><img src="' + esc(f.url) + '"' + respAttrs(f.url, "120px", [320, 480]) + ' alt="" loading="lazy" decoding="async"></button>'
+    '<button type="button" aria-label="' + esc(T("fotoN", { n: i + 1 })) + '"><img src="' + esc(f.url) + '"' + respAttrs(f.url, "120px", [320, 480]) + ' alt="" loading="lazy" decoding="async"></button>'
   ).join("");
   document.querySelectorAll("#galeriaThumbs button").forEach((b, i) =>
     b.addEventListener("click", () => { fotoIdx = i; renderFoto(); }));
@@ -125,11 +171,13 @@
   $("equipamiento").innerHTML = (get("camper.equipamiento") || []).map((e) => "<li>" + esc(e) + "</li>").join("");
 
   /* ---------- Tarifas ---------- */
-  const mesActual = ["", "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"][new Date().getMonth() + 1];
+  // El mes actual, en el idioma de la página: se compara con el texto de meses
+  // de cada temporada ("Abril, mayo y junio…") para resaltar la vigente.
+  const mesActual = T("mes." + (new Date().getMonth() + 1));
   const enTemporada = (t) => (t.meses || "").toLowerCase().includes(mesActual);
   // Número → "110 €" + "por noche". Texto con "·" ("120 €/noche · mín. 3 noches") → precio grande + condición en pequeño.
   const precioHTML = (p) => {
-    if (typeof p === "number") return esc(p) + " €<small>por noche</small>";
+    if (typeof p === "number") return (LANG === "en" ? "€" + esc(p) : esc(p) + " €") + "<small>" + T("porNoche") + "</small>";
     const s = String(p || ""), i = s.indexOf("·");
     if (i === -1) return esc(s);
     return esc(s.slice(0, i).trim()) + "<small>" + esc(s.slice(i + 1).trim()) + "</small>";
@@ -153,7 +201,7 @@
   const star = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .5-5.4 4.8L18.5 22 12 17.7 5.5 22l1.9-7.7L2 9.5 9 9z"/></svg>';
   $("reviews").innerHTML = (get("resenas.lista") || []).map((r) => {
     const n = Math.min(5, Math.max(1, +r.estrellas || 5));
-    return '<article class="review reveal"><div class="stars" role="img" aria-label="' + n + ' de 5 estrellas">' + star.repeat(n) + "</div>" +
+    return '<article class="review reveal"><div class="stars" role="img" aria-label="' + esc(T("estrellasDe5", { n: n })) + '">' + star.repeat(n) + "</div>" +
       "<p>“" + esc(r.texto) + "”</p><footer>" + esc(r.nombre) + "<span>" + esc(r.viaje) + "</span></footer></article>";
   }).join("");
 
@@ -165,7 +213,7 @@
     const wrap = $("opinaStars");
     const pintaStars = () => {
       wrap.innerHTML = [1, 2, 3, 4, 5].map((i) =>
-        '<button type="button" class="' + (i <= rating ? "on" : "") + '" data-v="' + i + '" aria-label="' + i + ' estrellas">' + star + "</button>"
+        '<button type="button" class="' + (i <= rating ? "on" : "") + '" data-v="' + i + '" aria-label="' + esc(T("estrellas", { n: i })) + '">' + star + "</button>"
       ).join("");
       wrap.querySelectorAll("button").forEach((b) =>
         b.addEventListener("click", () => { rating = +b.getAttribute("data-v"); pintaStars(); }));
@@ -173,11 +221,11 @@
     pintaStars();
     const opinionTexto = () => {
       const f = new FormData(form);
-      return "⭐ OPINIÓN para la web de La Bellota\n" +
-        "· Nombre: " + f.get("nombre") + "\n" +
-        "· Viaje: " + (f.get("viaje") || "-") + "\n" +
-        "· Estrellas: " + rating + "/5\n" +
-        "· Opinión: " + f.get("texto");
+      return T("waOpinionTitulo") + "\n" +
+        T("waOpinionNombre", { nombre: f.get("nombre") }) + "\n" +
+        T("waOpinionViaje", { viaje: f.get("viaje") || "-" }) + "\n" +
+        T("waOpinionEstrellas", { estrellas: rating }) + "\n" +
+        T("waOpinionTexto", { texto: f.get("texto") });
     };
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -187,7 +235,7 @@
     if (mailBtn) mailBtn.addEventListener("click", () => {
       if (!form.reportValidity()) return;
       location.href = "mailto:" + (get("negocio.email") || "") +
-        "?subject=" + encodeURIComponent("Opinión para la web de La Bellota") +
+        "?subject=" + encodeURIComponent(T("mailOpinionAsunto")) +
         "&body=" + encodeURIComponent(opinionTexto());
     });
   })();
@@ -204,21 +252,21 @@
     const D = C.disponibilidad;
     if (!D) { const s = document.getElementById("disponibilidad"); if (s) s.hidden = true; return; }
     const ocupado = new Set(D.ocupado || []);
-    const DOW = ["L", "M", "X", "J", "V", "S", "D"];
+    const DOW = T("dow").split(",");
     const MESES_MAX = 12;
     const iso = (d) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
     const hoyD = new Date(); hoyD.setHours(0, 0, 0, 0);
     const hoyIso = iso(hoyD);
     let offset = 0, selA = null, selB = null;
 
-    const fmt = (s) => new Date(s + "T12:00").toLocaleDateString("es-ES", { day: "numeric", month: "short" });
+    const fmt = (s) => new Date(s + "T12:00").toLocaleDateString(LOCALE, { day: "numeric", month: "short" });
     const addDias = (s, n) => { const d = new Date(s + "T12:00"); d.setDate(d.getDate() + n); return iso(d); };
     const noches = (a, b) => Math.round((new Date(b + "T12:00") - new Date(a + "T12:00")) / 864e5);
     const rangoLibre = (a, b) => { for (let d = a; d <= b; d = addDias(d, 1)) { if (ocupado.has(d)) return false; } return true; };
 
     const mesHtml = (base) => {
       const y = base.getFullYear(), m = base.getMonth();
-      const nombre = base.toLocaleDateString("es-ES", { month: "long", year: "numeric" });
+      const nombre = base.toLocaleDateString(LOCALE, { month: "long", year: "numeric" });
       const primero = new Date(y, m, 1);
       const pad = (primero.getDay() + 6) % 7;
       const dias = new Date(y, m + 1, 0).getDate();
@@ -229,7 +277,7 @@
         let cls = "cal__dia", attr = "";
         if (f < hoyIso) cls += " pasado";
         else if (ocupado.has(f)) cls += " ocupado";
-        else { cls += " libre"; attr = ' data-f="' + f + '" role="button" tabindex="0" aria-label="Elegir ' + f + '"'; }
+        else { cls += " libre"; attr = ' data-f="' + f + '" role="button" tabindex="0" aria-label="' + esc(T("elegirDia", { fecha: f })) + '"'; }
         if (f === hoyIso) cls += " hoy";
         if (selA && selB && f >= selA && f <= selB) cls += (f === selA || f === selB) ? " sel" : " enrango";
         else if (selA && !selB && f === selA) cls += " sel";
@@ -252,11 +300,12 @@
       const acc = $("calAccion"), res = $("calResumen");
       if (selA && selB) {
         const n = noches(selA, selB);
-        res.innerHTML = "Del <b>" + fmt(selA) + "</b> al <b>" + fmt(selB) + "</b> · " + n + (n === 1 ? " noche" : " noches");
-        $("calWa").href = waUrl("Hola 🚐 He visto en el calendario que La Bellota está libre del " + selA + " al " + selB + " (" + n + (n === 1 ? " noche" : " noches") + "). ¿Me confirmáis disponibilidad y precio?");
+        const pal = T(n === 1 ? "noche" : "noches");
+        res.innerHTML = T("rangoResumen", { a: fmt(selA), b: fmt(selB), n: n, noches: pal });
+        $("calWa").href = waUrl(T("waCalendario", { a: selA, b: selB, n: n, noches: pal }));
         acc.hidden = false;
       } else if (selA) {
-        res.innerHTML = "Recogida el <b>" + fmt(selA) + "</b> — ahora elige el día de devolución.";
+        res.innerHTML = T("recogidaElegida", { a: fmt(selA) });
         acc.hidden = false; $("calWa").removeAttribute("href");
       } else acc.hidden = true;
     };
@@ -271,7 +320,7 @@
       else if (f <= selA) { selA = f; selB = null; }
       else if (!rangoLibre(selA, f)) {
         $("calAccion").hidden = false;
-        $("calResumen").innerHTML = '<span class="err">Ese rango incluye días ocupados — elige otras fechas.</span>';
+        $("calResumen").innerHTML = '<span class="err">' + esc(T("rangoOcupado")) + "</span>";
         selA = null; selB = null;
         setTimeout(pintar, 1600);
         return;
@@ -328,7 +377,7 @@
   /* ---------- Contact links ---------- */
   const wa = (get("negocio.whatsapp") || "").replace(/\D/g, "");
   const waUrl = (text) => "https://wa.me/" + wa + (text ? "?text=" + encodeURIComponent(text) : "");
-  const saludo = "Hola, me interesa alquilar La Bellota 🚐";
+  const saludo = T("waSaludo");
   ["waFloat", "waSticky", "waFooter"].forEach((id) => { const el = $(id); if (el) el.href = waUrl(saludo); });
   const tel = $("telLink"); if (tel) tel.href = "tel:" + (get("negocio.telefono") || "").replace(/\s/g, "");
   const mail = $("mailLink"); if (mail) mail.href = "mailto:" + (get("negocio.email") || "");
@@ -342,17 +391,17 @@
   $("quickbook").addEventListener("submit", (e) => {
     e.preventDefault();
     const f = new FormData(e.target);
-    openWa("Hola, ¿está libre La Bellota del " + f.get("desde") + " al " + f.get("hasta") + "? 🚐");
+    openWa(T("waQuickbook", { a: f.get("desde"), b: f.get("hasta") }));
   });
   $("bookform").addEventListener("submit", (e) => {
     e.preventDefault();
     const f = new FormData(e.target);
     openWa(
-      "Hola, soy " + f.get("nombre") + " y quiero reservar La Bellota 🚐\n" +
-      "· Fechas: del " + f.get("desde") + " al " + f.get("hasta") + "\n" +
-      "· Viajamos: " + f.get("personas") + "\n" +
-      "· Contacto: " + f.get("contacto") +
-      (f.get("mensaje") ? "\n· Mensaje: " + f.get("mensaje") : "")
+      T("waReserva", { nombre: f.get("nombre") }) + "\n" +
+      T("waReservaFechas", { a: f.get("desde"), b: f.get("hasta") }) + "\n" +
+      T("waReservaPersonas", { personas: f.get("personas") }) + "\n" +
+      T("waReservaContacto", { contacto: f.get("contacto") }) +
+      (f.get("mensaje") ? "\n" + T("waReservaMensaje", { mensaje: f.get("mensaje") }) : "")
     );
   });
 
