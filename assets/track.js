@@ -62,6 +62,24 @@
   var utm = new URLSearchParams(location.search).get("utm_source");
   if (utm) ev("campana", utm);
 
+  // Llegada desde un asistente de IA. Search Console no separa este tráfico y
+  // el referente se pierde entre los demás: aquí queda agrupado como evento
+  // "ia" con la fuente, visible en el panel → Estadísticas.
+  var FUENTES_IA = [
+    [/(^|\.)chatgpt\.com$|(^|\.)openai\.com$/, "chatgpt"],
+    [/(^|\.)perplexity\.ai$/, "perplexity"],
+    [/(^|\.)copilot\.microsoft\.com$/, "copilot"], // bing.com queda fuera: ahí no se distingue la IA de la búsqueda normal
+    [/(^|\.)gemini\.google\.com$|(^|\.)bard\.google\.com$/, "gemini"],
+    [/(^|\.)claude\.ai$/, "claude"],
+    [/(^|\.)you\.com$|(^|\.)phind\.com$|(^|\.)poe\.com$/, "otros"]
+  ];
+  try {
+    var rh = new URL(document.referrer).hostname;
+    for (var i = 0; i < FUENTES_IA.length; i++) {
+      if (FUENTES_IA[i][0].test(rh)) { ev("ia", FUENTES_IA[i][1]); break; }
+    }
+  } catch (e) { /* sin referente */ }
+
   // Contexto de un elemento: id propio o de la sección/zona que lo contiene
   function contexto(el) {
     if (el.id) return el.id;

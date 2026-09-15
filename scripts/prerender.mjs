@@ -73,6 +73,16 @@ const neg = C.negocio || {};
 const precios = (C.tarifas?.temporadas || [])
   .map((t) => +(String(t.precio).match(/\d+/) || [0])[0])
   .filter((n) => n >= 30); // ignora "−10 %" y similares
+// Perfiles del negocio en otras plataformas: le dicen a Google y a los
+// asistentes de IA que la web, la ficha de Yescapa y las redes son el MISMO
+// negocio. Cuantas más fuentes coincidan, más fácil es que lo recomienden.
+// Pendiente de añadir: la URL de la ficha de Google Business (maps.google.com/?cid=…).
+const perfiles = [
+  neg.instagram && "https://instagram.com/" + neg.instagram,
+  "https://www.yescapa.es/campers/121413",
+  "https://www.facebook.com/p/La-Bellota-Extreme%C3%B1a-100067590225478/",
+].filter(Boolean);
+
 const ld = [
   {
     "@context": "https://schema.org",
@@ -80,10 +90,16 @@ const ld = [
     "@id": BASE + "#negocio",
     "name": neg.nombre || "La Bellota Campers",
     "legalName": "La Bellota Extremeña S.L.U.",
+    "description": C.intro?.resumen || "Alquiler de furgoneta camper en Gran Canaria.",
     "url": BASE,
     "telephone": neg.telefono,
     "email": neg.email,
-    "image": BASE + (C.hero?.foto || "content/img/camper-exterior-lateral.jpg"),
+    "image": [
+      BASE + (C.hero?.foto || "content/img/camper-cumbre-mar-de-nubes.jpg"),
+      BASE + "content/img/camper-exterior-lateral.jpg",
+      BASE + "content/img/camper-interior-salon-cama.jpg",
+    ],
+    "logo": BASE + "assets/icons/icon-512.png",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "C/ Luis Morote 45, bajo",
@@ -93,15 +109,44 @@ const ld = [
       "addressCountry": "ES",
     },
     "areaServed": { "@type": "Place", "name": "Gran Canaria" },
+    "knowsLanguage": ["es", "en"],
+    "currenciesAccepted": "EUR",
+    "paymentAccepted": "Transferencia bancaria, tarjeta",
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "09:00",
+      "closes": "20:00",
+    }],
     "priceRange": precios.length ? Math.min(...precios) + "–" + Math.max(...precios) + " € por noche" : undefined,
-    "sameAs": neg.instagram ? ["https://instagram.com/" + neg.instagram] : [],
+    "sameAs": perfiles,
+  },
+  {
+    // Frescura: la fecha real de la última edición del contenido.
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": BASE + "#pagina",
+    "url": BASE,
+    "name": "Alquiler de camper en Gran Canaria · La Bellota Campers",
+    "inLanguage": "es-ES",
+    "isPartOf": { "@id": BASE + "#negocio" },
+    "dateModified": C.meta?.actualizado || HOY,
+    "primaryImageOfPage": BASE + (C.hero?.foto || "content/img/camper-cumbre-mar-de-nubes.jpg"),
   },
   precios.length && {
     "@context": "https://schema.org",
-    "@type": "Product",
+    // Product + Vehicle: los campos de vehículo (plazas, año, combustible) son
+    // los que extraen los asistentes de IA cuando les preguntan por la camper.
+    "@type": ["Product", "Vehicle"],
     "name": "Alquiler de furgoneta camper Weinsberg 2026 (4 plazas) en Gran Canaria",
     "description": "Camper Weinsberg 2026 sobre Fiat Ducato para 4 personas: 2 camas dobles, cocina, ducha y WC, nevera, placas solares. Entrega junto al aeropuerto de Gran Canaria.",
     "brand": { "@type": "Brand", "name": "Weinsberg" },
+    "vehicleModelDate": "2026",
+    "vehicleSeatingCapacity": 4,
+    "fuelType": "Diésel",
+    "vehicleTransmission": "Manual",
+    "vehicleConfiguration": "Camper de gran volumen sobre Fiat Ducato, 6,0 m",
+    "provider": { "@id": BASE + "#negocio" },
     "image": BASE + "content/img/camper-exterior-lateral.jpg",
     // Sin "review" ni "aggregateRating" A PROPÓSITO: las reseñas de la web son de
     // ejemplo y Google penaliza las valoraciones no reales. Search Console los
@@ -116,6 +161,16 @@ const ld = [
       "url": BASE + "#tarifas",
       "availability": "https://schema.org/InStock",
       "description": "Precio por noche · mínimo 3 noches · 200 km/día incluidos",
+      // El precio, dicho en lenguaje de máquina: 110 € por noche, mínimo 3.
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": Math.min(...precios),
+        "priceCurrency": "EUR",
+        "unitCode": "DAY",
+        "referenceQuantity": { "@type": "QuantitativeValue", "value": 1, "unitCode": "DAY" },
+        "eligibleQuantity": { "@type": "QuantitativeValue", "minValue": 3, "unitCode": "DAY" },
+      },
+      "seller": { "@id": BASE + "#negocio" },
     },
   },
   (C.faq || []).length && {
@@ -162,9 +217,13 @@ fs.writeFileSync(path.join(DIST, "explora-gran-canaria", "index.html"), expHtml)
 const lastmod = C.meta?.actualizado || HOY;
 // Solo páginas indexables: las legales llevan <meta name="robots" content="noindex">
 // y listarlas aquí solo genera avisos en Search Console.
+// Cada URL con SU fecha real: la home sigue la del contenido editable y la guía
+// la del fichero de lugares. Un lastmod compartido le dice a Google que todo
+// cambió cada vez que Nahum toca un precio, y deja de creérselo.
+const mtime = (p) => fs.statSync(path.join(ROOT, p)).mtime.toISOString().slice(0, 10);
 const urls = [
   { loc: BASE, lastmod, priority: "1.0" },
-  { loc: BASE + "explora-gran-canaria/", lastmod, priority: "0.8" },
+  { loc: BASE + "explora-gran-canaria/", lastmod: mtime("content/explora-lugares.js"), priority: "0.8" },
 ];
 fs.writeFileSync(
   path.join(DIST, "sitemap.xml"),
@@ -202,6 +261,9 @@ Disallow: /admin
 Disallow: /api/
 
 Sitemap: ${BASE}sitemap.xml
+
+# Resumen del negocio en texto plano para asistentes de IA:
+# ${BASE}llms.txt
 `);
 
 /* ---------- 6b. Clave de IndexNow (Bing, DuckDuckGo, Yandex…) ---------- */
@@ -219,7 +281,7 @@ const faqTxt = (C.faq || []).map((f) => `### ${f.p}\n${f.r}`).join("\n\n");
 const lugares = (exp.win.EXPLORA_LUGARES?.lugares || []).map((l) => `- ${l.nombre} (${l.municipio})`).join("\n");
 fs.writeFileSync(path.join(DIST, "llms.txt"), `# La Bellota Campers
 
-> Alquiler de una furgoneta camper Weinsberg 2026 (4 plazas, 2 camas dobles) en Gran Canaria, España. Entrega junto al aeropuerto de Gran Canaria (Ojos de Garza, Telde). Desde ${precios.length ? Math.min(...precios) : 110} € por noche con 200 km/día incluidos. Reserva por WhatsApp al ${neg.telefono || ""}. Titular: La Bellota Extremeña S.L.U.
+> Alquiler de una furgoneta camper Weinsberg 2026 (4 plazas, 2 camas dobles) en Gran Canaria, España. Entrega junto al aeropuerto de Gran Canaria (Ojos de Garza, Telde). Desde ${precios.length ? Math.min(...precios) : 110} € por noche con 200 km/día incluidos. Reserva por WhatsApp al ${neg.telefono || ""}. Titular: La Bellota Extremeña S.L.U. Atención en español e inglés, todo el año.
 
 Última actualización del contenido: ${lastmod}
 
